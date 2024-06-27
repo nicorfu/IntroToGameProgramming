@@ -8,6 +8,7 @@
 * Academic Misconduct.
 **/
 
+
 #include <GL/glew.h>
 
 #define GL_SILENCE_DEPRECATION
@@ -25,12 +26,20 @@
 #include "cmath"
 #include <ctime>
 
-enum AppStatus { RUNNING, TERMINATED };
 
+enum AppStatus { RUNNING, TERMINATED };
 AppStatus g_app_status = RUNNING;
+
 SDL_Window* g_display_window;
 ShaderProgram g_shader_program;
 
+constexpr int WINDOW_WIDTH = 960;
+constexpr int WINDOW_HEIGHT = 720;
+
+constexpr int VIEWPORT_X = 0;
+constexpr int VIEWPORT_Y = 0;
+constexpr int VIEWPORT_WIDTH = WINDOW_WIDTH;
+constexpr int VIEWPORT_HEIGHT = WINDOW_HEIGHT;
 
 void initialize();
 void process_input();
@@ -41,7 +50,24 @@ void shutdown();
 
 void initialize()
 {
+	SDL_Init(SDL_INIT_VIDEO);
 
+	g_display_window = SDL_CreateWindow("FutPong", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+		WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
+
+	if (g_display_window == nullptr)
+	{
+		std::cerr << "Error: SDL window could not be created.\n";
+		shutdown();
+		exit(1);
+	}
+
+	SDL_GLContext context = SDL_GL_CreateContext(g_display_window);
+	SDL_GL_MakeCurrent(g_display_window, context);
+
+	glewInit();
+
+	glViewport(VIEWPORT_X, VIEWPORT_Y, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
 }
 
 
