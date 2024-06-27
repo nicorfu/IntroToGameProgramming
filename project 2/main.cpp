@@ -97,6 +97,21 @@ glm::mat4 g_ball_matrix;
 glm::mat4 g_projection_matrix;
 glm::mat4 g_translation_matrix;
 
+constexpr glm::vec3 G_POSITION_LINE = INIT_POS_LINE;
+
+constexpr glm::vec3 G_POSITION_CIRCLE = INIT_POS_CIRCLE;
+
+glm::vec3 g_position_alexis = INIT_POS_ALEXIS;
+glm::vec3 g_movement_alexis = glm::vec3(0.0f, 0.0f, 0.0f);
+
+glm::vec3 g_position_messi = INIT_POS_MESSI;
+glm::vec3 g_movement_messi = glm::vec3(0.0f, 0.0f, 0.0f);
+
+glm::vec3 g_position_ball = INIT_POS_BALL;
+glm::vec3 g_movement_ball = glm::vec3(0.0f, 0.0f, 0.0f);
+glm::vec3 g_rotation_ball = glm::vec3(0.0f, 0.0f, 0.0f);
+glm::vec3 g_scale_ball = INIT_SCALE_BALL;
+
 void initialize();
 void process_input();
 void update();
