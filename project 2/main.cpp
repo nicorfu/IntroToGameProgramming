@@ -33,8 +33,8 @@ AppStatus g_app_status = RUNNING;
 SDL_Window* g_display_window;
 ShaderProgram g_shader_program;
 
-constexpr int WINDOW_WIDTH = 960;
-constexpr int WINDOW_HEIGHT = 720;
+constexpr int WINDOW_WIDTH = 1100;
+constexpr int WINDOW_HEIGHT = 710;
 
 constexpr float BG_RED = 0.3333f;
 constexpr float BG_GREEN = 0.4196f;

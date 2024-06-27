@@ -27,4 +27,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="line.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="circle.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="alexis.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="messi.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ball.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>
