@@ -46,6 +46,18 @@ constexpr int VIEWPORT_Y = 0;
 constexpr int VIEWPORT_WIDTH = WINDOW_WIDTH;
 constexpr int VIEWPORT_HEIGHT = WINDOW_HEIGHT;
 
+constexpr GLint NUMBER_OF_TEXTURES = 1;
+constexpr GLint LEVEL_OF_DETAIL = 0;
+constexpr GLint TEXTURE_BORDER = 0;
+
+constexpr char V_SHADER_PATH[] = "shaders/vertex_textured.glsl";
+constexpr char F_SHADER_PATH[] = "shaders/fragment_textured.glsl";
+
+constexpr char LINE_SPRITE_FILEPATH[] = "line.png";
+constexpr char CIRCLE_SPRITE_FILEPATH[] = "circle.png";
+constexpr char ALEXIS_SPRITE_FILEPATH[] = "alexis.png";
+constexpr char MESSI_SPRITE_FILEPATH[] = "messi.png";
+
 void initialize();
 void process_input();
 void update();
