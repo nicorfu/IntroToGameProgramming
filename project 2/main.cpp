@@ -58,6 +58,25 @@ constexpr char CIRCLE_SPRITE_FILEPATH[] = "circle.png";
 constexpr char ALEXIS_SPRITE_FILEPATH[] = "alexis.png";
 constexpr char MESSI_SPRITE_FILEPATH[] = "messi.png";
 
+constexpr float LINE_MULTIPLIER = 1.0f;
+constexpr float CIRCLE_MULTIPLIER = 1.0f;
+constexpr float ALEXIS_MULTIPLIER = 1.0f;
+constexpr float MESSI_MULTIPLIER = 1.0f;
+
+constexpr glm::vec3 INIT_SCALE_LINE = glm::vec3(10.0f, 6.6666f, 0.000f)
+* LINE_MULTIPLIER;
+constexpr glm::vec3 INIT_SCALE_CIRCLE = glm::vec3(10.0f, 10.0f, 0.000f)
+* CIRCLE_MULTIPLIER;
+constexpr glm::vec3 INIT_SCALE_ALEXIS = glm::vec3(10.0f, 13.9752f, 0.000f)
+* ALEXIS_MULTIPLIER;
+constexpr glm::vec3 INIT_SCALE_MESSI = glm::vec3(10.0f, 15.1568f, 0.000f)
+* MESSI_MULTIPLIER;
+
+constexpr glm::vec3 INIT_POS_LINE = glm::vec3(0.0f, 0.0f, 0.0f);
+constexpr glm::vec3 INIT_POS_CIRCLE = glm::vec3(0.0f, 0.0f, 0.0f);
+constexpr glm::vec3 INIT_POS_ALEXIS = glm::vec3(-3.5f, 0.0f, 0.0f);
+constexpr glm::vec3 INIT_POS_MESSI = glm::vec3(3.5f, 0.0f, 0.0f);
+
 void initialize();
 void process_input();
 void update();
