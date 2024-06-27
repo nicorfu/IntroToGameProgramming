@@ -158,7 +158,7 @@ void initialize()
 	g_shader_program.set_projection_matrix(g_projection_matrix);
 	g_shader_program.set_view_matrix(g_view_matrix);
 
-	glUseProgram(g_shader_program.get_program_id());
+	//glUseProgram(g_shader_program.get_program_id());
 
 	glClearColor(BG_RED, BG_GREEN, BG_BLUE, BG_OPACITY);
 

@@ -36,6 +36,11 @@ ShaderProgram g_shader_program;
 constexpr int WINDOW_WIDTH = 960;
 constexpr int WINDOW_HEIGHT = 720;
 
+constexpr float BG_RED = 0.3333f;
+constexpr float BG_GREEN = 0.4196f;
+constexpr float BG_BLUE = 0.1843f;
+constexpr float BG_OPACITY = 1.0f;
+
 constexpr int VIEWPORT_X = 0;
 constexpr int VIEWPORT_Y = 0;
 constexpr int VIEWPORT_WIDTH = WINDOW_WIDTH;
@@ -68,6 +73,13 @@ void initialize()
 	glewInit();
 
 	glViewport(VIEWPORT_X, VIEWPORT_Y, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+
+	glUseProgram(g_shader_program.get_program_id());
+
+	glClearColor(BG_RED, BG_GREEN, BG_BLUE, BG_OPACITY);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 
@@ -92,7 +104,9 @@ void update()
 
 void render()
 {
+	glClear(GL_COLOR_BUFFER_BIT);
 
+	SDL_GL_SwapWindow(g_display_window);
 }
 
 
