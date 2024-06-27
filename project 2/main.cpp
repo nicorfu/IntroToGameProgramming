@@ -59,6 +59,12 @@ constexpr char ALEXIS_SPRITE_FILEPATH[] = "alexis.png";
 constexpr char MESSI_SPRITE_FILEPATH[] = "messi.png";
 constexpr char BALL_SPRITE_FILEPATH[] = "ball.png";
 
+GLuint g_line_texture_id;
+GLuint g_circle_texture_id;
+GLuint g_alexis_texture_id;
+GLuint g_messi_texture_id;
+GLuint g_mball_texture_id;
+
 constexpr float LINE_SCALE_MULTIPLIER = 1.0f;
 constexpr float CIRCLE_SCALE_MULTIPLIER = 1.0f;
 constexpr float ALEXIS_SCALE_MULTIPLIER = 1.0f;
@@ -81,6 +87,15 @@ constexpr glm::vec3 INIT_POS_CIRCLE = glm::vec3(0.0f, 0.0f, 0.0f);
 constexpr glm::vec3 INIT_POS_ALEXIS = glm::vec3(-3.5f, 0.0f, 0.0f);
 constexpr glm::vec3 INIT_POS_MESSI = glm::vec3(3.5f, 0.0f, 0.0f);
 constexpr glm::vec3 INIT_POS_BALL = glm::vec3(-0.5f, 0.0f, 0.0f);
+
+glm::mat4 g_view_matrix;
+glm::mat4 g_line_matrix;
+glm::mat4 g_circle_matrix;
+glm::mat4 g_alexis_matrix;
+glm::mat4 g_messi_matrix;
+glm::mat4 g_ball_matrix;
+glm::mat4 g_projection_matrix;
+glm::mat4 g_translation_matrix;
 
 void initialize();
 void process_input();
