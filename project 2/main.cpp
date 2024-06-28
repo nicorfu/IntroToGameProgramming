@@ -65,14 +65,14 @@ GLuint g_alexis_texture_id;
 GLuint g_messi_texture_id;
 GLuint g_ball_texture_id;
 
-constexpr float LINE_SCALE_MULTIPLIER = 20.0f;
-constexpr float CIRCLE_SCALE_MULTIPLIER = 20.0f;
+constexpr float LINE_SCALE_MULTIPLIER = 1.125f;
+constexpr float CIRCLE_SCALE_MULTIPLIER = 0.3f;
 constexpr float ALEXIS_SCALE_MULTIPLIER = 0.25f;
 constexpr float MESSI_SCALE_MULTIPLIER = 0.24f;
 constexpr float BALL_SCALE_MULTIPLIER = 0.095f;
 
-constexpr glm::vec3 INIT_SCALE_LINE = glm::vec3(10.0f, 6.6666f, 0.000f) * LINE_SCALE_MULTIPLIER;
-constexpr glm::vec3 INIT_SCALE_CIRCLE = glm::vec3(10.0f, 10.0f, 0.000f) * CIRCLE_SCALE_MULTIPLIER;
+constexpr glm::vec3 INIT_SCALE_LINE = glm::vec3(1.0f, 6.6666f, 0.000f) * LINE_SCALE_MULTIPLIER;
+constexpr glm::vec3 INIT_SCALE_CIRCLE = glm::vec3(9.2f, 10.0f, 0.000f) * CIRCLE_SCALE_MULTIPLIER;
 constexpr glm::vec3 INIT_SCALE_ALEXIS = glm::vec3(8.7f, 13.9752f, 0.000f) * ALEXIS_SCALE_MULTIPLIER;
 constexpr glm::vec3 INIT_SCALE_MESSI = glm::vec3(8.7f, 10.0f, 0.000f) * MESSI_SCALE_MULTIPLIER;
 constexpr glm::vec3 INIT_SCALE_BALL = glm::vec3(9.0f, 10.0f, 0.000f) * BALL_SCALE_MULTIPLIER;

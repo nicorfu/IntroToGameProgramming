@@ -37,10 +37,10 @@
     <Image Include="ball.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="circle.png">
+    <Image Include="messi.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="messi.png">
+    <Image Include="circle.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
