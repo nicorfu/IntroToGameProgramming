@@ -224,9 +224,46 @@ void update()
 }
 
 
+void draw_object(glm::mat4& object_g_model_matrix, GLuint& object_texture_id)
+{
+	g_shader_program.set_model_matrix(object_g_model_matrix);
+	glBindTexture(GL_TEXTURE_2D, object_texture_id);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+}
+
+
 void render()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	float vertices[] =
+	{
+		-0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f,
+		-0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f
+	};
+
+	float texture_coordinates[] =
+	{
+		0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+		0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+	};
+
+	glVertexAttribPointer(g_shader_program.get_position_attribute(), 2, GL_FLOAT, false, 0, 
+					      vertices);
+	glEnableVertexAttribArray(g_shader_program.get_position_attribute());
+
+	glVertexAttribPointer(g_shader_program.get_tex_coordinate_attribute(), 2, GL_FLOAT, false, 0, 
+						  texture_coordinates);
+	glEnableVertexAttribArray(g_shader_program.get_tex_coordinate_attribute());
+
+	draw_object(g_line_matrix, g_line_texture_id);
+	draw_object(g_circle_matrix, g_circle_texture_id);
+	draw_object(g_alexis_matrix, g_alexis_texture_id);
+	draw_object(g_messi_matrix, g_messi_texture_id);
+	draw_object(g_ball_matrix, g_ball_texture_id);
+
+	glDisableVertexAttribArray(g_shader_program.get_position_attribute());
+	glDisableVertexAttribArray(g_shader_program.get_tex_coordinate_attribute());
 
 	SDL_GL_SwapWindow(g_display_window);
 }
