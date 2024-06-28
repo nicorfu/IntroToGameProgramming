@@ -63,7 +63,7 @@ GLuint g_line_texture_id;
 GLuint g_circle_texture_id;
 GLuint g_alexis_texture_id;
 GLuint g_messi_texture_id;
-GLuint g_mball_texture_id;
+GLuint g_ball_texture_id;
 
 constexpr float LINE_SCALE_MULTIPLIER = 1.0f;
 constexpr float CIRCLE_SCALE_MULTIPLIER = 1.0f;
@@ -176,9 +176,29 @@ void initialize()
 
 	glViewport(VIEWPORT_X, VIEWPORT_Y, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
 
+	g_shader_program.load(V_SHADER_PATH, F_SHADER_PATH);
+
+	g_line_matrix = glm::mat4(1.0f);
+	g_circle_matrix = glm::mat4(1.0f);
+	g_alexis_matrix = glm::mat4(1.0f);
+	g_messi_matrix = glm::mat4(1.0f);
+	g_ball_matrix = glm::mat4(1.0f);
+
+	g_view_matrix = glm::mat4(1.0f);
+	g_projection_matrix = glm::ortho(-5.0f, 5.0f, -3.75f, 3.75f, -1.0f, 1.0f);
+
+	g_shader_program.set_projection_matrix(g_projection_matrix);
+	g_shader_program.set_view_matrix(g_view_matrix);
+
 	glUseProgram(g_shader_program.get_program_id());
 
 	glClearColor(BG_RED, BG_GREEN, BG_BLUE, BG_OPACITY);
+
+	g_line_texture_id = load_texture(LINE_SPRITE_FILEPATH);
+	g_circle_texture_id = load_texture(CIRCLE_SPRITE_FILEPATH);
+	g_alexis_texture_id = load_texture(ALEXIS_SPRITE_FILEPATH);
+	g_messi_texture_id = load_texture(MESSI_SPRITE_FILEPATH);
+	g_ball_texture_id = load_texture(BALL_SPRITE_FILEPATH);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
