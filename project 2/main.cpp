@@ -236,7 +236,7 @@ void update()
 	g_ball_matrix = glm::mat4(1.0f);
 	g_ball_matrix = glm::translate(g_ball_matrix, g_position_ball);
 	g_ball_matrix = glm::rotate(g_ball_matrix, g_rotation_ball.z, glm::vec3(0.0f, 0.0f, 1.0f));
-	g_ball_matrix = glm::scale(g_ball_matrix, g_scale_ball);
+	//g_ball_matrix = glm::scale(g_ball_matrix, g_scale_ball);
 }
 
 
