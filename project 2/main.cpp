@@ -66,16 +66,16 @@ GLuint g_messi_texture_id;
 GLuint g_ball_texture_id;
 
 constexpr float LINE_SCALE_MULTIPLIER = 1.0f;
-constexpr float CIRCLE_SCALE_MULTIPLIER = 1.0f;
-constexpr float ALEXIS_SCALE_MULTIPLIER = 1.0f;
-constexpr float MESSI_SCALE_MULTIPLIER = 1.0f;
-constexpr float BALL_SCALE_MULTIPLIER = 1.0f;
+constexpr float CIRCLE_SCALE_MULTIPLIER = 0.05f;
+constexpr float ALEXIS_SCALE_MULTIPLIER = 0.25f;
+constexpr float MESSI_SCALE_MULTIPLIER = 0.24f;
+constexpr float BALL_SCALE_MULTIPLIER = 0.095f;
 
 constexpr glm::vec3 INIT_SCALE_LINE = glm::vec3(10.0f, 6.6666f, 0.000f) * LINE_SCALE_MULTIPLIER;
 constexpr glm::vec3 INIT_SCALE_CIRCLE = glm::vec3(10.0f, 10.0f, 0.000f) * CIRCLE_SCALE_MULTIPLIER;
-constexpr glm::vec3 INIT_SCALE_ALEXIS = glm::vec3(10.0f, 13.9752f, 0.000f) * ALEXIS_SCALE_MULTIPLIER;
-constexpr glm::vec3 INIT_SCALE_MESSI = glm::vec3(10.0f, 15.1568f, 0.000f) * MESSI_SCALE_MULTIPLIER;
-constexpr glm::vec3 INIT_SCALE_BALL = glm::vec3(10.0f, 10.0f, 0.000f) * BALL_SCALE_MULTIPLIER;
+constexpr glm::vec3 INIT_SCALE_ALEXIS = glm::vec3(8.7f, 13.9752f, 0.000f) * ALEXIS_SCALE_MULTIPLIER;
+constexpr glm::vec3 INIT_SCALE_MESSI = glm::vec3(8.7f, 10.0f, 0.000f) * MESSI_SCALE_MULTIPLIER;
+constexpr glm::vec3 INIT_SCALE_BALL = glm::vec3(9.0f, 10.0f, 0.000f) * BALL_SCALE_MULTIPLIER;
 
 constexpr glm::vec3 INIT_POS_LINE = glm::vec3(0.0f, 0.0f, 0.0f);
 constexpr glm::vec3 INIT_POS_CIRCLE = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -224,18 +224,25 @@ void update()
 	float delta_time = ticks - g_previous_ticks;
 	g_previous_ticks = ticks;
 
+	g_line_matrix = glm::scale(g_line_matrix, INIT_SCALE_LINE);
+
+	g_circle_matrix = glm::scale(g_circle_matrix, INIT_SCALE_CIRCLE);
+
 	g_position_alexis += g_movement_alexis * g_alexis_speed * delta_time;
 	g_alexis_matrix = glm::mat4(1.0f);
 	g_alexis_matrix = glm::translate(g_alexis_matrix, g_position_alexis);
+	g_alexis_matrix = glm::scale(g_alexis_matrix, INIT_SCALE_ALEXIS);
 
 	g_position_messi += g_movement_messi * g_messi_speed * delta_time;
 	g_messi_matrix = glm::mat4(1.0f);
 	g_messi_matrix = glm::translate(g_messi_matrix, g_position_messi);
+	g_messi_matrix = glm::scale(g_messi_matrix, INIT_SCALE_MESSI);
 	
 	g_position_ball += g_movement_ball * g_ball_speed * delta_time;
 	g_ball_matrix = glm::mat4(1.0f);
 	g_ball_matrix = glm::translate(g_ball_matrix, g_position_ball);
 	g_ball_matrix = glm::rotate(g_ball_matrix, g_rotation_ball.z, glm::vec3(0.0f, 0.0f, 1.0f));
+	g_ball_matrix = glm::scale(g_ball_matrix, INIT_SCALE_BALL);
 	//g_ball_matrix = glm::scale(g_ball_matrix, g_scale_ball);
 }
 
