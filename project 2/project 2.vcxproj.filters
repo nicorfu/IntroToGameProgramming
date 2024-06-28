@@ -43,5 +43,8 @@
     <Image Include="circle.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="dot.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

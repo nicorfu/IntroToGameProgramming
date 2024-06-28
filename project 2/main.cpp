@@ -55,30 +55,35 @@ constexpr char F_SHADER_PATH[] = "shaders/fragment_textured.glsl";
 
 constexpr char LINE_SPRITE_FILEPATH[] = "line.png";
 constexpr char CIRCLE_SPRITE_FILEPATH[] = "circle.png";
+constexpr char DOT_SPRITE_FILEPATH[] = "dot.png";
 constexpr char ALEXIS_SPRITE_FILEPATH[] = "alexis.png";
 constexpr char MESSI_SPRITE_FILEPATH[] = "messi.png";
 constexpr char BALL_SPRITE_FILEPATH[] = "ball.png";
 
 GLuint g_line_texture_id;
 GLuint g_circle_texture_id;
+GLuint g_dot_texture_id;
 GLuint g_alexis_texture_id;
 GLuint g_messi_texture_id;
 GLuint g_ball_texture_id;
 
 constexpr float LINE_SCALE_MULTIPLIER = 1.125f;
 constexpr float CIRCLE_SCALE_MULTIPLIER = 0.3f;
+constexpr float DOT_SCALE_MULTIPLIER = 0.009f;
 constexpr float ALEXIS_SCALE_MULTIPLIER = 0.25f;
 constexpr float MESSI_SCALE_MULTIPLIER = 0.24f;
 constexpr float BALL_SCALE_MULTIPLIER = 0.095f;
 
 constexpr glm::vec3 INIT_SCALE_LINE = glm::vec3(1.0f, 6.6666f, 0.000f) * LINE_SCALE_MULTIPLIER;
 constexpr glm::vec3 INIT_SCALE_CIRCLE = glm::vec3(9.2f, 10.0f, 0.000f) * CIRCLE_SCALE_MULTIPLIER;
+constexpr glm::vec3 INIT_SCALE_DOT = glm::vec3(9.2f, 10.0f, 0.000f) * DOT_SCALE_MULTIPLIER;
 constexpr glm::vec3 INIT_SCALE_ALEXIS = glm::vec3(8.7f, 13.9752f, 0.000f) * ALEXIS_SCALE_MULTIPLIER;
 constexpr glm::vec3 INIT_SCALE_MESSI = glm::vec3(8.7f, 10.0f, 0.000f) * MESSI_SCALE_MULTIPLIER;
 constexpr glm::vec3 INIT_SCALE_BALL = glm::vec3(9.0f, 10.0f, 0.000f) * BALL_SCALE_MULTIPLIER;
 
 constexpr glm::vec3 INIT_POS_LINE = glm::vec3(0.0f, 0.0f, 0.0f);
 constexpr glm::vec3 INIT_POS_CIRCLE = glm::vec3(0.0f, 0.0f, 0.0f);
+constexpr glm::vec3 INIT_POS_DOT = glm::vec3(0.0f, 0.0f, 0.0f);
 constexpr glm::vec3 INIT_POS_ALEXIS = glm::vec3(-4.1f, 0.0f, 0.0f);
 constexpr glm::vec3 INIT_POS_MESSI = glm::vec3(4.0f, 0.0f, 0.0f);
 constexpr glm::vec3 INIT_POS_BALL = glm::vec3(-0.5f, 0.0f, 0.0f);
@@ -86,6 +91,7 @@ constexpr glm::vec3 INIT_POS_BALL = glm::vec3(-0.5f, 0.0f, 0.0f);
 glm::mat4 g_view_matrix;
 glm::mat4 g_line_matrix;
 glm::mat4 g_circle_matrix;
+glm::mat4 g_dot_matrix;
 glm::mat4 g_alexis_matrix;
 glm::mat4 g_messi_matrix;
 glm::mat4 g_ball_matrix;
@@ -95,6 +101,8 @@ glm::mat4 g_translation_matrix;
 constexpr glm::vec3 G_POSITION_LINE = INIT_POS_LINE;
 
 constexpr glm::vec3 G_POSITION_CIRCLE = INIT_POS_CIRCLE;
+
+constexpr glm::vec3 G_POSITION_DOT = INIT_POS_DOT;
 
 glm::vec3 g_position_alexis = INIT_POS_ALEXIS;
 glm::vec3 g_movement_alexis = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -180,6 +188,7 @@ void initialize()
 
 	g_line_matrix = glm::mat4(1.0f);
 	g_circle_matrix = glm::mat4(1.0f);
+	g_dot_matrix = glm::mat4(1.0f);
 	g_alexis_matrix = glm::mat4(1.0f);
 	g_messi_matrix = glm::mat4(1.0f);
 	g_ball_matrix = glm::mat4(1.0f);
@@ -196,6 +205,7 @@ void initialize()
 
 	g_line_texture_id = load_texture(LINE_SPRITE_FILEPATH);
 	g_circle_texture_id = load_texture(CIRCLE_SPRITE_FILEPATH);
+	g_dot_texture_id = load_texture(DOT_SPRITE_FILEPATH);
 	g_alexis_texture_id = load_texture(ALEXIS_SPRITE_FILEPATH);
 	g_messi_texture_id = load_texture(MESSI_SPRITE_FILEPATH);
 	g_ball_texture_id = load_texture(BALL_SPRITE_FILEPATH);
@@ -229,6 +239,9 @@ void update()
 
 	g_circle_matrix = glm::mat4(1.0f);
 	g_circle_matrix = glm::scale(g_circle_matrix, INIT_SCALE_CIRCLE);
+
+	g_dot_matrix = glm::mat4(1.0f);
+	g_dot_matrix = glm::scale(g_dot_matrix, INIT_SCALE_DOT);
 
 	g_position_alexis += g_movement_alexis * g_alexis_speed * delta_time;
 	g_alexis_matrix = glm::mat4(1.0f);
@@ -283,6 +296,7 @@ void render()
 
 	draw_object(g_line_matrix, g_line_texture_id);
 	draw_object(g_circle_matrix, g_circle_texture_id);
+	draw_object(g_dot_matrix, g_dot_texture_id);
 	draw_object(g_alexis_matrix, g_alexis_texture_id);
 	draw_object(g_messi_matrix, g_messi_texture_id);
 	draw_object(g_ball_matrix, g_ball_texture_id);

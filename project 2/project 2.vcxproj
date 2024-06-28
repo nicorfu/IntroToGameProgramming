@@ -143,6 +143,7 @@
     <Image Include="alexis.png" />
     <Image Include="ball.png" />
     <Image Include="circle.png" />
+    <Image Include="dot.png" />
     <Image Include="line.png" />
     <Image Include="messi.png" />
   </ItemGroup>
