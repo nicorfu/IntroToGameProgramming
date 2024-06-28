@@ -230,7 +230,7 @@ void update()
 
 	g_position_messi += g_movement_messi * g_messi_speed * delta_time;
 	g_messi_matrix = glm::mat4(1.0f);
-	g_messi_matrix = glm::translate(g_alexis_matrix, g_position_messi);
+	g_messi_matrix = glm::translate(g_messi_matrix, g_position_messi);
 	
 	g_position_ball += g_movement_ball * g_ball_speed * delta_time;
 	g_ball_matrix = glm::mat4(1.0f);
