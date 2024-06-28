@@ -65,8 +65,8 @@ GLuint g_alexis_texture_id;
 GLuint g_messi_texture_id;
 GLuint g_ball_texture_id;
 
-constexpr float LINE_SCALE_MULTIPLIER = 20.0f;
-constexpr float CIRCLE_SCALE_MULTIPLIER = 5.0f;
+constexpr float LINE_SCALE_MULTIPLIER = 10.0f;
+constexpr float CIRCLE_SCALE_MULTIPLIER = 10.0f;
 constexpr float ALEXIS_SCALE_MULTIPLIER = 0.25f;
 constexpr float MESSI_SCALE_MULTIPLIER = 0.24f;
 constexpr float BALL_SCALE_MULTIPLIER = 0.095f;
@@ -225,8 +225,10 @@ void update()
 	g_previous_ticks = ticks;
 
 	g_line_matrix = glm::scale(g_line_matrix, INIT_SCALE_LINE);
+	g_line_matrix = glm::mat4(1.0f);
 
 	g_circle_matrix = glm::scale(g_circle_matrix, INIT_SCALE_CIRCLE);
+	g_circle_matrix = glm::mat4(1.0f);
 
 	g_position_alexis += g_movement_alexis * g_alexis_speed * delta_time;
 	g_alexis_matrix = glm::mat4(1.0f);
