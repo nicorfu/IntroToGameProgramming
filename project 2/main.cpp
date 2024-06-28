@@ -220,7 +220,23 @@ void process_input()
 
 void update()
 {
+	float ticks = (float)SDL_GetTicks() / SECOND_IN_MILLISECONDS;
+	float delta_time = ticks - g_previous_ticks;
+	g_previous_ticks = ticks;
 
+	g_position_alexis += g_movement_alexis * g_alexis_speed * delta_time;
+	g_alexis_matrix = glm::mat4(1.0f);
+	g_alexis_matrix = glm::translate(g_alexis_matrix, g_position_alexis);
+
+	g_position_messi += g_movement_messi * g_messi_speed * delta_time;
+	g_messi_matrix = glm::mat4(1.0f);
+	g_messi_matrix = glm::translate(g_alexis_matrix, g_position_messi);
+	
+	g_position_ball += g_movement_ball * g_ball_speed * delta_time;
+	g_ball_matrix = glm::mat4(1.0f);
+	g_ball_matrix = glm::translate(g_ball_matrix, g_position_ball);
+	g_ball_matrix = glm::rotate(g_ball_matrix, g_rotation_ball.z, glm::vec3(0.0f, 0.0f, 1.0f));
+	g_ball_matrix = glm::scale(g_ball_matrix, g_scale_ball);
 }
 
 
