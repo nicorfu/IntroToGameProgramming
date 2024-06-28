@@ -71,16 +71,11 @@ constexpr float ALEXIS_SCALE_MULTIPLIER = 1.0f;
 constexpr float MESSI_SCALE_MULTIPLIER = 1.0f;
 constexpr float BALL_SCALE_MULTIPLIER = 1.0f;
 
-constexpr glm::vec3 INIT_SCALE_LINE = glm::vec3(10.0f, 6.6666f, 0.000f)
-* LINE_SCALE_MULTIPLIER;
-constexpr glm::vec3 INIT_SCALE_CIRCLE = glm::vec3(10.0f, 10.0f, 0.000f)
-* CIRCLE_SCALE_MULTIPLIER;
-constexpr glm::vec3 INIT_SCALE_ALEXIS = glm::vec3(10.0f, 13.9752f, 0.000f)
-* ALEXIS_SCALE_MULTIPLIER;
-constexpr glm::vec3 INIT_SCALE_MESSI = glm::vec3(10.0f, 15.1568f, 0.000f)
-* MESSI_SCALE_MULTIPLIER;
-constexpr glm::vec3 INIT_SCALE_BALL = glm::vec3(10.0f, 10.0f, 0.000f)
-* BALL_SCALE_MULTIPLIER;
+constexpr glm::vec3 INIT_SCALE_LINE = glm::vec3(10.0f, 6.6666f, 0.000f) * LINE_SCALE_MULTIPLIER;
+constexpr glm::vec3 INIT_SCALE_CIRCLE = glm::vec3(10.0f, 10.0f, 0.000f) * CIRCLE_SCALE_MULTIPLIER;
+constexpr glm::vec3 INIT_SCALE_ALEXIS = glm::vec3(10.0f, 13.9752f, 0.000f) * ALEXIS_SCALE_MULTIPLIER;
+constexpr glm::vec3 INIT_SCALE_MESSI = glm::vec3(10.0f, 15.1568f, 0.000f) * MESSI_SCALE_MULTIPLIER;
+constexpr glm::vec3 INIT_SCALE_BALL = glm::vec3(10.0f, 10.0f, 0.000f) * BALL_SCALE_MULTIPLIER;
 
 constexpr glm::vec3 INIT_POS_LINE = glm::vec3(0.0f, 0.0f, 0.0f);
 constexpr glm::vec3 INIT_POS_CIRCLE = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -111,6 +106,17 @@ glm::vec3 g_position_ball = INIT_POS_BALL;
 glm::vec3 g_movement_ball = glm::vec3(0.0f, 0.0f, 0.0f);
 glm::vec3 g_rotation_ball = glm::vec3(0.0f, 0.0f, 0.0f);
 glm::vec3 g_scale_ball = INIT_SCALE_BALL;
+
+constexpr float g_alexis_speed = 1.0f;
+
+constexpr float g_messi_speed = 1.0f;
+
+constexpr float g_ball_speed = 1.0f;
+constexpr float g_ball_rot_increment = 1.0f;
+constexpr float g_ball_scale_increment = 1.0f;
+
+constexpr float SECOND_IN_MILLISECONDS = 1000.0f;
+float g_previous_ticks = 0.0f;
 
 void initialize();
 void process_input();
