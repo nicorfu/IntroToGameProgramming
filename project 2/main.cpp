@@ -323,6 +323,7 @@ void update()
 	g_dot_matrix = glm::scale(g_dot_matrix, INIT_SCALE_DOT);
 
 	g_position_alexis += g_movement_alexis * g_alexis_speed * delta_time;
+
 	if (g_position_alexis.y >= 2.52f)
 	{
 		g_position_alexis.y -= 0.05f;
@@ -331,11 +332,22 @@ void update()
 	{
 		g_position_alexis.y += 0.05f;
 	}
+
 	g_alexis_matrix = glm::mat4(1.0f);
 	g_alexis_matrix = glm::translate(g_alexis_matrix, g_position_alexis);
 	g_alexis_matrix = glm::scale(g_alexis_matrix, INIT_SCALE_ALEXIS);
 
 	g_position_messi += g_movement_messi * g_messi_speed * delta_time;
+
+	if (g_position_messi.y >= 2.65f)
+	{
+		g_position_messi.y -= 0.05f;
+	}
+	if (g_position_messi.y <= -2.65f)
+	{
+		g_position_messi.y += 0.05f;
+	}
+
 	g_messi_matrix = glm::mat4(1.0f);
 	g_messi_matrix = glm::translate(g_messi_matrix, g_position_messi);
 	g_messi_matrix = glm::scale(g_messi_matrix, INIT_SCALE_MESSI);
