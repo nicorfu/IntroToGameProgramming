@@ -236,20 +236,20 @@ void process_input()
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym)
 				{
-					case SDLK_UP:
+					case SDLK_w:
 						g_movement_alexis.y = 1.0f;
 						break;
 
-					case SDLK_DOWN:
+					case SDLK_s:
 						g_movement_alexis.y = -1.0f;
 						break;
 
 					if (g_gamemode == TWO_PLAYER)
 					{
-						case SDLK_w:
+						case SDLK_UP:
 							g_movement_messi.y = 1.0f;
 							break;
-						case SDLK_s:
+						case SDLK_DOWN:
 							g_movement_messi.y = -1.0f;
 							break;
 					}
@@ -273,11 +273,11 @@ void process_input()
 
 	const Uint8* key_state = SDL_GetKeyboardState(NULL);
 
-	if (key_state[SDL_SCANCODE_UP])
+	if (key_state[SDL_SCANCODE_W])
 	{
 		g_movement_alexis.y = 1.0f;
 	}
-	else if (key_state[SDL_SCANCODE_DOWN])
+	else if (key_state[SDL_SCANCODE_S])
 	{
 		g_movement_alexis.y = -1.0f;
 	}
@@ -285,11 +285,11 @@ void process_input()
 
 	if (g_gamemode == TWO_PLAYER)
 	{
-		if (key_state[SDL_SCANCODE_W])
+		if (key_state[SDL_SCANCODE_UP])
 		{
 			g_movement_messi.y = 1.0f;
 		}
-		else if (key_state[SDL_SCANCODE_S])
+		else if (key_state[SDL_SCANCODE_DOWN])
 		{
 			g_movement_messi.y = -1.0f;
 		}
