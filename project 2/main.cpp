@@ -127,7 +127,7 @@ constexpr float SECOND_IN_MILLISECONDS = 1000.0f;
 float g_previous_ticks = 0.0f;
 
 enum GameMode { ONE_PLAYER, TWO_PLAYER };
-GameMode g_game_mode = TWO_PLAYER;
+GameMode g_gamemode = TWO_PLAYER;
 
 void initialize();
 void process_input();
@@ -243,6 +243,16 @@ void process_input()
 						g_movement_alexis.y = -1.0f;
 						break;
 
+					if (g_gamemode == TWO_PLAYER)
+					{
+						case SDLK_w:
+							g_movement_messi.y = 1.0f;
+							break;
+						case SDLK_s:
+							g_movement_messi.y = -1.0f;
+							break;
+					}
+
 					case SDLK_ESCAPE:
 						g_app_status = TERMINATED;
 						break;
@@ -267,9 +277,26 @@ void process_input()
 		g_movement_alexis.y = -1.0f;
 	}
 
+	//if (g_gamemode == TWO_PLAYER)
+	//{
+		if (key_state[SDL_SCANCODE_W])
+		{
+			g_movement_messi.y = 1.0f;
+		}
+		else if (key_state[SDL_SCANCODE_S])
+		{
+			g_movement_messi.y = -1.0f;
+		}
+	//}
+
 	if (glm::length(g_movement_alexis) > 1.0f)
 	{
 		g_movement_alexis = glm::normalize(g_movement_alexis);
+	}
+
+	if (glm::length(g_movement_messi) > 1.0f)
+	{
+		g_movement_messi = glm::normalize(g_movement_messi);
 	}
 }
 
