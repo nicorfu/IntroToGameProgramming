@@ -117,7 +117,7 @@ glm::vec3 g_scale_ball = INIT_SCALE_BALL;
 
 constexpr float g_alexis_speed = 4.0f;
 
-constexpr float g_messi_speed = 2.0f;
+constexpr float g_messi_speed = 4.0f;
 
 constexpr float g_ball_speed = 1.0f;
 constexpr float g_ball_rot_increment = 1.0f;
@@ -253,6 +253,10 @@ void process_input()
 							g_movement_messi.y = -1.0f;
 							break;
 					}
+
+					case SDLK_t:
+						g_gamemode = (g_gamemode == TWO_PLAYER) ? ONE_PLAYER : TWO_PLAYER;
+						break;
 
 					case SDLK_ESCAPE:
 						g_app_status = TERMINATED;
