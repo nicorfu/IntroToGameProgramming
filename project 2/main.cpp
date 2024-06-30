@@ -232,25 +232,41 @@ void process_input()
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym)
 				{
-				case SDLK_UP:
-					g_movement_alexis.y = 1.0f;
-					break;
+					case SDLK_UP:
+						g_movement_alexis.y = 1.0f;
+						break;
 
-				case SDLK_DOWN:
-					g_movement_alexis.y = -1.0f;
-					break;
+					case SDLK_DOWN:
+						g_movement_alexis.y = -1.0f;
+						break;
 
-				case SDLK_ESCAPE:
-					g_app_status = TERMINATED;
-					break;
+					case SDLK_ESCAPE:
+						g_app_status = TERMINATED;
+						break;
 
-				default:
-					break;
+					default:
+						break;
 				}
 
 			default:
 				break;
 		}
+	}
+
+	const Uint8* key_state = SDL_GetKeyboardState(NULL);
+
+	if (key_state[SDL_SCANCODE_UP])
+	{
+		g_movement_alexis.y = 1.0f;
+	}
+	else if (key_state[SDL_SCANCODE_DOWN])
+	{
+		g_movement_alexis.y = -1.0f;
+	}
+
+	if (glm::length(g_movement_alexis) > 1.0f)
+	{
+		g_movement_alexis = glm::normalize(g_movement_alexis);
 	}
 }
 
