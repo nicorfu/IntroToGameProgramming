@@ -115,9 +115,9 @@ glm::vec3 g_movement_ball = glm::vec3(0.0f, 0.0f, 0.0f);
 glm::vec3 g_rotation_ball = glm::vec3(0.0f, 0.0f, 0.0f);
 glm::vec3 g_scale_ball = INIT_SCALE_BALL;
 
-constexpr float g_alexis_speed = 1.0f;
+constexpr float g_alexis_speed = 4.0f;
 
-constexpr float g_messi_speed = 1.0f;
+constexpr float g_messi_speed = 2.0f;
 
 constexpr float g_ball_speed = 1.0f;
 constexpr float g_ball_rot_increment = 1.0f;
@@ -221,6 +221,7 @@ void initialize()
 void process_input()
 {
 	g_movement_alexis = glm::vec3(0.0f);
+	g_movement_messi = glm::vec3(0.0f);
 
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
@@ -277,8 +278,9 @@ void process_input()
 		g_movement_alexis.y = -1.0f;
 	}
 
-	//if (g_gamemode == TWO_PLAYER)
-	//{
+
+	if (g_gamemode == TWO_PLAYER)
+	{
 		if (key_state[SDL_SCANCODE_W])
 		{
 			g_movement_messi.y = 1.0f;
@@ -287,7 +289,7 @@ void process_input()
 		{
 			g_movement_messi.y = -1.0f;
 		}
-	//}
+	}
 
 	if (glm::length(g_movement_alexis) > 1.0f)
 	{
