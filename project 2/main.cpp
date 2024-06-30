@@ -126,6 +126,9 @@ constexpr float g_ball_scale_increment = 1.0f;
 constexpr float SECOND_IN_MILLISECONDS = 1000.0f;
 float g_previous_ticks = 0.0f;
 
+enum GameMode { ONE_PLAYER, TWO_PLAYER };
+GameMode g_game_mode = TWO_PLAYER;
+
 void initialize();
 void process_input();
 void update();
