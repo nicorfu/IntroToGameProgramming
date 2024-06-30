@@ -217,12 +217,39 @@ void initialize()
 
 void process_input()
 {
+	g_movement_alexis = glm::vec3(0.0f);
+
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
 	{
-		if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE)
+		switch (event.type)
 		{
-			g_app_status = TERMINATED;
+			case SDL_QUIT:
+			case SDL_WINDOWEVENT_CLOSE:
+				g_app_status = TERMINATED;
+				break;
+
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym)
+				{
+				case SDLK_UP:
+					g_movement_alexis.y = 1.0f;
+					break;
+
+				case SDLK_DOWN:
+					g_movement_alexis.y = -1.0f;
+					break;
+
+				case SDLK_ESCAPE:
+					g_app_status = TERMINATED;
+					break;
+
+				default:
+					break;
+				}
+
+			default:
+				break;
 		}
 	}
 }
