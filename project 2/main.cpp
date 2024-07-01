@@ -113,7 +113,6 @@ glm::vec3 g_movement_messi = glm::vec3(0.0f, 0.0f, 0.0f);
 
 glm::vec3 g_position_ball = INIT_POS_BALL;
 glm::vec3 g_movement_ball = glm::vec3(0.0f, 0.0f, 0.0f);
-glm::vec3 g_rotation_ball = glm::vec3(0.0f, 0.0f, 0.0f);
 glm::vec3 g_scale_ball = INIT_SCALE_BALL;
 
 constexpr float g_alexis_speed = 4.0f;
@@ -121,7 +120,6 @@ constexpr float g_alexis_speed = 4.0f;
 constexpr float g_messi_speed = 4.0f;
 
 constexpr float g_ball_speed = 4.0f;
-constexpr float g_ball_rot_increment = 1.0f;
 constexpr float g_ball_scale_increment = 1.0f;
 
 constexpr float SECOND_IN_MILLISECONDS = 1000.0f;
@@ -379,11 +377,9 @@ void update()
 			g_movement_ball = glm::normalize(g_movement_ball);
 		}
 		g_position_ball += g_movement_ball * g_ball_speed * delta_time;
-
 	}
 	g_ball_matrix = glm::mat4(1.0f);
 	g_ball_matrix = glm::translate(g_ball_matrix, g_position_ball);
-	g_ball_matrix = glm::rotate(g_ball_matrix, g_rotation_ball.z, glm::vec3(0.0f, 0.0f, 1.0f));
 	g_ball_matrix = glm::scale(g_ball_matrix, INIT_SCALE_BALL);
 	//g_ball_matrix = glm::scale(g_ball_matrix, g_scale_ball);
 }
