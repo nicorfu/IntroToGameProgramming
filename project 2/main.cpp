@@ -370,7 +370,7 @@ void update()
 	g_messi_matrix = glm::translate(g_messi_matrix, g_position_messi);
 	g_messi_matrix = glm::scale(g_messi_matrix, INIT_SCALE_MESSI);
 
-	if (ticks >= 2.0f)
+	if (ticks >= 1.75f)
 	{
 		if (glm::length(g_movement_ball) > 1.0f)
 		{
