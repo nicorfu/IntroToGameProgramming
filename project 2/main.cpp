@@ -449,7 +449,7 @@ void update()
 		if ((g_curr_collision_time - g_prev_collision_time) > 0.1)
 		{
 			g_movement_ball.x *= -1.0f;
-			g_ball_speed *= 1.05f;
+			g_ball_speed *= 1.08f;
 		}
 		g_prev_collision_time = g_curr_collision_time;
 	}
