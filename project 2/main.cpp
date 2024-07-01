@@ -337,8 +337,13 @@ void calculate_ball_collision_distances()
 {
 	x_distance_ball_alexis_torso = fabs(g_position_ball.x - g_position_alexis.x) -
 								 ((INIT_SCALE_BALL.x + INIT_SCALE_ALEXIS.x) / 2.0f);
-	y_distance_ball_alexis_torso = fabs(g_position_ball.y - g_position_alexis.y) -
-								 ((INIT_SCALE_BALL.y + INIT_SCALE_ALEXIS.y) / 2.0f);
+	y_distance_ball_alexis_torso = fabs(g_position_ball.y - g_position_alexis_torso_y) -
+								 ((INIT_SCALE_BALL.y + ALEXIS_TORSO_HEIGHT) / 2.0f);
+
+	x_distance_ball_alexis_head = fabs(g_position_ball.x - g_position_alexis.x) -
+		((INIT_SCALE_BALL.x + ALEXIS_HEAD_WIDTH) / 2.0f);
+	y_distance_ball_alexis_head = fabs(g_position_ball.y - g_position_alexis_head_y) -
+		((INIT_SCALE_BALL.y + ALEXIS_HEAD_HEIGHT) / 2.0f);
 
 	x_distance_ball_messi = fabs(g_position_ball.x - g_position_messi.x) -
 								((INIT_SCALE_BALL.x + INIT_SCALE_MESSI.x) / 2.0f);
@@ -419,6 +424,7 @@ void update()
 	calculate_ball_collision_distances();
 
 	if ((x_distance_ball_alexis_torso < -0.3f && y_distance_ball_alexis_torso < -0.3f) || 
+		(x_distance_ball_alexis_head < -0.2f && y_distance_ball_alexis_head < -0.2f) ||
 		(x_distance_ball_messi < -0.5f && y_distance_ball_messi < -0.5f))	
 	{
 		g_movement_ball.x *= -1.0f;
