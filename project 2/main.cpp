@@ -116,7 +116,7 @@ glm::vec3 g_movement_ball = glm::vec3(0.0f, 0.0f, 0.0f);
 
 constexpr float g_alexis_speed = 4.0f;
 
-constexpr float g_messi_speed = 4.0f;
+float g_messi_speed = 4.0f;
 
 float g_ball_speed = 4.0f;
 
@@ -450,6 +450,15 @@ void update()
 		{
 			g_movement_ball.x *= -1.0f;
 			g_ball_speed *= 1.08f;
+
+			if (g_gamemode == ONE_PLAYER)
+			{
+				g_messi_speed *= 1.1f;
+			}
+			else
+			{
+				g_messi_speed = 4.0f;
+			}
 		}
 		g_prev_collision_time = g_curr_collision_time;
 	}
