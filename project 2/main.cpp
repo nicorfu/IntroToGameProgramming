@@ -128,6 +128,9 @@ float g_previous_ticks = 0.0f;
 enum GameMode { ONE_PLAYER, TWO_PLAYER };
 GameMode g_gamemode = TWO_PLAYER;
 
+enum GameStatus { ONGOING, OVER};
+GameStatus g_game_status = ONGOING;
+
 enum MessiDirection { UP, DOWN };
 MessiDirection g_messi_dir = DOWN;
 
@@ -273,12 +276,12 @@ void process_input()
 					case SDLK_s:
 						g_movement_alexis.y = -1.0f;
 						break;
-					
+
 					case SDLK_UP:
 						if (g_gamemode == TWO_PLAYER)
 						{
 							g_movement_messi.y = 1.0f;
-							
+
 						}
 						break;
 
@@ -286,7 +289,7 @@ void process_input()
 						if (g_gamemode == TWO_PLAYER)
 						{
 							g_movement_messi.y = -1.0f;
-							
+
 						}
 						break;
 
@@ -424,13 +427,19 @@ void update()
 	calculate_ball_collision_distances();
 
 	if ((x_distance_ball_alexis_torso < -0.3f && y_distance_ball_alexis_torso < -0.3f) || 
-		(x_distance_ball_alexis_head < -0.25f && y_distance_ball_alexis_head < -0.25f))	
+		(x_distance_ball_alexis_head < -0.15f && y_distance_ball_alexis_head < -0.25f))	
 	{
 		g_movement_ball.x = 1.0f;
+
 	}
 	else if (x_distance_ball_messi < -0.5f && y_distance_ball_messi < -0.5f)
 	{
 		g_movement_ball.x = -1.0f;
+	}
+
+	if (g_position_ball.x <= -4.0f || g_position_ball.x >= 4.0f)
+	{
+		g_game_status = OVER;
 	}
 
 	g_ball_matrix = glm::mat4(1.0f);
