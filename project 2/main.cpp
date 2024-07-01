@@ -144,6 +144,9 @@ float y_distance_ball_alexis_head;
 float x_distance_ball_alexis_torso;
 float y_distance_ball_alexis_torso;
 
+float g_prev_border_hit_time = 0.0f;
+float g_curr_border_hit_time;
+
 float g_prev_collision_time = 0.0f;
 float g_curr_collision_time;
 
@@ -428,7 +431,12 @@ void update()
 
 	if (g_position_ball.y >= 3.3 || g_position_ball.y <= -3.3f)
 	{
-		g_movement_ball.y *= -1.0f;
+		g_curr_border_hit_time = ticks;
+		if ((g_curr_border_hit_time - g_prev_border_hit_time) > 0.1)
+		{
+			g_movement_ball.y *= -1.0f;
+		}
+		g_prev_border_hit_time = g_curr_border_hit_time;
 	}
 
 	calculate_ball_collision_distances();
