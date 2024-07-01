@@ -389,7 +389,13 @@ void update()
 	float y_distance_ball_alexis = fabs(g_position_ball.y - g_position_alexis.y) -
 		((INIT_SCALE_BALL.y + INIT_SCALE_ALEXIS.y) / 2.0f);
 
-	if (x_distance_ball_alexis < 0 && y_distance_ball_alexis)
+	float x_distance_ball_messi = fabs(g_position_ball.x - g_position_messi.x) -
+		((INIT_SCALE_BALL.x + INIT_SCALE_MESSI.x) / 2.0f);
+	float y_distance_ball_messi = fabs(g_position_ball.y - g_position_messi.y) -
+		((INIT_SCALE_BALL.y + INIT_SCALE_MESSI.y) / 2.0f);
+
+	if ((x_distance_ball_alexis < 0 && y_distance_ball_alexis) || 
+		(x_distance_ball_messi < 0 && y_distance_ball_messi))
 	{
 		g_movement_ball.x *= -1.0f;
 	}
