@@ -131,6 +131,12 @@ GameMode g_gamemode = TWO_PLAYER;
 enum MessiDirection { UP, DOWN };
 MessiDirection g_messi_dir = DOWN;
 
+float x_distance_ball_alexis;
+float y_distance_ball_alexis;
+
+float x_distance_ball_messi;
+float y_distance_ball_messi;
+
 void initialize();
 void process_input();
 void update();
@@ -318,6 +324,20 @@ void process_input()
 }
 
 
+void calculate_ball_collision_distances()
+{
+	x_distance_ball_alexis = fabs(g_position_ball.x - g_position_alexis.x) -
+								 ((INIT_SCALE_BALL.x + INIT_SCALE_ALEXIS.x) / 2.0f);
+	y_distance_ball_alexis = fabs(g_position_ball.y - g_position_alexis.y) -
+								 ((INIT_SCALE_BALL.y + INIT_SCALE_ALEXIS.y) / 2.0f);
+
+	x_distance_ball_messi = fabs(g_position_ball.x - g_position_messi.x) -
+								((INIT_SCALE_BALL.x + INIT_SCALE_MESSI.x) / 2.0f);
+	y_distance_ball_messi = fabs(g_position_ball.y - g_position_messi.y) -
+								((INIT_SCALE_BALL.y + INIT_SCALE_MESSI.y) / 2.0f);
+}
+
+
 void update()
 {
 	float ticks = (float)SDL_GetTicks() / SECOND_IN_MILLISECONDS;
@@ -384,15 +404,7 @@ void update()
 		g_movement_ball.y *= -1.0f;
 	}
 
-	float x_distance_ball_alexis = fabs(g_position_ball.x - g_position_alexis.x) - 
-						   ((INIT_SCALE_BALL.x + INIT_SCALE_ALEXIS.x) / 2.0f);
-	float y_distance_ball_alexis = fabs(g_position_ball.y - g_position_alexis.y) -
-		((INIT_SCALE_BALL.y + INIT_SCALE_ALEXIS.y) / 2.0f);
-
-	float x_distance_ball_messi = fabs(g_position_ball.x - g_position_messi.x) -
-		((INIT_SCALE_BALL.x + INIT_SCALE_MESSI.x) / 2.0f);
-	float y_distance_ball_messi = fabs(g_position_ball.y - g_position_messi.y) -
-		((INIT_SCALE_BALL.y + INIT_SCALE_MESSI.y) / 2.0f);
+	calculate_ball_collision_distances();
 
 	if ((x_distance_ball_alexis < 0 && y_distance_ball_alexis) || 
 		(x_distance_ball_messi < 0 && y_distance_ball_messi))
