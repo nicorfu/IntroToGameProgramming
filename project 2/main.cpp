@@ -113,14 +113,12 @@ glm::vec3 g_movement_messi = glm::vec3(0.0f, 0.0f, 0.0f);
 
 glm::vec3 g_position_ball = INIT_POS_BALL;
 glm::vec3 g_movement_ball = glm::vec3(0.0f, 0.0f, 0.0f);
-glm::vec3 g_scale_ball = INIT_SCALE_BALL;
 
 constexpr float g_alexis_speed = 4.0f;
 
 constexpr float g_messi_speed = 4.0f;
 
-constexpr float g_ball_speed = 4.0f;
-constexpr float g_ball_scale_increment = 1.0f;
+float g_ball_speed = 4.0f;
 
 constexpr float SECOND_IN_MILLISECONDS = 1000.0f;
 float g_previous_ticks = 0.0f;
@@ -436,11 +434,12 @@ void update()
 		(x_distance_ball_alexis_head < -0.15f && y_distance_ball_alexis_head < -0.25f))	
 	{
 		g_movement_ball.x = 1.0f;
-
+		g_ball_speed *= 1.03f;
 	}
 	else if (x_distance_ball_messi < -0.5f && y_distance_ball_messi < -0.5f)
 	{
 		g_movement_ball.x = -1.0f;
+		g_ball_speed *= 1.03f;
 	}
 
 	if (g_position_ball.x <= -5.4f || g_position_ball.x >= 5.4f)
@@ -451,7 +450,6 @@ void update()
 	g_ball_matrix = glm::mat4(1.0f);
 	g_ball_matrix = glm::translate(g_ball_matrix, g_position_ball);
 	g_ball_matrix = glm::scale(g_ball_matrix, INIT_SCALE_BALL);
-	//g_ball_matrix = glm::scale(g_ball_matrix, g_scale_ball);
 }
 
 
