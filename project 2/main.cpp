@@ -243,16 +243,22 @@ void process_input()
 					case SDLK_s:
 						g_movement_alexis.y = -1.0f;
 						break;
-
-					if (g_gamemode == TWO_PLAYER)
-					{
-						case SDLK_UP:
+					
+					case SDLK_UP:
+						if (g_gamemode == TWO_PLAYER)
+						{
 							g_movement_messi.y = 1.0f;
-							break;
-						case SDLK_DOWN:
+							
+						}
+						break;
+
+					case SDLK_DOWN:
+						if (g_gamemode == TWO_PLAYER)
+						{
 							g_movement_messi.y = -1.0f;
-							break;
-					}
+							
+						}
+						break;
 
 					case SDLK_t:
 						g_gamemode = (g_gamemode == TWO_PLAYER) ? ONE_PLAYER : TWO_PLAYER;
