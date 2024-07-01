@@ -144,6 +144,9 @@ float y_distance_ball_alexis_head;
 float x_distance_ball_alexis_torso;
 float y_distance_ball_alexis_torso;
 
+float g_prev_collision_time = 0.0f;
+float g_curr_collision_time;
+
 float x_distance_ball_messi;
 float y_distance_ball_messi;
 
@@ -431,15 +434,16 @@ void update()
 	calculate_ball_collision_distances();
 
 	if ((x_distance_ball_alexis_torso < -0.3f && y_distance_ball_alexis_torso < -0.3f) || 
-		(x_distance_ball_alexis_head < -0.15f && y_distance_ball_alexis_head < -0.25f))	
+		(x_distance_ball_alexis_head < -0.15f && y_distance_ball_alexis_head < -0.25f) ||
+		(x_distance_ball_messi < -0.5f && y_distance_ball_messi < -0.5f))
 	{
-		g_movement_ball.x = 1.0f;
-		g_ball_speed *= 1.03f;
-	}
-	else if (x_distance_ball_messi < -0.5f && y_distance_ball_messi < -0.5f)
-	{
-		g_movement_ball.x = -1.0f;
-		g_ball_speed *= 1.03f;
+		g_curr_collision_time = ticks;
+		if ((g_curr_collision_time - g_prev_collision_time) > 0.1)
+		{
+			g_movement_ball.x *= -1.0f;
+			g_ball_speed *= 1.05f;
+		}
+		g_prev_collision_time = g_curr_collision_time;
 	}
 
 	if (g_position_ball.x <= -5.4f || g_position_ball.x >= 5.4f)

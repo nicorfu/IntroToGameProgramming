@@ -1,3 +1,3 @@
 ﻿  main.cpp
-C:\Users\nico\Desktop\IntroToGameProgramming\project 2\main.cpp(189,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\nico\Desktop\IntroToGameProgramming\project 2\main.cpp(192,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   project 2.vcxproj -> C:\Users\nico\Desktop\IntroToGameProgramming\project 2\Debug\project 2.exe
