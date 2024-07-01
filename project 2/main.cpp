@@ -370,7 +370,10 @@ void update()
 	g_dot_matrix = glm::mat4(1.0f);
 	g_dot_matrix = glm::scale(g_dot_matrix, INIT_SCALE_DOT);
 
-	g_position_alexis += g_movement_alexis * g_alexis_speed * delta_time;
+	if (g_game_status == ONGOING)
+	{
+		g_position_alexis += g_movement_alexis * g_alexis_speed * delta_time;
+	}
 
 	if (g_position_alexis.y >= 2.52f)
 	{
@@ -393,7 +396,10 @@ void update()
 		g_movement_messi.y = (g_messi_dir == UP) ? 1.0f : -1.0f;
 	}
 
-	g_position_messi += g_movement_messi * g_messi_speed * delta_time;
+	if (g_game_status == ONGOING)
+	{
+		g_position_messi += g_movement_messi * g_messi_speed * delta_time;
+	}
 
 	if (g_position_messi.y >= 2.65f)
 	{
@@ -410,7 +416,7 @@ void update()
 	g_messi_matrix = glm::translate(g_messi_matrix, g_position_messi);
 	g_messi_matrix = glm::scale(g_messi_matrix, INIT_SCALE_MESSI);
 
-	if (ticks >= 1.75f)
+	if (ticks >= 1.75f && g_game_status == ONGOING)
 	{
 		if (glm::length(g_movement_ball) > 1.0f)
 		{
@@ -437,7 +443,7 @@ void update()
 		g_movement_ball.x = -1.0f;
 	}
 
-	if (g_position_ball.x <= -4.0f || g_position_ball.x >= 4.0f)
+	if (g_position_ball.x <= -5.0f || g_position_ball.x >= 5.0f)
 	{
 		g_game_status = OVER;
 	}
