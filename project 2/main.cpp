@@ -370,7 +370,7 @@ void update()
 	g_messi_matrix = glm::translate(g_messi_matrix, g_position_messi);
 	g_messi_matrix = glm::scale(g_messi_matrix, INIT_SCALE_MESSI);
 
-	if (ticks >= 2.5f)
+	if (ticks >= 2.0f)
 	{
 		if (glm::length(g_movement_ball) > 1.0f)
 		{
@@ -378,6 +378,16 @@ void update()
 		}
 		g_position_ball += g_movement_ball * g_ball_speed * delta_time;
 	}
+
+	if (g_position_ball.y >= 3.3)
+	{
+		g_movement_ball.y = -1.0f;
+	}
+	else if (g_position_ball.y <= -3.3f)
+	{
+		g_movement_ball.y = 1.0f;
+	}
+
 	g_ball_matrix = glm::mat4(1.0f);
 	g_ball_matrix = glm::translate(g_ball_matrix, g_position_ball);
 	g_ball_matrix = glm::scale(g_ball_matrix, INIT_SCALE_BALL);
