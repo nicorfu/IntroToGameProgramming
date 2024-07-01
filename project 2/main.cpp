@@ -379,14 +379,12 @@ void update()
 		g_position_ball += g_movement_ball * g_ball_speed * delta_time;
 	}
 
-	if (g_position_ball.y >= 3.3)
+	if (g_position_ball.y >= 3.3 || g_position_ball.y <= -3.3f)
 	{
-		g_movement_ball.y = -1.0f;
+		g_movement_ball.y *= -1.0f;
 	}
-	else if (g_position_ball.y <= -3.3f)
-	{
-		g_movement_ball.y = 1.0f;
-	}
+
+	//float x_distance = fabs()
 
 	g_ball_matrix = glm::mat4(1.0f);
 	g_ball_matrix = glm::translate(g_ball_matrix, g_position_ball);
