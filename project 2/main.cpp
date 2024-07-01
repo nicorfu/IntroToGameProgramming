@@ -129,6 +129,9 @@ float g_previous_ticks = 0.0f;
 enum GameMode { ONE_PLAYER, TWO_PLAYER };
 GameMode g_gamemode = TWO_PLAYER;
 
+enum MessiDirection { UP, DOWN };
+MessiDirection g_messi_dir = DOWN;
+
 void initialize();
 void process_input();
 void update();
@@ -343,15 +346,22 @@ void update()
 	g_alexis_matrix = glm::translate(g_alexis_matrix, g_position_alexis);
 	g_alexis_matrix = glm::scale(g_alexis_matrix, INIT_SCALE_ALEXIS);
 
+	if (g_gamemode == ONE_PLAYER)
+	{
+		g_movement_messi.y = (g_messi_dir == UP) ? 1.0f : -1.0f;
+	}
+
 	g_position_messi += g_movement_messi * g_messi_speed * delta_time;
 
 	if (g_position_messi.y >= 2.65f)
 	{
 		g_position_messi.y -= 0.05f;
+		g_messi_dir = DOWN;
 	}
-	if (g_position_messi.y <= -2.65f)
+	else if (g_position_messi.y <= -2.65f)
 	{
 		g_position_messi.y += 0.05f;
+		g_messi_dir = UP;
 	}
 
 	g_messi_matrix = glm::mat4(1.0f);
