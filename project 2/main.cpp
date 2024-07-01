@@ -384,7 +384,15 @@ void update()
 		g_movement_ball.y *= -1.0f;
 	}
 
-	//float x_distance = fabs()
+	float x_distance_ball_alexis = fabs(g_position_ball.x - g_position_alexis.x) - 
+						   ((INIT_SCALE_BALL.x + INIT_SCALE_ALEXIS.x) / 2.0f);
+	float y_distance_ball_alexis = fabs(g_position_ball.y - g_position_alexis.y) -
+		((INIT_SCALE_BALL.y + INIT_SCALE_ALEXIS.y) / 2.0f);
+
+	if (x_distance_ball_alexis < 0 && y_distance_ball_alexis)
+	{
+		g_movement_ball.x *= -1.0f;
+	}
 
 	g_ball_matrix = glm::mat4(1.0f);
 	g_ball_matrix = glm::translate(g_ball_matrix, g_position_ball);
