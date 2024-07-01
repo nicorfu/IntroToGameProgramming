@@ -25,6 +25,7 @@
 #include "stb_image.h"
 #include "cmath"
 #include <ctime>
+#include <cstdlib>
 
 
 enum AppStatus { RUNNING, TERMINATED };
@@ -86,7 +87,7 @@ constexpr glm::vec3 INIT_POS_CIRCLE = glm::vec3(0.0f, 0.0f, 0.0f);
 constexpr glm::vec3 INIT_POS_DOT = glm::vec3(0.0f, 0.0f, 0.0f);
 constexpr glm::vec3 INIT_POS_ALEXIS = glm::vec3(-4.1f, 0.0f, 0.0f);
 constexpr glm::vec3 INIT_POS_MESSI = glm::vec3(4.0f, 0.0f, 0.0f);
-constexpr glm::vec3 INIT_POS_BALL = glm::vec3(-0.5f, 0.0f, 0.0f);
+constexpr glm::vec3 INIT_POS_BALL = glm::vec3(0.0f, 0.0f, 0.0f);
 
 glm::mat4 g_view_matrix;
 glm::mat4 g_line_matrix;
@@ -119,7 +120,7 @@ constexpr float g_alexis_speed = 4.0f;
 
 constexpr float g_messi_speed = 4.0f;
 
-constexpr float g_ball_speed = 1.0f;
+constexpr float g_ball_speed = 4.0f;
 constexpr float g_ball_rot_increment = 1.0f;
 constexpr float g_ball_scale_increment = 1.0f;
 
@@ -166,6 +167,17 @@ GLuint load_texture(const char* filepath)
 	stbi_image_free(image);
 
 	return textureID;
+}
+
+
+void randomize_ball_dir()
+{
+	srand(time(nullptr));
+
+	bool negative = rand() % 2;
+
+	g_movement_ball.x = -1.0f;
+	g_movement_ball.y = (negative) ? -1.0f : 1.0f;
 }
 
 
@@ -218,6 +230,8 @@ void initialize()
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	randomize_ball_dir();
 }
 
 
@@ -303,16 +317,6 @@ void process_input()
 			g_movement_messi.y = -1.0f;
 		}
 	}
-
-	if (glm::length(g_movement_alexis) > 1.0f)
-	{
-		g_movement_alexis = glm::normalize(g_movement_alexis);
-	}
-
-	if (glm::length(g_movement_messi) > 1.0f)
-	{
-		g_movement_messi = glm::normalize(g_movement_messi);
-	}
 }
 
 
@@ -367,8 +371,16 @@ void update()
 	g_messi_matrix = glm::mat4(1.0f);
 	g_messi_matrix = glm::translate(g_messi_matrix, g_position_messi);
 	g_messi_matrix = glm::scale(g_messi_matrix, INIT_SCALE_MESSI);
-	
-	g_position_ball += g_movement_ball * g_ball_speed * delta_time;
+
+	if (ticks >= 2.5f)
+	{
+		if (glm::length(g_movement_ball) > 1.0f)
+		{
+			g_movement_ball = glm::normalize(g_movement_ball);
+		}
+		g_position_ball += g_movement_ball * g_ball_speed * delta_time;
+
+	}
 	g_ball_matrix = glm::mat4(1.0f);
 	g_ball_matrix = glm::translate(g_ball_matrix, g_position_ball);
 	g_ball_matrix = glm::rotate(g_ball_matrix, g_rotation_ball.z, glm::vec3(0.0f, 0.0f, 1.0f));
