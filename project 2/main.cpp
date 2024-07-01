@@ -131,8 +131,17 @@ GameMode g_gamemode = TWO_PLAYER;
 enum MessiDirection { UP, DOWN };
 MessiDirection g_messi_dir = DOWN;
 
-float x_distance_ball_alexis;
-float y_distance_ball_alexis;
+constexpr float ALEXIS_HEAD_WIDTH = INIT_SCALE_ALEXIS.x * 0.333f;
+constexpr float ALEXIS_HEAD_HEIGHT = INIT_SCALE_ALEXIS.y * 0.4f;
+constexpr float ALEXIS_TORSO_HEIGHT = INIT_SCALE_ALEXIS.y * 0.6f;
+
+float g_position_alexis_head_y;
+float g_position_alexis_torso_y;
+
+float x_distance_ball_alexis_head;
+float y_distance_ball_alexis_head;
+float x_distance_ball_alexis_torso;
+float y_distance_ball_alexis_torso;
 
 float x_distance_ball_messi;
 float y_distance_ball_messi;
@@ -326,9 +335,9 @@ void process_input()
 
 void calculate_ball_collision_distances()
 {
-	x_distance_ball_alexis = fabs(g_position_ball.x - g_position_alexis.x) -
+	x_distance_ball_alexis_torso = fabs(g_position_ball.x - g_position_alexis.x) -
 								 ((INIT_SCALE_BALL.x + INIT_SCALE_ALEXIS.x) / 2.0f);
-	y_distance_ball_alexis = fabs(g_position_ball.y - g_position_alexis.y) -
+	y_distance_ball_alexis_torso = fabs(g_position_ball.y - g_position_alexis.y) -
 								 ((INIT_SCALE_BALL.y + INIT_SCALE_ALEXIS.y) / 2.0f);
 
 	x_distance_ball_messi = fabs(g_position_ball.x - g_position_messi.x) -
@@ -363,6 +372,9 @@ void update()
 	{
 		g_position_alexis.y += 0.05f;
 	}
+
+	g_position_alexis_head_y = g_position_alexis.y + 1.0f;
+	g_position_alexis_torso_y = g_position_alexis.y - 0.75f;
 
 	g_alexis_matrix = glm::mat4(1.0f);
 	g_alexis_matrix = glm::translate(g_alexis_matrix, g_position_alexis);
@@ -406,8 +418,8 @@ void update()
 
 	calculate_ball_collision_distances();
 
-	if ((x_distance_ball_alexis < 0 && y_distance_ball_alexis) || 
-		(x_distance_ball_messi < 0 && y_distance_ball_messi))
+	if ((x_distance_ball_alexis_torso < -0.3f && y_distance_ball_alexis_torso < -0.3f) || 
+		(x_distance_ball_messi < -0.5f && y_distance_ball_messi < -0.5f))	
 	{
 		g_movement_ball.x *= -1.0f;
 	}
