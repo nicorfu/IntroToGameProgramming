@@ -443,7 +443,7 @@ void update()
 		g_movement_ball.x = -1.0f;
 	}
 
-	if (g_position_ball.x <= -5.0f || g_position_ball.x >= 5.0f)
+	if (g_position_ball.x <= -5.4f || g_position_ball.x >= 5.4f)
 	{
 		g_game_status = OVER;
 	}
