@@ -441,12 +441,12 @@ void update()
 
 	calculate_ball_collision_distances();
 
-	if ((x_distance_ball_alexis_torso < -0.3f && y_distance_ball_alexis_torso < -0.3f) || 
-		(x_distance_ball_alexis_head < -0.15f && y_distance_ball_alexis_head < -0.25f) ||
+	if ((x_distance_ball_alexis_torso < -0.2f && y_distance_ball_alexis_torso < -1.0f) || 
+		(x_distance_ball_alexis_head < -0.15f && y_distance_ball_alexis_head < -0.45f) ||
 		(x_distance_ball_messi < -0.5f && y_distance_ball_messi < -0.5f))
 	{
 		g_curr_collision_time = ticks;
-		if ((g_curr_collision_time - g_prev_collision_time) > 0.1)
+		if (((g_curr_collision_time - g_prev_collision_time) > 0.1) && (g_position_ball.x > -3.5f))
 		{
 			g_movement_ball.x *= -1.0f;
 			g_ball_speed *= 1.08f;
@@ -459,6 +459,10 @@ void update()
 			{
 				g_messi_speed = 4.0f;
 			}
+		}
+		else if (((g_curr_collision_time - g_prev_collision_time) > 0.1) && (g_position_ball.x <= -3.5f))
+		{
+			g_movement_ball.y *= -1.0f;
 		}
 		g_prev_collision_time = g_curr_collision_time;
 	}
