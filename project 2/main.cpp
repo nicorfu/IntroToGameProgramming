@@ -454,7 +454,7 @@ void update()
 
 			if (g_gamemode == ONE_PLAYER)
 			{
-				g_messi_speed *= 1.1f;
+				g_messi_speed *= 1.14f;
 			}
 			else
 			{
