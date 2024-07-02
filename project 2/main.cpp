@@ -134,7 +134,7 @@ MessiDirection g_messi_dir = DOWN;
 
 constexpr float ALEXIS_HEAD_WIDTH = INIT_SCALE_ALEXIS.x * 0.333f;
 constexpr float ALEXIS_HEAD_HEIGHT = INIT_SCALE_ALEXIS.y * 0.4f;
-constexpr float ALEXIS_TORSO_HEIGHT = INIT_SCALE_ALEXIS.y * 0.55f;
+constexpr float ALEXIS_TORSO_HEIGHT = INIT_SCALE_ALEXIS.y * 0.5f;
 
 float g_position_alexis_head_y;
 float g_position_alexis_torso_y;
@@ -389,7 +389,7 @@ void update()
 	}
 
 	g_position_alexis_head_y = g_position_alexis.y + 1.0f;
-	g_position_alexis_torso_y = g_position_alexis.y - 0.75f;
+	g_position_alexis_torso_y = g_position_alexis.y - 0.5f;
 
 	g_alexis_matrix = glm::mat4(1.0f);
 	g_alexis_matrix = glm::translate(g_alexis_matrix, g_position_alexis);
@@ -441,7 +441,7 @@ void update()
 
 	calculate_ball_collision_distances();
 
-	if ((x_distance_ball_alexis_torso < -0.2f && y_distance_ball_alexis_torso < -1.0f) || 
+	if ((x_distance_ball_alexis_torso < -0.3f && y_distance_ball_alexis_torso < -0.5f) || 
 		(x_distance_ball_alexis_head < -0.15f && y_distance_ball_alexis_head < -0.45f) ||
 		(x_distance_ball_messi < -0.5f && y_distance_ball_messi < -0.5f))
 	{
