@@ -447,7 +447,7 @@ void update()
 	{
 		g_curr_collision_time = ticks;
 		if (((g_curr_collision_time - g_prev_collision_time) > 0.2) && 
-			((g_position_ball.x > -3.5f) && (g_position_ball.x < 3.5f)))
+			((g_position_ball.x > -3.5f) && (g_position_ball.x < 3.8f)))
 		{
 			g_movement_ball.x *= -1.0f;
 			g_ball_speed *= 1.08f;
@@ -462,7 +462,7 @@ void update()
 			}
 		}
 		else if (((g_curr_collision_time - g_prev_collision_time) > 0.2) && 
-			((g_position_ball.x <= -3.5f) || (g_position_ball.x >= 3.5f)))
+			((g_position_ball.x <= -3.5f) || (g_position_ball.x >= 3.8f)))
 		{
 			g_movement_ball.y *= -1.0f;
 		}
