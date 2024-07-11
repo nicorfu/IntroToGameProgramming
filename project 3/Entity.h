@@ -20,6 +20,11 @@ public:
 	float m_speed;
 	glm::vec3 m_movement;
 
+	bool m_collided_top = false;
+	bool m_collided_bottom = false;
+	bool m_collided_left = false;
+	bool m_collided_right = false;
+
 	Entity();
 
 	void update(float delta_time, Entity* collidable_entities, int collidable_entity_count);

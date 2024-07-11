@@ -31,3 +31,16 @@ Entity::Entity()
 	m_speed = 0;
 	m_model_matrix = glm::mat4(1.0f);
 }
+
+void Entity::update(float delta_time, Entity* collidable_entities, int collidable_entity_count)
+{
+	if (!m_is_active)
+	{
+		return;
+	}
+
+	m_collided_top = false;
+	m_collided_bottom = false;
+	m_collided_left = false;
+	m_collided_right = false;
+}
