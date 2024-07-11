@@ -8,6 +8,7 @@
 * Academic Misconduct.
 **/
 
+
 #include <GL/glew.h>
 
 #define GL_SILENCE_DEPRECATION
@@ -21,6 +22,7 @@
 #include "ShaderProgram.h"
 #include "Entity.h"
 
+
 Entity::Entity()
 {
 	m_position = glm::vec3(0.0f);
@@ -31,6 +33,7 @@ Entity::Entity()
 	m_speed = 0;
 	m_model_matrix = glm::mat4(1.0f);
 }
+
 
 void Entity::update(float delta_time, Entity* collidable_entities, int collidable_entity_count)
 {
@@ -57,6 +60,7 @@ void Entity::update(float delta_time, Entity* collidable_entities, int collidabl
 	m_model_matrix = glm::translate(m_model_matrix, m_position);
 }
 
+
 void const Entity::check_collision_y(Entity* collidable_entities, int collidable_entity_count)
 {
 	for (int i = 0; i < collidable_entity_count; i++)
@@ -79,6 +83,34 @@ void const Entity::check_collision_y(Entity* collidable_entities, int collidable
 				m_position.y += y_overlap;
 				m_velocity.y = 0;
 				m_collided_bottom = true;
+			}
+		}
+	}
+}
+
+
+void const Entity::check_collision_x(Entity* collidable_entities, int collidable_entity_count)
+{
+	for (int i = 0; i < collidable_entity_count; i++)
+	{
+		Entity* collidable_entity = &collidable_entities[i];
+
+		if (check_collision(collidable_entity))
+		{
+			float x_distance = fabs(m_position.x - collidable_entity->m_position.x);
+			float x_overlap = fabs(x_distance - (m_width / 2.0f) - (collidable_entity->m_width / 2.0f));
+
+			if (m_velocity.x > 0) 
+			{
+				m_position.x -= x_overlap;
+				m_velocity.x = 0;
+				m_collided_right = true;
+			}
+			else if (m_velocity.x < 0) 
+			{
+				m_position.x += x_overlap;
+				m_velocity.x = 0;
+				m_collided_left = true;
 			}
 		}
 	}
