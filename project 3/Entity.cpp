@@ -138,3 +138,17 @@ void Entity::render(ShaderProgram* program)
 	glDisableVertexAttribArray(program->get_position_attribute());
 	glDisableVertexAttribArray(program->get_tex_coordinate_attribute());
 }
+
+
+bool const Entity::check_collision(Entity* other) const
+{
+	if (!m_is_active || !other->m_is_active)
+	{
+		return false;
+	}
+
+	float x_distance = fabs(m_position.x - other->m_position.x) - ((m_width + other->m_width) / 2.0f);
+	float y_distance = fabs(m_position.y - other->m_position.y) - ((m_height + other->m_height) / 2.0f);
+
+	return x_distance < 0.0f && y_distance < 0.0f;
+}
