@@ -22,12 +22,12 @@ AppStatus g_app_status = RUNNING;
 SDL_Window* g_display_window;
 ShaderProgram g_shader_program;
 
-constexpr int WINDOW_WIDTH = 960;
-constexpr int WINDOW_HEIGHT = 720;
+constexpr int WINDOW_WIDTH = 1100;
+constexpr int WINDOW_HEIGHT = 710;
 
-constexpr float BG_RED = 0.3333f;
-constexpr float BG_GREEN = 0.4196f;
-constexpr float BG_BLUE = 0.1843f;
+constexpr float BG_RED = 11.0f / 255.0f;
+constexpr float BG_GREEN = 4.0f / 255.0f;
+constexpr float BG_BLUE = 4.0f / 255.0f;
 constexpr float BG_OPACITY = 1.0f;
 
 constexpr int VIEWPORT_X = 0;
@@ -46,7 +46,7 @@ void initialize()
 {
 	SDL_Init(SDL_INIT_VIDEO);
 
-	g_display_window = SDL_CreateWindow("FutPong", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+	g_display_window = SDL_CreateWindow("Lunar Lander", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
 
 	if (g_display_window == nullptr)
