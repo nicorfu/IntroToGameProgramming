@@ -35,7 +35,7 @@ ShaderProgram g_shader_program;
 constexpr int WINDOW_WIDTH = 1100;
 constexpr int WINDOW_HEIGHT = 710;
 
-constexpr float BG_RED = 11.0f / 255.0f;
+constexpr float BG_RED = 13.0f / 255.0f;
 constexpr float BG_GREEN = 4.0f / 255.0f;
 constexpr float BG_BLUE = 4.0f / 255.0f;
 constexpr float BG_OPACITY = 1.0f;
