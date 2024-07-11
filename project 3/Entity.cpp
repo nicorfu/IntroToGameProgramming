@@ -115,3 +115,26 @@ void const Entity::check_collision_x(Entity* collidable_entities, int collidable
 		}
 	}
 }
+
+
+void Entity::render(ShaderProgram* program)
+{
+	if (!m_is_active) return;
+
+	program->set_model_matrix(m_model_matrix);
+
+	float vertices[] = { -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5 };
+	float tex_coords[] = { 0.0,  1.0, 1.0,  1.0, 1.0, 0.0,  0.0,  1.0, 1.0, 0.0,  0.0, 0.0 };
+
+	glBindTexture(GL_TEXTURE_2D, m_texture_id);
+
+	glVertexAttribPointer(program->get_position_attribute(), 2, GL_FLOAT, false, 0, vertices);
+	glEnableVertexAttribArray(program->get_position_attribute());
+	glVertexAttribPointer(program->get_tex_coordinate_attribute(), 2, GL_FLOAT, false, 0, tex_coords);
+	glEnableVertexAttribArray(program->get_tex_coordinate_attribute());
+
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	glDisableVertexAttribArray(program->get_position_attribute());
+	glDisableVertexAttribArray(program->get_tex_coordinate_attribute());
+}
