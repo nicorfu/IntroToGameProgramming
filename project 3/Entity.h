@@ -21,7 +21,6 @@ public:
 	glm::vec3 m_movement;
 
 	Entity();
-	~Entity();
 
 	void update(float delta_time, Entity* collidable_entities, int collidable_entity_count);
 	void render(ShaderProgram* program);
