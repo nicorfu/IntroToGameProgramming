@@ -1,2 +1,6 @@
 ﻿  Entity.cpp
+  main.cpp
+C:\Users\nico\Desktop\IntroToGameProgramming\project 3\Entity.h(60,10): warning C4244: 'return': conversion from 'const float' to 'const int', possible loss of data
+C:\Users\nico\Desktop\IntroToGameProgramming\project 3\Entity.h(64,10): warning C4244: 'return': conversion from 'const float' to 'const int', possible loss of data
+  Generating Code...
   project 3.vcxproj -> C:\Users\nico\Desktop\IntroToGameProgramming\project 3\Debug\project 3.exe
