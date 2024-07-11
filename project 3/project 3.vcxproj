@@ -136,11 +136,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\SDL\glew\include\GL\glew.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="SDL.h" />
     <ClInclude Include="SDL_opengl.h" />
     <ClInclude Include="ShaderProgram.h" />
