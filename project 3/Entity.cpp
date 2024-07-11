@@ -20,3 +20,14 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "ShaderProgram.h"
 #include "Entity.h"
+
+Entity::Entity()
+{
+	m_position = glm::vec3(0.0f);
+	m_velocity = glm::vec3(0.0f);
+	m_acceleration = glm::vec3(0.0f);
+
+	m_movement = glm::vec3(0.0f);
+	m_speed = 0;
+	m_model_matrix = glm::mat4(1.0f);
+}
