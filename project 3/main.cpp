@@ -60,7 +60,7 @@ const char V_SHADER_PATH[] = "shaders/vertex_textured.glsl";
 const char F_SHADER_PATH[] = "shaders/fragment_textured.glsl";
 
 const char SHIP_FILEPATH[] = "ship.png";
-//const char PLATFORM_FILEPATH[] = "assets/platformPack_tile027.png";
+const char PLATFORM_FILEPATH[] = "platform.png";
 
 glm::mat4 g_view_matrix;
 glm::mat4 g_projection_matrix;
@@ -146,14 +146,38 @@ void initialize()
 
 	glClearColor(BG_RED, BG_GREEN, BG_BLUE, BG_OPACITY);
 
+	GLuint platform_texture_id = load_texture(PLATFORM_FILEPATH);
+
+	g_state.platforms = new Entity[PLATFORM_COUNT];
+
+	g_state.platforms[PLATFORM_COUNT - 1].m_texture_id = platform_texture_id;
+	g_state.platforms[PLATFORM_COUNT - 1].set_position(glm::vec3(-1.5f, -2.35f, 0.0f));
+	g_state.platforms[PLATFORM_COUNT - 1].set_width(0.4f);
+	g_state.platforms[PLATFORM_COUNT - 1].update(0.0f, NULL, 0);
+
+	for (int i = 0; i < PLATFORM_COUNT - 2; i++)
+	{
+		g_state.platforms[i].m_texture_id = platform_texture_id;
+		g_state.platforms[i].set_position(glm::vec3(i - 1.0f, -3.0f, 0.0f));
+		g_state.platforms[i].set_width(0.4f);
+		g_state.platforms[i].update(0.0f, NULL, 0);
+	}
+
+	g_state.platforms[PLATFORM_COUNT - 2].m_texture_id = platform_texture_id;
+	g_state.platforms[PLATFORM_COUNT - 2].set_position(glm::vec3(2.5f, -2.5f, 0.0f));
+	g_state.platforms[PLATFORM_COUNT - 2].set_width(0.4f);
+	g_state.platforms[PLATFORM_COUNT - 2].update(0.0f, NULL, 0);
+
 	GLuint ship_texture_id = load_texture(SHIP_FILEPATH);
 
 	g_state.ship = new Entity();
+
+	g_state.ship->m_texture_id = ship_texture_id;
 	g_state.ship->set_position(glm::vec3(0.0f));
+	g_state.ship->set_width(0.4f);
 	g_state.ship->set_movement(glm::vec3(0.0f));
 	g_state.ship->m_speed = 1.0f;
 	g_state.ship->set_acceleration(glm::vec3(0.0f, -4.905f, 0.0f));
-	g_state.ship->m_texture_id = load_texture(SHIP_FILEPATH);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -234,7 +258,10 @@ void render()
 
 	g_state.ship->render(&g_program);
 
-	for (int i = 0; i < PLATFORM_COUNT; i++) g_state.platforms[i].render(&g_program);
+	for (int i = 0; i < PLATFORM_COUNT; i++)
+	{
+		g_state.platforms[i].render(&g_program);
+	}
 
 	SDL_GL_SwapWindow(g_display_window);
 }
