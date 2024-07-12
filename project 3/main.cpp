@@ -177,7 +177,7 @@ void initialize()
 	g_state.ship->set_width(0.4f);
 	g_state.ship->set_movement(glm::vec3(0.0f));
 	g_state.ship->m_speed = 1.0f;
-	g_state.ship->set_acceleration(glm::vec3(0.0f, -4.905f, 0.0f));
+	g_state.ship->set_acceleration(glm::vec3(0.0f, -4.7f, 0.0f));
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
