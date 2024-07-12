@@ -232,6 +232,10 @@ void render()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
+	g_state.ship->render(&g_program);
+
+	for (int i = 0; i < PLATFORM_COUNT; i++) g_state.platforms[i].render(&g_program);
+
 	SDL_GL_SwapWindow(g_display_window);
 }
 
