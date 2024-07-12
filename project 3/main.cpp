@@ -42,7 +42,7 @@ ShaderProgram g_program;
 constexpr int WINDOW_WIDTH = 1100;
 constexpr int WINDOW_HEIGHT = 710;
 
-constexpr float BG_RED = 13.0f / 255.0f;
+constexpr float BG_RED = 15.0f / 255.0f;
 constexpr float BG_GREEN = 4.0f / 255.0f;
 constexpr float BG_BLUE = 4.0f / 255.0f;
 constexpr float BG_OPACITY = 1.0f;
@@ -72,6 +72,9 @@ bool g_game_is_running = true;
 const float MILLISECONDS_IN_SECOND = 1000.0f;
 float g_previous_ticks = 0.0f;
 float g_accumulator = 0.0f;
+
+const float GRAVITY = -4.7f;
+const float THRUST = 2.0f;
 
 void initialize();
 void process_input();
@@ -148,36 +151,48 @@ void initialize()
 
 	GLuint platform_texture_id = load_texture(PLATFORM_FILEPATH);
 
+	constexpr glm::vec3 platform_scale = glm::vec3(3.0f, 1.5f,0.0f);
+
 	g_state.platforms = new Entity[PLATFORM_COUNT];
 
+	g_state.platforms[PLATFORM_COUNT - 1].m_type = PLATFORM;
 	g_state.platforms[PLATFORM_COUNT - 1].m_texture_id = platform_texture_id;
+	g_state.platforms[PLATFORM_COUNT - 1].set_scale(platform_scale);
 	g_state.platforms[PLATFORM_COUNT - 1].set_position(glm::vec3(-1.5f, -2.35f, 0.0f));
 	g_state.platforms[PLATFORM_COUNT - 1].set_width(0.4f);
 	g_state.platforms[PLATFORM_COUNT - 1].update(0.0f, NULL, 0);
 
 	for (int i = 0; i < PLATFORM_COUNT - 2; i++)
 	{
+		g_state.platforms[i].m_type = PLATFORM;
 		g_state.platforms[i].m_texture_id = platform_texture_id;
+		g_state.platforms[i].set_scale(platform_scale);
 		g_state.platforms[i].set_position(glm::vec3(i - 1.0f, -3.0f, 0.0f));
 		g_state.platforms[i].set_width(0.4f);
 		g_state.platforms[i].update(0.0f, NULL, 0);
 	}
 
-	g_state.platforms[PLATFORM_COUNT - 2].m_texture_id = platform_texture_id;
+	g_state.platforms[PLATFORM_COUNT - 1].m_type = PLATFORM;
+	g_state.platforms[PLATFORM_COUNT - 1].m_texture_id = platform_texture_id;
+	g_state.platforms[PLATFORM_COUNT - 1].set_scale(platform_scale);
 	g_state.platforms[PLATFORM_COUNT - 2].set_position(glm::vec3(2.5f, -2.5f, 0.0f));
 	g_state.platforms[PLATFORM_COUNT - 2].set_width(0.4f);
 	g_state.platforms[PLATFORM_COUNT - 2].update(0.0f, NULL, 0);
 
-	GLuint ship_texture_id = load_texture(SHIP_FILEPATH);
+	GLuint ship_texture_id = load_texture(SHIP_FILEPATH);	
+
+	constexpr glm::vec3 ship_scale = glm::vec3(1.0f, 1.0f, 0.0f);
 
 	g_state.ship = new Entity();
 
+	g_state.ship->m_type = PLAYER;
 	g_state.ship->m_texture_id = ship_texture_id;
+	g_state.ship->set_scale(ship_scale);
 	g_state.ship->set_position(glm::vec3(0.0f));
 	g_state.ship->set_width(0.4f);
 	g_state.ship->set_movement(glm::vec3(0.0f));
 	g_state.ship->m_speed = 1.0f;
-	g_state.ship->set_acceleration(glm::vec3(0.0f, -4.7f, 0.0f));
+	g_state.ship->set_acceleration(glm::vec3(0.0f, GRAVITY, 0.0f));
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -186,7 +201,7 @@ void initialize()
 
 void process_input()
 {
-	g_state.ship->set_movement(glm::vec3(0.0f));
+	g_state.ship->set_acceleration(glm::vec3(0.0f, GRAVITY, 0.0f));
 
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
@@ -214,11 +229,11 @@ void process_input()
 
 	if (key_state[SDL_SCANCODE_LEFT])
 	{
-		g_state.ship->m_movement.x = -1.0f;
+		g_state.ship->set_acceleration(glm::vec3(-1.0f * THRUST, GRAVITY, 0.0f));
 	}
 	else if (key_state[SDL_SCANCODE_RIGHT])
 	{
-		g_state.ship->m_movement.x = 1.0f;
+		g_state.ship->set_acceleration(glm::vec3(THRUST, GRAVITY, 0.0f));
 	}
 
 	if (glm::length(g_state.ship->m_movement) > 1.0f)
@@ -245,6 +260,12 @@ void update()
 	while (delta_time >= FIXED_TIMESTEP)
 	{
 		g_state.ship->update(FIXED_TIMESTEP, g_state.platforms, PLATFORM_COUNT);
+
+		for (int i = 0; i < PLATFORM_COUNT; i++)
+		{
+			g_state.platforms[i].update(0.0f, NULL, 0);
+		}
+
 		delta_time -= FIXED_TIMESTEP;
 	}
 

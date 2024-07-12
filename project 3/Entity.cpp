@@ -47,8 +47,9 @@ void Entity::update(float delta_time, Entity* collidable_entities, int collidabl
 	m_collided_left = false;
 	m_collided_right = false;
 
-	m_velocity.x = m_movement.x * m_speed;
 	m_velocity += m_acceleration * delta_time;
+	//m_velocity.x = m_movement.x * m_speed;
+	//m_velocity += m_acceleration * delta_time;
 
 	m_position.y += m_velocity.y * delta_time;
 	check_collision_y(collidable_entities, collidable_entity_count);
@@ -58,6 +59,7 @@ void Entity::update(float delta_time, Entity* collidable_entities, int collidabl
 
 	m_model_matrix = glm::mat4(1.0f);
 	m_model_matrix = glm::translate(m_model_matrix, m_position);
+	m_model_matrix = glm::scale(m_model_matrix, m_scale);
 }
 
 
