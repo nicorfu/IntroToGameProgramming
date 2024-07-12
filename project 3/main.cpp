@@ -13,6 +13,8 @@
 #define GL_SILENCE_DEPRECATION
 #define STB_IMAGE_IMPLEMENTATION
 #define GL_GLEXT_PROTOTYPES 1
+#define FIXED_TIMESTEP 0.0166666f
+#define PLATFORM_COUNT 5
 #define LOG(argument) std::cout << argument << '\n'
 
 #include <iostream>
@@ -30,12 +32,12 @@
 
 struct GameState
 {
-	Entity* player;
+	Entity* ship;
 	Entity* platforms;
 };
 
 SDL_Window* g_display_window;
-ShaderProgram g_shader_program;
+ShaderProgram g_program;
 
 constexpr int WINDOW_WIDTH = 1100;
 constexpr int WINDOW_HEIGHT = 710;
@@ -69,6 +71,7 @@ bool g_game_is_running = true;
 
 const float MILLISECONDS_IN_SECOND = 1000.0f;
 float g_previous_ticks = 0.0f;
+float g_accumulator = 0.0f;
 
 void initialize();
 void process_input();
@@ -131,9 +134,26 @@ void initialize()
 
 	glViewport(VIEWPORT_X, VIEWPORT_Y, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
 
-	glUseProgram(g_shader_program.get_program_id());
+	g_program.load(V_SHADER_PATH, F_SHADER_PATH);
+
+	g_view_matrix = glm::mat4(1.0f);
+	g_projection_matrix = glm::ortho(-5.0f, 5.0f, -3.75f, 3.75f, -1.0f, 1.0f);
+
+	g_program.set_projection_matrix(g_projection_matrix);
+	g_program.set_view_matrix(g_view_matrix);
+
+	glUseProgram(g_program.get_program_id());
 
 	glClearColor(BG_RED, BG_GREEN, BG_BLUE, BG_OPACITY);
+
+	GLuint ship_texture_id = load_texture(SHIP_FILEPATH);
+
+	g_state.ship = new Entity();
+	g_state.ship->set_position(glm::vec3(0.0f));
+	g_state.ship->set_movement(glm::vec3(0.0f));
+	g_state.ship->m_speed = 1.0f;
+	g_state.ship->set_acceleration(glm::vec3(0.0f, -4.905f, 0.0f));
+	g_state.ship->m_texture_id = load_texture(SHIP_FILEPATH);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -142,19 +162,53 @@ void initialize()
 
 void process_input()
 {
+	g_state.ship->set_movement(glm::vec3(0.0f));
+
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
 	{
-		if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE)
+		switch (event.type)
 		{
-			g_game_is_running = false;
+			case SDL_QUIT:
+			case SDL_WINDOWEVENT_CLOSE:
+				g_game_is_running = false;
+				break;
+
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym) {
+					case SDLK_ESCAPE:
+						g_game_is_running = false;
+						break;
+
+				default:
+					break;
+			}
 		}
+	}
+
+	const Uint8* key_state = SDL_GetKeyboardState(NULL);
+
+	if (key_state[SDL_SCANCODE_LEFT])
+	{
+		g_state.ship->m_movement.x = -1.0f;
+	}
+	else if (key_state[SDL_SCANCODE_RIGHT])
+	{
+		g_state.ship->m_movement.x = 1.0f;
+	}
+
+	if (glm::length(g_state.ship->m_movement) > 1.0f)
+	{
+		g_state.ship->m_movement = glm::normalize(g_state.ship->m_movement);
 	}
 }
 
 
 void update()
 {
+	float ticks = (float)SDL_GetTicks() / MILLISECONDS_IN_SECOND;
+	float delta_time = ticks - g_previous_ticks;
+	g_previous_ticks = ticks;
 
 }
 
