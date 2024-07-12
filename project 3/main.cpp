@@ -243,6 +243,9 @@ void render()
 void shutdown()
 {
 	SDL_Quit();
+
+	delete[] g_state.platforms;
+	delete g_state.ship;
 }
 
 
