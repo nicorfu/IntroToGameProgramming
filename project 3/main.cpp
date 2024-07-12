@@ -151,7 +151,7 @@ void initialize()
 
 	GLuint platform_texture_id = load_texture(PLATFORM_FILEPATH);
 
-	constexpr glm::vec3 platform_scale = glm::vec3(3.0f, 1.5f,0.0f);
+	constexpr glm::vec3 platform_scale = glm::vec3(1.2f, 4.0f, 0.0f);
 
 	g_state.platforms = new Entity[PLATFORM_COUNT];
 
@@ -172,16 +172,18 @@ void initialize()
 		g_state.platforms[i].update(0.0f, NULL, 0);
 	}
 
-	g_state.platforms[PLATFORM_COUNT - 1].m_type = PLATFORM;
-	g_state.platforms[PLATFORM_COUNT - 1].m_texture_id = platform_texture_id;
-	g_state.platforms[PLATFORM_COUNT - 1].set_scale(platform_scale);
+	g_state.platforms[PLATFORM_COUNT - 2].m_type = PLATFORM;
+	g_state.platforms[PLATFORM_COUNT - 2].m_texture_id = platform_texture_id;
+	g_state.platforms[PLATFORM_COUNT - 2].set_scale(platform_scale);
 	g_state.platforms[PLATFORM_COUNT - 2].set_position(glm::vec3(2.5f, -2.5f, 0.0f));
 	g_state.platforms[PLATFORM_COUNT - 2].set_width(0.4f);
 	g_state.platforms[PLATFORM_COUNT - 2].update(0.0f, NULL, 0);
 
 	GLuint ship_texture_id = load_texture(SHIP_FILEPATH);	
 
-	constexpr glm::vec3 ship_scale = glm::vec3(1.0f, 1.0f, 0.0f);
+	constexpr float ship_scale_multiplier = 0.75f;
+
+	constexpr glm::vec3 ship_scale = glm::vec3(1.0f, 1.2f, 0.0f) * ship_scale_multiplier;
 
 	g_state.ship = new Entity();
 
