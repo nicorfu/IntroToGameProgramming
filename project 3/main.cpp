@@ -24,10 +24,15 @@
 #include "stb_image.h"
 #include "cmath"
 #include <ctime>
+#include <vector>
+#include "Entity.h"
 
 
-enum AppStatus { RUNNING, TERMINATED };
-AppStatus g_app_status = RUNNING;
+struct GameState
+{
+	Entity* player;
+	Entity* platforms;
+};
 
 SDL_Window* g_display_window;
 ShaderProgram g_shader_program;
@@ -44,6 +49,26 @@ constexpr int VIEWPORT_X = 0;
 constexpr int VIEWPORT_Y = 0;
 constexpr int VIEWPORT_WIDTH = WINDOW_WIDTH;
 constexpr int VIEWPORT_HEIGHT = WINDOW_HEIGHT;
+
+constexpr GLint NUMBER_OF_TEXTURES = 1;
+constexpr GLint LEVEL_OF_DETAIL = 0;
+constexpr GLint TEXTURE_BORDER = 0;
+
+const char V_SHADER_PATH[] = "shaders/vertex_textured.glsl";
+const char F_SHADER_PATH[] = "shaders/fragment_textured.glsl";
+
+const char SHIP_FILEPATH[] = "ship.png";
+//const char PLATFORM_FILEPATH[] = "assets/platformPack_tile027.png";
+
+glm::mat4 g_view_matrix;
+glm::mat4 g_projection_matrix;
+
+GameState g_state;
+
+bool g_game_is_running = true;
+
+const float MILLISECONDS_IN_SECOND = 1000.0f;
+float g_previous_ticks = 0.0f;
 
 void initialize();
 void process_input();
@@ -89,7 +114,7 @@ void process_input()
 	{
 		if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE)
 		{
-			g_app_status = TERMINATED;
+			g_game_is_running = false;
 		}
 	}
 }
@@ -119,7 +144,7 @@ int main(int argc, char* argv[])
 {
 	initialize();
 
-	while (g_app_status == RUNNING)
+	while (g_game_is_running)
 	{
 		process_input();
 		update();
