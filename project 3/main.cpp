@@ -210,6 +210,21 @@ void update()
 	float delta_time = ticks - g_previous_ticks;
 	g_previous_ticks = ticks;
 
+	delta_time += g_accumulator;
+
+	if (delta_time < FIXED_TIMESTEP)
+	{
+		g_accumulator = delta_time;
+		return;
+	}
+
+	while (delta_time >= FIXED_TIMESTEP)
+	{
+		g_state.ship->update(FIXED_TIMESTEP, g_state.platforms, PLATFORM_COUNT);
+		delta_time -= FIXED_TIMESTEP;
+	}
+
+	g_accumulator = delta_time;
 }
 
 
