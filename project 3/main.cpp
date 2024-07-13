@@ -73,8 +73,8 @@ const float MILLISECONDS_IN_SECOND = 1000.0f;
 float g_previous_ticks = 0.0f;
 float g_accumulator = 0.0f;
 
-const float GRAVITY = -4.7f;
-const float THRUST = 2.0f;
+const float GRAVITY = -2.2f;
+const float THRUST = 1.5f;
 
 void initialize();
 void process_input();
@@ -227,6 +227,10 @@ void process_input()
 	else if (key_state[SDL_SCANCODE_RIGHT])
 	{
 		g_state.ship->set_acceleration(glm::vec3(THRUST, GRAVITY, 0.0f));
+	}
+	else if (key_state[SDL_SCANCODE_SPACE])
+	{
+		g_state.ship->set_acceleration(glm::vec3(0.0f, 1.75f, 0.0f));
 	}
 
 	if (glm::length(g_state.ship->m_movement) > 1.0f)

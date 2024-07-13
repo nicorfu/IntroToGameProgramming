@@ -54,6 +54,28 @@ void Entity::update(float delta_time, Entity* collidable_entities, int collidabl
 	m_position.y += m_velocity.y * delta_time;
 	check_collision_y(collidable_entities, collidable_entity_count);
 
+	if (m_acceleration.x == 0 && m_velocity.x != 0)
+	{
+		if (m_velocity.x > 0)
+		{
+			m_velocity -= 0.008f;
+
+			if (m_velocity.x < 0)
+			{
+				m_velocity.x = 0;
+			}
+		}
+		else if (m_velocity.x < 0)
+		{
+			m_velocity += 0.008f;
+
+			if (m_velocity.x > 0)
+			{
+				m_velocity.x = 0;
+			}
+		}
+	}
+
 	m_position.x += m_velocity.x * delta_time;
 	check_collision_x(collidable_entities, collidable_entity_count);
 

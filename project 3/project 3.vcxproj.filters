@@ -49,5 +49,8 @@
     <Image Include="ship.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="platform.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
