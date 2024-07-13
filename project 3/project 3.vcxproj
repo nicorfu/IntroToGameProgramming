@@ -150,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="arrow.png" />
+    <Image Include="explosion.png" />
     <Image Include="platform.png" />
     <Image Include="ship.png" />
   </ItemGroup>

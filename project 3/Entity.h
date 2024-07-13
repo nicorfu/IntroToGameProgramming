@@ -29,7 +29,7 @@ public:
 
 	Entity();
 
-	void update(float delta_time, Entity* collidable_entities, int collidable_entity_count);
+	void update(float delta_time, Entity* collidable_entities, int collidable_entity_count, bool *game_ongoing);
 	void render(ShaderProgram* program);
 
 	void const check_collision_y(Entity* collidable_entities, int collidable_entity_count);

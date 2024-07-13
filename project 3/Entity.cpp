@@ -35,7 +35,7 @@ Entity::Entity()
 }
 
 
-void Entity::update(float delta_time, Entity* collidable_entities, int collidable_entity_count)
+void Entity::update(float delta_time, Entity* collidable_entities, int collidable_entity_count, bool *game_ongoing)
 {
 	if (!m_is_active)
 	{
@@ -48,8 +48,6 @@ void Entity::update(float delta_time, Entity* collidable_entities, int collidabl
 	m_collided_right = false;
 
 	m_velocity += m_acceleration * delta_time;
-	//m_velocity.x = m_movement.x * m_speed;
-	//m_velocity += m_acceleration * delta_time;
 
 	m_position.y += m_velocity.y * delta_time;
 	check_collision_y(collidable_entities, collidable_entity_count);
@@ -96,6 +94,10 @@ void const Entity::check_collision_y(Entity* collidable_entities, int collidable
 
 		if (check_collision(collidable_entity))
 		{
+			if (fabs(m_velocity.y) > 2.0f)
+			{
+
+			}
 			float y_distance = fabs(m_position.y - (collidable_entity->m_position.y - 0.25f));
 			float y_overlap = fabs(y_distance - (m_height / 2.0f) - (collidable_entity->m_height / 2.0f));
 

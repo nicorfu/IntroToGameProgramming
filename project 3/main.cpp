@@ -38,6 +38,8 @@ struct GameState
 	Entity* arrow;
 };
 
+bool GAME_ONGOING = true;
+
 SDL_Window* g_display_window;
 ShaderProgram g_program;
 
@@ -64,6 +66,7 @@ const char F_SHADER_PATH[] = "shaders/fragment_textured.glsl";
 const char SHIP_FILEPATH[] = "ship.png";
 const char PLATFORM_FILEPATH[] = "platform.png";
 const char ARROW_FILEPATH[] = "arrow.png";
+const char EXPLOSION_FILEPATH[] = "explosion.png";
 
 glm::mat4 g_view_matrix;
 glm::mat4 g_projection_matrix;
@@ -77,7 +80,7 @@ float g_previous_ticks = 0.0f;
 float g_accumulator = 0.0f;
 
 const float GRAVITY = -2.2f;
-const float THRUST = 1.5f;
+const float THRUST = 1.7f;
 
 int TARGET_PLATFORM;
 
@@ -188,7 +191,7 @@ void initialize()
 		g_state.platforms[i].set_rotation(glm::vec3(0.0f));
 		g_state.platforms[i].set_height(1.525f);
 		g_state.platforms[i].set_width(1.1f);
-		g_state.platforms[i].update(0.0f, NULL, 0);
+		g_state.platforms[i].update(0.0f, NULL, 0, &GAME_ONGOING);
 	}
 
 	g_state.platforms[0].set_position(glm::vec3(-3.7f, 1.7f, 0.0f));
@@ -235,7 +238,7 @@ void initialize()
 	g_state.arrow->set_scale(arrow_scale);
 	g_state.arrow->set_rotation(arrow_rotation);
 	g_state.arrow->set_position(arrow_position);
-	g_state.arrow->update(0.0f, NULL, 0);
+	g_state.arrow->update(0.0f, NULL, 0, &GAME_ONGOING);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -306,11 +309,11 @@ void update()
 
 	while (delta_time >= FIXED_TIMESTEP)
 	{
-		g_state.ship->update(FIXED_TIMESTEP, g_state.platforms, PLATFORM_COUNT);
+		g_state.ship->update(FIXED_TIMESTEP, g_state.platforms, PLATFORM_COUNT, &GAME_ONGOING);
 
 		for (int i = 0; i < PLATFORM_COUNT; i++)
 		{
-			g_state.platforms[i].update(0.0f, NULL, 0);
+			g_state.platforms[i].update(0.0f, NULL, 0, &GAME_ONGOING);
 		}
 
 		delta_time -= FIXED_TIMESTEP;
