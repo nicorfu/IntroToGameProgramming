@@ -160,7 +160,8 @@ void initialize()
 		g_state.platforms[i].m_type = PLATFORM;
 		g_state.platforms[i].m_texture_id = platform_texture_id;
 		g_state.platforms[i].set_scale(platform_scale);
-		g_state.platforms[i].set_width(0.4f);
+		g_state.platforms[i].set_height(1.05f);
+		g_state.platforms[i].set_width(1.1f);
 		g_state.platforms[i].update(0.0f, NULL, 0);
 	}
 
