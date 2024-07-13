@@ -271,24 +271,27 @@ void process_input()
 		}
 	}
 
-	const Uint8* key_state = SDL_GetKeyboardState(NULL);
+	if (GAME_ONGOING)
+	{
+		const Uint8* key_state = SDL_GetKeyboardState(NULL);
 
-	if (key_state[SDL_SCANCODE_LEFT])
-	{
-		g_state.ship->set_acceleration(glm::vec3(-1.0f * THRUST, GRAVITY, 0.0f));
-	}
-	else if (key_state[SDL_SCANCODE_RIGHT])
-	{
-		g_state.ship->set_acceleration(glm::vec3(THRUST, GRAVITY, 0.0f));
-	}
-	else if (key_state[SDL_SCANCODE_SPACE])
-	{
-		g_state.ship->set_acceleration(glm::vec3(0.0f, 1.75f, 0.0f));
-	}
+		if (key_state[SDL_SCANCODE_LEFT])
+		{
+			g_state.ship->set_acceleration(glm::vec3(-1.0f * THRUST, GRAVITY, 0.0f));
+		}
+		else if (key_state[SDL_SCANCODE_RIGHT])
+		{
+			g_state.ship->set_acceleration(glm::vec3(THRUST, GRAVITY, 0.0f));
+		}
+		else if (key_state[SDL_SCANCODE_SPACE])
+		{
+			g_state.ship->set_acceleration(glm::vec3(0.0f, 1.75f, 0.0f));
+		}
 
-	if (glm::length(g_state.ship->m_movement) > 1.0f)
-	{
-		g_state.ship->m_movement = glm::normalize(g_state.ship->m_movement);
+		if (glm::length(g_state.ship->m_movement) > 1.0f)
+		{
+			g_state.ship->m_movement = glm::normalize(g_state.ship->m_movement);
+		}
 	}
 }
 

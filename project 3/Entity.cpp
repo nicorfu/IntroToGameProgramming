@@ -50,7 +50,7 @@ void Entity::update(float delta_time, Entity* collidable_entities, int collidabl
 	m_velocity += m_acceleration * delta_time;
 
 	m_position.y += m_velocity.y * delta_time;
-	check_collision_y(collidable_entities, collidable_entity_count);
+	check_collision_y(collidable_entities, collidable_entity_count, game_ongoing);
 
 	if (m_acceleration.x == 0 && m_velocity.x != 0)
 	{
@@ -77,7 +77,7 @@ void Entity::update(float delta_time, Entity* collidable_entities, int collidabl
 	}
 
 	m_position.x += m_velocity.x * delta_time;
-	check_collision_x(collidable_entities, collidable_entity_count);
+	check_collision_x(collidable_entities, collidable_entity_count, game_ongoing);
 
 	m_model_matrix = glm::mat4(1.0f);
 	m_model_matrix = glm::translate(m_model_matrix, m_position);
@@ -86,7 +86,7 @@ void Entity::update(float delta_time, Entity* collidable_entities, int collidabl
 }
 
 
-void const Entity::check_collision_y(Entity* collidable_entities, int collidable_entity_count)
+void const Entity::check_collision_y(Entity* collidable_entities, int collidable_entity_count, bool *game_ongoing)
 {
 	for (int i = 0; i < collidable_entity_count; i++)
 	{
@@ -94,10 +94,11 @@ void const Entity::check_collision_y(Entity* collidable_entities, int collidable
 
 		if (check_collision(collidable_entity))
 		{
-			if (fabs(m_velocity.y) > 2.0f)
+			if (fabs(m_velocity.y) > 0.8f)
 			{
-
+				*game_ongoing = false;
 			}
+
 			float y_distance = fabs(m_position.y - (collidable_entity->m_position.y - 0.25f));
 			float y_overlap = fabs(y_distance - (m_height / 2.0f) - (collidable_entity->m_height / 2.0f));
 
@@ -118,7 +119,7 @@ void const Entity::check_collision_y(Entity* collidable_entities, int collidable
 }
 
 
-void const Entity::check_collision_x(Entity* collidable_entities, int collidable_entity_count)
+void const Entity::check_collision_x(Entity* collidable_entities, int collidable_entity_count, bool *game_ongoing)
 {
 	for (int i = 0; i < collidable_entity_count; i++)
 	{
