@@ -128,6 +128,18 @@ int choose_random_platform()
 	return rand() % PLATFORM_COUNT;
 }
 
+glm::vec3 choose_random_postion()
+{
+	srand(static_cast<unsigned int>(time(0)));
+
+	int range_x = 3;
+
+	float x_offset = rand() % range_x;
+	float x_direction = (rand() % 2) ? 1 : -1;
+
+	return glm::vec3(0.0f + (x_offset * x_direction), 4.0f, 0.0f);
+}
+
 
 void initialize()
 {
@@ -191,13 +203,15 @@ void initialize()
 
 	constexpr glm::vec3 ship_scale = glm::vec3(1.0f, 1.2f, 0.0f) * ship_scale_multiplier;
 
+	glm::vec3 ship_init_position = choose_random_postion();
+
 	g_state.ship = new Entity();
 
 	g_state.ship->m_type = PLAYER;
 	g_state.ship->m_texture_id = ship_texture_id;
 	g_state.ship->set_scale(ship_scale);
 	g_state.ship->set_rotation(glm::vec3(0.0f));
-	g_state.ship->set_position(glm::vec3(0.0f));
+	g_state.ship->set_position(ship_init_position);
 	g_state.ship->set_width(0.4f);
 	g_state.ship->set_movement(glm::vec3(0.0f));
 	g_state.ship->m_speed = 1.0f;
