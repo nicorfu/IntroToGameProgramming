@@ -149,6 +149,7 @@
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="arrow.png" />
     <Image Include="platform.png" />
     <Image Include="ship.png" />
   </ItemGroup>

@@ -52,5 +52,8 @@
     <Image Include="platform.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="arrow.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

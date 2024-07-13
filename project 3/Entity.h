@@ -1,4 +1,4 @@
-enum EntityType { PLATFORM, PLAYER };
+enum EntityType { PLATFORM, PLAYER, ARROW };
 
 class Entity
 {
@@ -6,6 +6,7 @@ private:
 	bool m_is_active = true;
 
 	glm::vec3 m_scale;
+	glm::vec3 m_rotation;
 	glm::vec3 m_position;
 	glm::vec3 m_velocity;
 	glm::vec3 m_acceleration;
@@ -72,6 +73,10 @@ public:
 	void const set_scale(glm::vec3 new_scale)
 	{
 		m_scale = new_scale;
+	};
+	void const set_rotation(glm::vec3 new_rotation)
+	{
+		m_rotation = new_rotation;
 	};
 	void const set_position(glm::vec3 new_position) 
 	{ 

@@ -25,6 +25,7 @@
 #include "ShaderProgram.h"
 #include "stb_image.h"
 #include "cmath"
+#include <cstdlib>
 #include <ctime>
 #include <vector>
 #include "Entity.h"
@@ -34,6 +35,7 @@ struct GameState
 {
 	Entity* ship;
 	Entity* platforms;
+	Entity* arrow;
 };
 
 SDL_Window* g_display_window;
@@ -61,6 +63,7 @@ const char F_SHADER_PATH[] = "shaders/fragment_textured.glsl";
 
 const char SHIP_FILEPATH[] = "ship.png";
 const char PLATFORM_FILEPATH[] = "platform.png";
+const char ARROW_FILEPATH[] = "arrow.png";
 
 glm::mat4 g_view_matrix;
 glm::mat4 g_projection_matrix;
@@ -75,6 +78,8 @@ float g_accumulator = 0.0f;
 
 const float GRAVITY = -2.2f;
 const float THRUST = 1.5f;
+
+int TARGET_PLATFORM;
 
 void initialize();
 void process_input();
@@ -113,6 +118,14 @@ GLuint load_texture(const char* filepath)
 	stbi_image_free(image);
 
 	return textureID;
+}
+
+
+int choose_random_platform()
+{
+	srand(static_cast<unsigned int>(time(0)));
+
+	return rand() % PLATFORM_COUNT;
 }
 
 
@@ -160,6 +173,7 @@ void initialize()
 		g_state.platforms[i].m_type = PLATFORM;
 		g_state.platforms[i].m_texture_id = platform_texture_id;
 		g_state.platforms[i].set_scale(platform_scale);
+		g_state.platforms[i].set_rotation(glm::vec3(0.0f));
 		g_state.platforms[i].set_height(1.525f);
 		g_state.platforms[i].set_width(1.1f);
 		g_state.platforms[i].update(0.0f, NULL, 0);
@@ -182,11 +196,32 @@ void initialize()
 	g_state.ship->m_type = PLAYER;
 	g_state.ship->m_texture_id = ship_texture_id;
 	g_state.ship->set_scale(ship_scale);
+	g_state.ship->set_rotation(glm::vec3(0.0f));
 	g_state.ship->set_position(glm::vec3(0.0f));
 	g_state.ship->set_width(0.4f);
 	g_state.ship->set_movement(glm::vec3(0.0f));
 	g_state.ship->m_speed = 1.0f;
 	g_state.ship->set_acceleration(glm::vec3(0.0f, GRAVITY, 0.0f));
+
+	GLuint arrow_texture_id = load_texture(ARROW_FILEPATH);
+
+	constexpr float arrow_scale_multiplier = 1.0;
+
+	constexpr glm::vec3 arrow_scale = glm::vec3(1.0f, 1.0f, 0.0f) * arrow_scale_multiplier;
+	constexpr glm::vec3 arrow_rotation = glm::vec3(0.0f, 0.0f, 10.0f);
+
+	TARGET_PLATFORM = choose_random_platform();
+	glm::vec3 arrow_position = glm::vec3(g_state.platforms[TARGET_PLATFORM].get_position().x + 1.0f,
+		g_state.platforms[TARGET_PLATFORM].get_position().y + 1.0f, 0.0f);
+
+	g_state.arrow = new Entity();
+
+	g_state.arrow->m_type = ARROW;
+	g_state.arrow->m_texture_id = arrow_texture_id;
+	g_state.arrow->set_scale(arrow_scale);
+	g_state.arrow->set_rotation(arrow_rotation);
+	g_state.arrow->set_position(arrow_position);
+	g_state.arrow->update(0.0f, NULL, 0);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -279,6 +314,8 @@ void render()
 	{
 		g_state.platforms[i].render(&g_program);
 	}
+
+	g_state.arrow->render(&g_program);
 
 	g_state.ship->render(&g_program);
 
