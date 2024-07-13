@@ -58,7 +58,7 @@ void Entity::update(float delta_time, Entity* collidable_entities, int collidabl
 	{
 		if (m_velocity.x > 0)
 		{
-			m_velocity -= 0.008f;
+			m_velocity -= 0.009f;
 
 			if (m_velocity.x < 0)
 			{
@@ -67,7 +67,7 @@ void Entity::update(float delta_time, Entity* collidable_entities, int collidabl
 		}
 		else if (m_velocity.x < 0)
 		{
-			m_velocity += 0.008f;
+			m_velocity += 0.009f;
 
 			if (m_velocity.x > 0)
 			{
