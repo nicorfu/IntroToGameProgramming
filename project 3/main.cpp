@@ -207,12 +207,12 @@ void initialize()
 
 	constexpr float arrow_scale_multiplier = 1.0;
 
-	constexpr glm::vec3 arrow_scale = glm::vec3(1.0f, 1.0f, 0.0f) * arrow_scale_multiplier;
-	constexpr glm::vec3 arrow_rotation = glm::vec3(0.0f, 0.0f, 10.0f);
+	constexpr glm::vec3 arrow_scale = glm::vec3(1.0f, 1.3f, 0.0f) * arrow_scale_multiplier;
+	constexpr glm::vec3 arrow_rotation = glm::vec3(0.0f, 0.0f, 10.4f);
 
 	TARGET_PLATFORM = choose_random_platform();
-	glm::vec3 arrow_position = glm::vec3(g_state.platforms[TARGET_PLATFORM].get_position().x + 1.0f,
-		g_state.platforms[TARGET_PLATFORM].get_position().y + 1.0f, 0.0f);
+	glm::vec3 arrow_position = glm::vec3(g_state.platforms[TARGET_PLATFORM].get_position().x + 0.75f,
+		g_state.platforms[TARGET_PLATFORM].get_position().y + 1.35f, 0.0f);
 
 	g_state.arrow = new Entity();
 
