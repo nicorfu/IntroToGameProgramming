@@ -167,8 +167,8 @@ void initialize()
 	g_state.platforms[0].set_position(glm::vec3(-3.7f, 1.7f, 0.0f));
 	g_state.platforms[1].set_position(glm::vec3(3.7f, 1.7f, 0.0f));
 	g_state.platforms[2].set_position(glm::vec3(0.0f, 0.8f, 0.0f));
-	g_state.platforms[3].set_position(glm::vec3(-1.9f, -1.6f, 0.0f));
-	g_state.platforms[4].set_position(glm::vec3(1.9f, -1.6f, 0.0f));
+	g_state.platforms[3].set_position(glm::vec3(-1.9f, -1.7f, 0.0f));
+	g_state.platforms[4].set_position(glm::vec3(1.9f, -1.7f, 0.0f));
 
 	GLuint ship_texture_id = load_texture(SHIP_FILEPATH);	
 
@@ -270,12 +270,12 @@ void render()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	g_state.ship->render(&g_program);
-
 	for (int i = 0; i < PLATFORM_COUNT; i++)
 	{
 		g_state.platforms[i].render(&g_program);
 	}
+
+	g_state.ship->render(&g_program);
 
 	SDL_GL_SwapWindow(g_display_window);
 }
