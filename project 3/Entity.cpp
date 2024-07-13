@@ -56,9 +56,11 @@ void Entity::update(float delta_time, Entity* collidable_entities, int collidabl
 
 	if (m_acceleration.x == 0 && m_velocity.x != 0)
 	{
+		float friction = (m_collided_bottom) ? 0.02f : 0.0085f;
+
 		if (m_velocity.x > 0)
 		{
-			m_velocity -= 0.0085f;
+			m_velocity -= friction;
 
 			if (m_velocity.x < 0)
 			{
@@ -67,7 +69,7 @@ void Entity::update(float delta_time, Entity* collidable_entities, int collidabl
 		}
 		else if (m_velocity.x < 0)
 		{
-			m_velocity += 0.0085f;
+			m_velocity += friction;
 
 			if (m_velocity.x > 0)
 			{
