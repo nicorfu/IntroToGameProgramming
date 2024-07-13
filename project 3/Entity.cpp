@@ -127,6 +127,11 @@ void const Entity::check_collision_x(Entity* collidable_entities, int collidable
 
 		if (check_collision(collidable_entity))
 		{
+			if (fabs(m_velocity.x) > 0.9f)
+			{
+				*game_ongoing = false;
+			}
+
 			float x_distance = fabs(m_position.x - collidable_entity->m_position.x);
 			float x_overlap = fabs(x_distance - (m_width / 2.0f) - (collidable_entity->m_width / 2.0f));
 			if (!m_collided_bottom && !m_collided_top)
