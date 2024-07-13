@@ -123,18 +123,20 @@ void const Entity::check_collision_x(Entity* collidable_entities, int collidable
 		{
 			float x_distance = fabs(m_position.x - collidable_entity->m_position.x);
 			float x_overlap = fabs(x_distance - (m_width / 2.0f) - (collidable_entity->m_width / 2.0f));
-
-			if (m_velocity.x > 0) 
+			if (!m_collided_bottom && !m_collided_top)
 			{
-				m_position.x -= x_overlap;
-				m_velocity.x = 0;
-				m_collided_right = true;
-			}
-			else if (m_velocity.x < 0) 
-			{
-				m_position.x += x_overlap;
-				m_velocity.x = 0;
-				m_collided_left = true;
+				if (m_velocity.x > 0)
+				{
+					m_position.x -= x_overlap;
+					m_velocity.x = 0;
+					m_collided_right = true;
+				}
+				else if (m_velocity.x < 0)
+				{
+					m_position.x += x_overlap;
+					m_velocity.x = 0;
+					m_collided_left = true;
+				}
 			}
 		}
 	}
