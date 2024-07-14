@@ -372,7 +372,7 @@ void render()
 	{
 		g_state.explosion->render(&g_program);
 
-		g_state.text->draw_text(&g_program, "MISSION FAILED", 0.25f, 0.0001f, glm::vec3(-3.35, 3.1f, 0.0f));
+		g_state.text->draw_text(&g_program, "MISSION FAILED", 0.4f, 0.0001f, glm::vec3(-2.6, 2.9f, 0.0f));
 	}
 	else
 	{
@@ -380,7 +380,7 @@ void render()
 
 		if (!GAME_ONGOING)
 		{
-			g_state.text->draw_text(&g_program, "MISSION ACCOMPLISHED", 0.5f, 0.02f, glm::vec3(-4.5, 3.1f, 0.0f));
+			g_state.text->draw_text(&g_program, "MISSION SUCCESS", 0.4f, 0.0001f, glm::vec3(-2.75, 2.9f, 0.0f));
 		}
 	}
 
