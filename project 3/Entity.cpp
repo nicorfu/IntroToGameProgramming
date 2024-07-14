@@ -136,6 +136,11 @@ void const Entity::check_collision_y(Entity* collidable_entities, int collidable
 				
 				*game_ongoing = false;
 
+				if (m_velocity.x != 0)
+				{
+					*mission_failed = true;
+				}
+
 				if (i != target_platform)
 				{
 					*mission_failed = true;
