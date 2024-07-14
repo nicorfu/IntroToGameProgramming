@@ -151,6 +151,7 @@
   <ItemGroup>
     <Image Include="arrow.png" />
     <Image Include="explosion.png" />
+    <Image Include="font1.png" />
     <Image Include="platform.png" />
     <Image Include="ship.png" />
   </ItemGroup>

@@ -93,8 +93,7 @@ int TARGET_PLATFORM;
 
 constexpr int FONTBANK_SIZE = 16;
 
-void draw_text(ShaderProgram* shader_program, GLuint font_texture_id, std::string text,
-	float font_size, float spacing, glm::vec3 position);
+void draw_text(ShaderProgram* shader_program, std::string text, float font_size, float spacing, glm::vec3 position);
 GLuint load_texture(const char* filepath);
 
 void initialize();
@@ -104,8 +103,7 @@ void render();
 void shutdown();
 
 
-void draw_text(ShaderProgram* shader_program, GLuint font_texture_id, std::string text,
-	float font_size, float spacing, glm::vec3 position)
+void draw_text(ShaderProgram* shader_program, std::string text, float font_size, float spacing, glm::vec3 position)
 {
 	float width = 1.0f / FONTBANK_SIZE;
 	float height = 1.0f / FONTBANK_SIZE;
@@ -268,7 +266,7 @@ void initialize()
 
 	g_state.platforms[0].set_position(glm::vec3(-3.7f, 1.7f, 0.0f));
 	g_state.platforms[1].set_position(glm::vec3(3.7f, 1.7f, 0.0f));
-	g_state.platforms[2].set_position(glm::vec3(0.0f, -0.5f, 0.0f));
+	g_state.platforms[2].set_position(glm::vec3(0.0f, -1.0f, 0.0f));
 	g_state.platforms[3].set_position(glm::vec3(-2.3f, -1.7f, 0.0f));
 	g_state.platforms[4].set_position(glm::vec3(2.3f, -1.7f, 0.0f));
 
@@ -370,7 +368,7 @@ void process_input()
 		}
 		else if (key_state[SDL_SCANCODE_SPACE])
 		{
-			g_state.ship->set_acceleration(glm::vec3(0.0f, 1.75f, 0.0f));
+			g_state.ship->set_acceleration(glm::vec3(0.0f, 1.9f, 0.0f));
 		}
 
 		if (glm::length(g_state.ship->m_movement) > 1.0f)
@@ -432,7 +430,7 @@ void render()
 	{
 		g_state.explosion->render(&g_program);
 
-		draw_text(&g_program, font_texture_id, "MISSION FAILED", 0.5f, 0.05f, glm::vec3(-3.5f, 2.0f, 0.0f));
+		draw_text(&g_program, "MISSION FAILED", 0.5f, 0.01f, glm::vec3(-3.5f, 2.0f, 0.0f));
 	}
 	else
 	{
@@ -440,7 +438,7 @@ void render()
 
 		if (!GAME_ONGOING)
 		{
-			draw_text(&g_program, font_texture_id, "MISSION ACCOMPLISHED", 0.5f, 0.05f, glm::vec3(-3.5f, 2.0f, 0.0f));
+			draw_text(&g_program, "MISSION ACCOMPLISHED", 0.5f, 0.01f, glm::vec3(-4.5f, 2.0f, 0.0f));
 		}
 	}
 

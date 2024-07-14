@@ -80,6 +80,12 @@ void Entity::update(float delta_time, Entity* collidable_entities, int collidabl
 	m_position.x += m_velocity.x * delta_time;
 	check_collision_x(collidable_entities, collidable_entity_count, game_ongoing, mission_failed);
 
+	if (m_position.x <= -4.8f || m_position.x >= 4.8f)
+	{
+		*game_ongoing = false;
+		*mission_failed = true;
+	}
+
 	m_model_matrix = glm::mat4(1.0f);
 	m_model_matrix = glm::translate(m_model_matrix, m_position);
 	m_model_matrix = glm::scale(m_model_matrix, m_scale);
