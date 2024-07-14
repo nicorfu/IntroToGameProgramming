@@ -8,6 +8,7 @@
 * Academic Misconduct.
 **/
 
+
 #include <GL/glew.h>
 
 #define GL_SILENCE_DEPRECATION
@@ -96,6 +97,7 @@ void update();
 void render();
 void shutdown();
 
+
 GLuint load_texture(const char* filepath)
 {
 	int width;
@@ -135,6 +137,7 @@ int choose_random_platform()
 
 	return rand() % PLATFORM_COUNT;
 }
+
 
 glm::vec3 choose_random_postion()
 {
