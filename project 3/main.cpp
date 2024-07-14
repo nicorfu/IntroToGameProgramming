@@ -197,9 +197,9 @@ void initialize()
 
 	g_state.platforms[0].set_position(glm::vec3(-3.7f, 1.7f, 0.0f));
 	g_state.platforms[1].set_position(glm::vec3(3.7f, 1.7f, 0.0f));
-	g_state.platforms[2].set_position(glm::vec3(0.0f, 0.0f, 0.0f));
-	g_state.platforms[3].set_position(glm::vec3(-1.9f, -1.7f, 0.0f));
-	g_state.platforms[4].set_position(glm::vec3(1.9f, -1.7f, 0.0f));
+	g_state.platforms[2].set_position(glm::vec3(0.0f, -0.5f, 0.0f));
+	g_state.platforms[3].set_position(glm::vec3(-2.3f, -1.7f, 0.0f));
+	g_state.platforms[4].set_position(glm::vec3(2.3f, -1.7f, 0.0f));
 
 	GLuint ship_texture_id = load_texture(SHIP_FILEPATH);	
 
