@@ -220,7 +220,7 @@ bool const Entity::check_collision(Entity* other) const
 	return x_distance < 0.0f && y_distance < 0.0f;
 }
 
-void Entity::draw_text(ShaderProgram* shader_program, GLuint font_texture_id, std::string text, float font_size, float spacing, glm::vec3 position)
+void Entity::draw_text(ShaderProgram* shader_program, std::string text, float font_size, float spacing, glm::vec3 position)
 {
 	float width = 1.0f / FONTBANK_SIZE;
 	float height = 1.0f / FONTBANK_SIZE;
@@ -270,7 +270,7 @@ void Entity::draw_text(ShaderProgram* shader_program, GLuint font_texture_id, st
 		texture_coordinates.data());
 	glEnableVertexAttribArray(shader_program->get_tex_coordinate_attribute());
 
-	glBindTexture(GL_TEXTURE_2D, font_texture_id);
+	glBindTexture(GL_TEXTURE_2D, m_texture_id);
 	glDrawArrays(GL_TRIANGLES, 0, (int)(text.size() * 6));
 
 	glDisableVertexAttribArray(shader_program->get_position_attribute());
