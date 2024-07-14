@@ -38,6 +38,8 @@ public:
 	void const check_collision_x(Entity* collidable_entities, int collidable_entity_count, bool *game_ongoing, 
 		bool *mission_failed);
 	bool const check_collision(Entity* other) const;
+	void draw_text(ShaderProgram* shader_program, GLuint font_texture_id, std::string text, float font_size, 
+		float spacing, glm::vec3 position);
 
 	void activate() 
 	{

@@ -1,5 +1,9 @@
-﻿  main.cpp
-C:\Users\nico\Desktop\IntroToGameProgramming\project 3\Entity.h(69,10): warning C4244: 'return': conversion from 'const float' to 'const int', possible loss of data
-C:\Users\nico\Desktop\IntroToGameProgramming\project 3\Entity.h(73,10): warning C4244: 'return': conversion from 'const float' to 'const int', possible loss of data
-C:\Users\nico\Desktop\IntroToGameProgramming\project 3\main.cpp(114,20): warning C4018: '<': signed/unsigned mismatch
+﻿  Entity.cpp
+C:\Users\nico\Desktop\IntroToGameProgramming\project 3\Entity.h(71,10): warning C4244: 'return': conversion from 'const float' to 'const int', possible loss of data
+C:\Users\nico\Desktop\IntroToGameProgramming\project 3\Entity.h(75,10): warning C4244: 'return': conversion from 'const float' to 'const int', possible loss of data
+C:\Users\nico\Desktop\IntroToGameProgramming\project 3\Entity.cpp(231,20): warning C4018: '<': signed/unsigned mismatch
+  main.cpp
+C:\Users\nico\Desktop\IntroToGameProgramming\project 3\Entity.h(71,10): warning C4244: 'return': conversion from 'const float' to 'const int', possible loss of data
+C:\Users\nico\Desktop\IntroToGameProgramming\project 3\Entity.h(75,10): warning C4244: 'return': conversion from 'const float' to 'const int', possible loss of data
+  Generating Code...
   project 3.vcxproj -> C:\Users\nico\Desktop\IntroToGameProgramming\project 3\Debug\project 3.exe

@@ -37,6 +37,7 @@ struct GameState
 	Entity* platforms;
 	Entity* arrow;
 	Entity* explosion;
+	Entity* text;
 };
 
 bool GAME_ONGOING = true;
@@ -69,11 +70,12 @@ const char SHIP_FILEPATH[] = "ship.png";
 const char PLATFORM_FILEPATH[] = "platform.png";
 const char ARROW_FILEPATH[] = "arrow.png";
 const char EXPLOSION_FILEPATH[] = "explosion.png";
+const char FONTSHEET_FILEPATH[] = "font1.png";
 
-constexpr char FONTSHEET_FILEPATH[] = "font1.png";
+//constexpr char FONTSHEET_FILEPATH[] = "font1.png";
 
-GLuint load_texture(const char* filepath);
-GLuint font_texture_id = load_texture(FONTSHEET_FILEPATH);
+//GLuint load_texture(const char* filepath);
+//GLuint font_texture_id = load_texture(FONTSHEET_FILEPATH);
 
 glm::mat4 g_view_matrix;
 glm::mat4 g_projection_matrix;
@@ -93,17 +95,14 @@ int TARGET_PLATFORM;
 
 constexpr int FONTBANK_SIZE = 16;
 
-void draw_text(ShaderProgram* shader_program, std::string text, float font_size, float spacing, glm::vec3 position);
-GLuint load_texture(const char* filepath);
-
 void initialize();
 void process_input();
 void update();
 void render();
 void shutdown();
 
-
-void draw_text(ShaderProgram* shader_program, std::string text, float font_size, float spacing, glm::vec3 position)
+/*
+void draw_text(ShaderProgram* shader_program, GLuint font_texture_id, std::string text, float font_size, float spacing, glm::vec3 position)
 {
 	float width = 1.0f / FONTBANK_SIZE;
 	float height = 1.0f / FONTBANK_SIZE;
@@ -117,7 +116,7 @@ void draw_text(ShaderProgram* shader_program, std::string text, float font_size,
 		float offset = (font_size + spacing) * i;
 
 		float u_coordinate = (float)(spritesheet_index % FONTBANK_SIZE) / FONTBANK_SIZE;
-		float v_coordinate = (float)(spritesheet_index / FONTBANK_SIZE) / FONTBANK_SIZE;
+		float v_coordinate = (float)(spritesheet_index / FONTBANK_SIZE) / FONTBANK_SIZE; 
 
 		vertices.insert(vertices.end(),
 			{
@@ -144,7 +143,7 @@ void draw_text(ShaderProgram* shader_program, std::string text, float font_size,
 	model_matrix = glm::translate(model_matrix, position);
 
 	shader_program->set_model_matrix(model_matrix);
-	glUseProgram(shader_program->get_program_id());
+	glUseProgram(shader_program->get_program_id());	
 
 	glVertexAttribPointer(shader_program->get_position_attribute(), 2, GL_FLOAT, false, 0, vertices.data());
 	glEnableVertexAttribArray(shader_program->get_position_attribute());
@@ -159,7 +158,7 @@ void draw_text(ShaderProgram* shader_program, std::string text, float font_size,
 	glDisableVertexAttribArray(shader_program->get_position_attribute());
 	glDisableVertexAttribArray(shader_program->get_tex_coordinate_attribute());
 }
-
+*/
 
 GLuint load_texture(const char* filepath)
 {
@@ -323,6 +322,13 @@ void initialize()
 	g_state.explosion->set_position(g_state.ship->get_position());
 	g_state.explosion->update(0.0f, NULL, 0, &GAME_ONGOING, &MISSION_FAILED, TARGET_PLATFORM);
 
+	GLuint font_texture_id = load_texture(FONTSHEET_FILEPATH);
+
+	g_state.text = new Entity();
+
+	g_state.text->m_texture_id = font_texture_id;
+	g_state.text->update(0.0f, NULL, 0, &GAME_ONGOING, &MISSION_FAILED, TARGET_PLATFORM);
+
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
@@ -430,7 +436,9 @@ void render()
 	{
 		g_state.explosion->render(&g_program);
 
-		draw_text(&g_program, "MISSION FAILED", 0.5f, 0.02f, glm::vec3(-3.5f, 3.1f, 0.0f));
+		//draw_text(&g_program, font_texture_id, "MISSION FAILED", 0.5f, 0.02f, glm::vec3(-3.5f, 3.1f, 0.0f));
+		g_state.text->draw_text(&g_program, g_state.text->m_texture_id, "MISSION FAILED", 0.5f, 0.02f, 
+			glm::vec3(-3.5, 3.1f, 0.0f));
 	}
 	else
 	{
@@ -438,7 +446,7 @@ void render()
 
 		if (!GAME_ONGOING)
 		{
-			draw_text(&g_program, "MISSION ACCOMPLISHED", 0.5f, 0.02f, glm::vec3(-4.5f, 3.1f, 0.0f));
+			//draw_text(&g_program, font_texture_id, "MISSION ACCOMPLISHED", 0.5f, 0.02f, glm::vec3(-4.5f, 3.1f, 0.0f));
 		}
 	}
 
