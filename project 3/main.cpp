@@ -192,7 +192,7 @@ void initialize()
 		g_state.platforms[i].set_rotation(glm::vec3(0.0f));
 		g_state.platforms[i].set_height(1.525f);
 		g_state.platforms[i].set_width(1.1f);
-		g_state.platforms[i].update(0.0f, NULL, 0, &GAME_ONGOING, &MISSION_FAILED);
+		g_state.platforms[i].update(0.0f, NULL, 0, &GAME_ONGOING, &MISSION_FAILED, TARGET_PLATFORM);
 	}
 
 	g_state.platforms[0].set_position(glm::vec3(-3.7f, 1.7f, 0.0f));
@@ -237,7 +237,7 @@ void initialize()
 	g_state.arrow->set_scale(arrow_scale);
 	g_state.arrow->set_rotation(arrow_rotation);
 	g_state.arrow->set_position(arrow_position);
-	g_state.arrow->update(0.0f, NULL, 0, &GAME_ONGOING, &MISSION_FAILED);
+	g_state.arrow->update(0.0f, NULL, 0, &GAME_ONGOING, &MISSION_FAILED, TARGET_PLATFORM);
 
 	GLuint explosion_texture_id = load_texture(EXPLOSION_FILEPATH);
 
@@ -252,7 +252,7 @@ void initialize()
 	g_state.explosion->set_scale(explosion_scale);
 	g_state.explosion->set_rotation(glm::vec3(0.0f));
 	g_state.explosion->set_position(g_state.ship->get_position());
-	g_state.explosion->update(0.0f, NULL, 0, &GAME_ONGOING, &MISSION_FAILED);
+	g_state.explosion->update(0.0f, NULL, 0, &GAME_ONGOING, &MISSION_FAILED, TARGET_PLATFORM);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -330,13 +330,13 @@ void update()
 		{
 			g_state.explosion->set_position(g_state.ship->get_position());
 		}
-		g_state.explosion->update(FIXED_TIMESTEP, NULL, 0, &GAME_ONGOING, &MISSION_FAILED);
+		g_state.explosion->update(FIXED_TIMESTEP, NULL, 0, &GAME_ONGOING, &MISSION_FAILED, TARGET_PLATFORM);
 
-		g_state.ship->update(FIXED_TIMESTEP, g_state.platforms, PLATFORM_COUNT, &GAME_ONGOING, &MISSION_FAILED);
+		g_state.ship->update(FIXED_TIMESTEP, g_state.platforms, PLATFORM_COUNT, &GAME_ONGOING, &MISSION_FAILED, TARGET_PLATFORM);
 
 		for (int i = 0; i < PLATFORM_COUNT; i++)
 		{
-			g_state.platforms[i].update(0.0f, NULL, 0, &GAME_ONGOING, &MISSION_FAILED);
+			g_state.platforms[i].update(0.0f, NULL, 0, &GAME_ONGOING, &MISSION_FAILED, TARGET_PLATFORM);
 		}
 
 		delta_time -= FIXED_TIMESTEP;

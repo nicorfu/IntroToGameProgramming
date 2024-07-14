@@ -30,11 +30,11 @@ public:
 	Entity();
 
 	void update(float delta_time, Entity* collidable_entities, int collidable_entity_count, bool *game_ongoing, 
-		bool *mission_failed);
+		bool *mission_failed, int target_platform);
 	void render(ShaderProgram* program);
 
 	void const check_collision_y(Entity* collidable_entities, int collidable_entity_count, bool *game_ongoing, 
-		bool *mission_failed);
+		bool *mission_failed, int target_platform);
 	void const check_collision_x(Entity* collidable_entities, int collidable_entity_count, bool *game_ongoing, 
 		bool *mission_failed);
 	bool const check_collision(Entity* other) const;

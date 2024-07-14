@@ -36,7 +36,7 @@ Entity::Entity()
 
 
 void Entity::update(float delta_time, Entity* collidable_entities, int collidable_entity_count, bool *game_ongoing, 
-	bool *mission_failed)
+	bool *mission_failed, int target_platform)
 {
 	if (!m_is_active)
 	{
@@ -51,7 +51,7 @@ void Entity::update(float delta_time, Entity* collidable_entities, int collidabl
 	m_velocity += m_acceleration * delta_time;
 
 	m_position.y += m_velocity.y * delta_time;
-	check_collision_y(collidable_entities, collidable_entity_count, game_ongoing, mission_failed);
+	check_collision_y(collidable_entities, collidable_entity_count, game_ongoing, mission_failed, target_platform);
 
 	if (m_acceleration.x == 0 && m_velocity.x != 0)
 	{
@@ -88,7 +88,7 @@ void Entity::update(float delta_time, Entity* collidable_entities, int collidabl
 
 
 void const Entity::check_collision_y(Entity* collidable_entities, int collidable_entity_count, bool *game_ongoing, 
-	bool *mission_failed)
+	bool *mission_failed, int target_platform)
 {
 	for (int i = 0; i < collidable_entity_count; i++)
 	{
@@ -100,6 +100,7 @@ void const Entity::check_collision_y(Entity* collidable_entities, int collidable
 			{
 				*game_ongoing = false;
 				*mission_failed = true;
+				return;
 			}
 
 			float y_distance = fabs(m_position.y - (collidable_entity->m_position.y - 0.25f));
@@ -116,6 +117,13 @@ void const Entity::check_collision_y(Entity* collidable_entities, int collidable
 				m_position.y += y_overlap;
 				m_velocity.y = 0;
 				m_collided_bottom = true;
+				
+				*game_ongoing = false;
+
+				if (i != target_platform)
+				{
+					*mission_failed = true;
+				}
 			}
 		}
 	}
@@ -135,6 +143,7 @@ void const Entity::check_collision_x(Entity* collidable_entities, int collidable
 			{
 				*game_ongoing = false;
 				*mission_failed = true;
+				return;
 			}
 
 			float x_distance = fabs(m_position.x - collidable_entity->m_position.x);
