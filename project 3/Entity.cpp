@@ -53,6 +53,12 @@ void Entity::update(float delta_time, Entity* collidable_entities, int collidabl
 	m_position.y += m_velocity.y * delta_time;
 	check_collision_y(collidable_entities, collidable_entity_count, game_ongoing, mission_failed, target_platform);
 
+	if (m_position.y <= -4.0f || m_position.y >= 4.5f)
+	{
+		*game_ongoing = false;
+		*mission_failed = true;
+	}
+
 	if (m_acceleration.x == 0 && m_velocity.x != 0)
 	{
 		float friction = (m_collided_bottom) ? 0.02f : 0.0085f;
@@ -80,7 +86,7 @@ void Entity::update(float delta_time, Entity* collidable_entities, int collidabl
 	m_position.x += m_velocity.x * delta_time;
 	check_collision_x(collidable_entities, collidable_entity_count, game_ongoing, mission_failed);
 
-	if (m_position.x <= -4.8f || m_position.x >= 4.8f)
+	if (m_position.x <= -4.9f || m_position.x >= 4.9f)
 	{
 		*game_ongoing = false;
 		*mission_failed = true;
