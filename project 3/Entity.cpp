@@ -35,7 +35,8 @@ Entity::Entity()
 }
 
 
-void Entity::update(float delta_time, Entity* collidable_entities, int collidable_entity_count, bool *game_ongoing)
+void Entity::update(float delta_time, Entity* collidable_entities, int collidable_entity_count, bool *game_ongoing, 
+	bool *mission_failed)
 {
 	if (!m_is_active)
 	{
@@ -50,7 +51,7 @@ void Entity::update(float delta_time, Entity* collidable_entities, int collidabl
 	m_velocity += m_acceleration * delta_time;
 
 	m_position.y += m_velocity.y * delta_time;
-	check_collision_y(collidable_entities, collidable_entity_count, game_ongoing);
+	check_collision_y(collidable_entities, collidable_entity_count, game_ongoing, mission_failed);
 
 	if (m_acceleration.x == 0 && m_velocity.x != 0)
 	{
@@ -77,7 +78,7 @@ void Entity::update(float delta_time, Entity* collidable_entities, int collidabl
 	}
 
 	m_position.x += m_velocity.x * delta_time;
-	check_collision_x(collidable_entities, collidable_entity_count, game_ongoing);
+	check_collision_x(collidable_entities, collidable_entity_count, game_ongoing, mission_failed);
 
 	m_model_matrix = glm::mat4(1.0f);
 	m_model_matrix = glm::translate(m_model_matrix, m_position);
@@ -86,7 +87,8 @@ void Entity::update(float delta_time, Entity* collidable_entities, int collidabl
 }
 
 
-void const Entity::check_collision_y(Entity* collidable_entities, int collidable_entity_count, bool *game_ongoing)
+void const Entity::check_collision_y(Entity* collidable_entities, int collidable_entity_count, bool *game_ongoing, 
+	bool *mission_failed)
 {
 	for (int i = 0; i < collidable_entity_count; i++)
 	{
@@ -97,6 +99,7 @@ void const Entity::check_collision_y(Entity* collidable_entities, int collidable
 			if (fabs(m_velocity.y) > 0.8f)
 			{
 				*game_ongoing = false;
+				*mission_failed = true;
 			}
 
 			float y_distance = fabs(m_position.y - (collidable_entity->m_position.y - 0.25f));
@@ -119,7 +122,8 @@ void const Entity::check_collision_y(Entity* collidable_entities, int collidable
 }
 
 
-void const Entity::check_collision_x(Entity* collidable_entities, int collidable_entity_count, bool *game_ongoing)
+void const Entity::check_collision_x(Entity* collidable_entities, int collidable_entity_count, bool *game_ongoing, 
+	bool *mission_failed)
 {
 	for (int i = 0; i < collidable_entity_count; i++)
 	{
@@ -130,6 +134,7 @@ void const Entity::check_collision_x(Entity* collidable_entities, int collidable
 			if (fabs(m_velocity.x) > 0.9f)
 			{
 				*game_ongoing = false;
+				*mission_failed = true;
 			}
 
 			float x_distance = fabs(m_position.x - collidable_entity->m_position.x);

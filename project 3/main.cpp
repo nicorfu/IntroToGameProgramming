@@ -36,9 +36,11 @@ struct GameState
 	Entity* ship;
 	Entity* platforms;
 	Entity* arrow;
+	Entity* explosion;
 };
 
 bool GAME_ONGOING = true;
+bool MISSION_FAILED = false;
 
 SDL_Window* g_display_window;
 ShaderProgram g_program;
@@ -79,7 +81,7 @@ const float MILLISECONDS_IN_SECOND = 1000.0f;
 float g_previous_ticks = 0.0f;
 float g_accumulator = 0.0f;
 
-const float GRAVITY = -2.2f;
+const float GRAVITY = -1.9f;
 const float THRUST = 1.7f;
 
 int TARGET_PLATFORM;
@@ -123,7 +125,6 @@ GLuint load_texture(const char* filepath)
 	return textureID;
 }
 
-
 int choose_random_platform()
 {
 	srand(static_cast<unsigned int>(time(0)));
@@ -137,8 +138,8 @@ glm::vec3 choose_random_postion()
 
 	int range_x = 3;
 
-	float x_offset = rand() % range_x;
-	float x_direction = (rand() % 2) ? 1 : -1;
+	float x_offset = float(rand() % range_x);
+	float x_direction = float((rand() % 2) ? 1 : -1);
 
 	return glm::vec3(0.0f + (x_offset * x_direction), 4.0f, 0.0f);
 }
@@ -191,7 +192,7 @@ void initialize()
 		g_state.platforms[i].set_rotation(glm::vec3(0.0f));
 		g_state.platforms[i].set_height(1.525f);
 		g_state.platforms[i].set_width(1.1f);
-		g_state.platforms[i].update(0.0f, NULL, 0, &GAME_ONGOING);
+		g_state.platforms[i].update(0.0f, NULL, 0, &GAME_ONGOING, &MISSION_FAILED);
 	}
 
 	g_state.platforms[0].set_position(glm::vec3(-3.7f, 1.7f, 0.0f));
@@ -222,9 +223,7 @@ void initialize()
 
 	GLuint arrow_texture_id = load_texture(ARROW_FILEPATH);
 
-	constexpr float arrow_scale_multiplier = 1.0;
-
-	constexpr glm::vec3 arrow_scale = glm::vec3(1.0f, 1.3f, 0.0f) * arrow_scale_multiplier;
+	constexpr glm::vec3 arrow_scale = glm::vec3(1.0f, 1.3f, 0.0f);
 	constexpr glm::vec3 arrow_rotation = glm::vec3(0.0f, 0.0f, 10.4f);
 
 	TARGET_PLATFORM = choose_random_platform();
@@ -238,7 +237,22 @@ void initialize()
 	g_state.arrow->set_scale(arrow_scale);
 	g_state.arrow->set_rotation(arrow_rotation);
 	g_state.arrow->set_position(arrow_position);
-	g_state.arrow->update(0.0f, NULL, 0, &GAME_ONGOING);
+	g_state.arrow->update(0.0f, NULL, 0, &GAME_ONGOING, &MISSION_FAILED);
+
+	GLuint explosion_texture_id = load_texture(EXPLOSION_FILEPATH);
+
+	constexpr float explosion_scale_multiplier = 0.75;
+
+	constexpr glm::vec3 explosion_scale = glm::vec3(1.0f, 1.0f, 0.0f) * explosion_scale_multiplier;
+
+	g_state.explosion = new Entity();
+
+	g_state.explosion->m_type = EXPLOSION;
+	g_state.explosion->m_texture_id = explosion_texture_id;
+	g_state.explosion->set_scale(explosion_scale);
+	g_state.explosion->set_rotation(glm::vec3(0.0f));
+	g_state.explosion->set_position(g_state.ship->get_position());
+	g_state.explosion->update(0.0f, NULL, 0, &GAME_ONGOING, &MISSION_FAILED);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -312,11 +326,14 @@ void update()
 
 	while (delta_time >= FIXED_TIMESTEP)
 	{
-		g_state.ship->update(FIXED_TIMESTEP, g_state.platforms, PLATFORM_COUNT, &GAME_ONGOING);
+		g_state.explosion->set_position(g_state.ship->get_position());
+		g_state.explosion->update(0.0f, NULL, 0, &GAME_ONGOING, &MISSION_FAILED);
+
+		g_state.ship->update(FIXED_TIMESTEP, g_state.platforms, PLATFORM_COUNT, &GAME_ONGOING, &MISSION_FAILED);
 
 		for (int i = 0; i < PLATFORM_COUNT; i++)
 		{
-			g_state.platforms[i].update(0.0f, NULL, 0, &GAME_ONGOING);
+			g_state.platforms[i].update(0.0f, NULL, 0, &GAME_ONGOING, &MISSION_FAILED);
 		}
 
 		delta_time -= FIXED_TIMESTEP;
@@ -337,7 +354,14 @@ void render()
 
 	g_state.arrow->render(&g_program);
 
-	g_state.ship->render(&g_program);
+	if (MISSION_FAILED)
+	{
+		g_state.explosion->render(&g_program);
+	}
+	else
+	{
+		g_state.ship->render(&g_program);
+	}
 
 	SDL_GL_SwapWindow(g_display_window);
 }
