@@ -197,7 +197,7 @@ void initialize()
 
 	g_state.platforms[0].set_position(glm::vec3(-3.7f, 1.7f, 0.0f));
 	g_state.platforms[1].set_position(glm::vec3(3.7f, 1.7f, 0.0f));
-	g_state.platforms[2].set_position(glm::vec3(0.0f, 0.8f, 0.0f));
+	g_state.platforms[2].set_position(glm::vec3(0.0f, 0.0f, 0.0f));
 	g_state.platforms[3].set_position(glm::vec3(-1.9f, -1.7f, 0.0f));
 	g_state.platforms[4].set_position(glm::vec3(1.9f, -1.7f, 0.0f));
 
@@ -241,7 +241,7 @@ void initialize()
 
 	GLuint explosion_texture_id = load_texture(EXPLOSION_FILEPATH);
 
-	constexpr float explosion_scale_multiplier = 0.75;
+	constexpr float explosion_scale_multiplier = 1.5f;
 
 	constexpr glm::vec3 explosion_scale = glm::vec3(1.0f, 1.0f, 0.0f) * explosion_scale_multiplier;
 
@@ -326,8 +326,11 @@ void update()
 
 	while (delta_time >= FIXED_TIMESTEP)
 	{
-		g_state.explosion->set_position(g_state.ship->get_position());
-		g_state.explosion->update(0.0f, NULL, 0, &GAME_ONGOING, &MISSION_FAILED);
+		if (GAME_ONGOING)
+		{
+			g_state.explosion->set_position(g_state.ship->get_position());
+		}
+		g_state.explosion->update(FIXED_TIMESTEP, NULL, 0, &GAME_ONGOING, &MISSION_FAILED);
 
 		g_state.ship->update(FIXED_TIMESTEP, g_state.platforms, PLATFORM_COUNT, &GAME_ONGOING, &MISSION_FAILED);
 
