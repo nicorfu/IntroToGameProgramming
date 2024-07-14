@@ -57,7 +57,7 @@ void Entity::update(float delta_time, Entity* collidable_entities, int collidabl
 	m_position.y += m_velocity.y * delta_time;
 	check_collision_y(collidable_entities, collidable_entity_count, game_ongoing, mission_failed, target_platform);
 
-	if (m_position.y <= -4.0f || m_position.y >= 4.5f)
+	if (m_position.y <= -3.75f || m_position.y >= 4.5f)
 	{
 		*game_ongoing = false;
 		*mission_failed = true;

@@ -1,4 +1,5 @@
-﻿  main.cpp
+﻿  Entity.cpp
 C:\Users\nico\Desktop\IntroToGameProgramming\project 3\Entity.h(70,10): warning C4244: 'return': conversion from 'const float' to 'const int', possible loss of data
 C:\Users\nico\Desktop\IntroToGameProgramming\project 3\Entity.h(74,10): warning C4244: 'return': conversion from 'const float' to 'const int', possible loss of data
+C:\Users\nico\Desktop\IntroToGameProgramming\project 3\Entity.cpp(231,20): warning C4018: '<': signed/unsigned mismatch
   project 3.vcxproj -> C:\Users\nico\Desktop\IntroToGameProgramming\project 3\Debug\project 3.exe
