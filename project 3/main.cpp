@@ -70,6 +70,11 @@ const char PLATFORM_FILEPATH[] = "platform.png";
 const char ARROW_FILEPATH[] = "arrow.png";
 const char EXPLOSION_FILEPATH[] = "explosion.png";
 
+constexpr char FONTSHEET_FILEPATH[] = "font1.png";
+
+GLuint load_texture(const char* filepath);
+GLuint font_texture_id = load_texture(FONTSHEET_FILEPATH);
+
 glm::mat4 g_view_matrix;
 glm::mat4 g_projection_matrix;
 
@@ -88,11 +93,74 @@ int TARGET_PLATFORM;
 
 constexpr int FONTBANK_SIZE = 16;
 
+void draw_text(ShaderProgram* shader_program, GLuint font_texture_id, std::string text,
+	float font_size, float spacing, glm::vec3 position);
+GLuint load_texture(const char* filepath);
+
 void initialize();
 void process_input();
 void update();
 void render();
 void shutdown();
+
+
+void draw_text(ShaderProgram* shader_program, GLuint font_texture_id, std::string text,
+	float font_size, float spacing, glm::vec3 position)
+{
+	float width = 1.0f / FONTBANK_SIZE;
+	float height = 1.0f / FONTBANK_SIZE;
+
+	std::vector<float> vertices;
+	std::vector<float> texture_coordinates;
+
+	for (int i = 0; i < text.size(); i++)
+	{
+		int spritesheet_index = (int)text[i];
+		float offset = (font_size + spacing) * i;
+
+		float u_coordinate = (float)(spritesheet_index % FONTBANK_SIZE) / FONTBANK_SIZE;
+		float v_coordinate = (float)(spritesheet_index / FONTBANK_SIZE) / FONTBANK_SIZE;
+
+		vertices.insert(vertices.end(),
+			{
+				offset + (-0.5f * font_size), 0.5f * font_size,
+				offset + (-0.5f * font_size), -0.5f * font_size,
+				offset + (0.5f * font_size), 0.5f * font_size,
+				offset + (0.5f * font_size), -0.5f * font_size,
+				offset + (0.5f * font_size), 0.5f * font_size,
+				offset + (-0.5f * font_size), -0.5f * font_size,
+			});
+
+		texture_coordinates.insert(texture_coordinates.end(),
+			{
+				u_coordinate, v_coordinate,
+				u_coordinate, v_coordinate + height,
+				u_coordinate + width, v_coordinate,
+				u_coordinate + width, v_coordinate + height,
+				u_coordinate + width, v_coordinate,
+				u_coordinate, v_coordinate + height,
+			});
+	}
+
+	glm::mat4 model_matrix = glm::mat4(1.0f);
+	model_matrix = glm::translate(model_matrix, position);
+
+	shader_program->set_model_matrix(model_matrix);
+	glUseProgram(shader_program->get_program_id());
+
+	glVertexAttribPointer(shader_program->get_position_attribute(), 2, GL_FLOAT, false, 0, vertices.data());
+	glEnableVertexAttribArray(shader_program->get_position_attribute());
+
+	glVertexAttribPointer(shader_program->get_tex_coordinate_attribute(), 2, GL_FLOAT, false, 0,
+		texture_coordinates.data());
+	glEnableVertexAttribArray(shader_program->get_tex_coordinate_attribute());
+
+	glBindTexture(GL_TEXTURE_2D, font_texture_id);
+	glDrawArrays(GL_TRIANGLES, 0, (int)(text.size() * 6));
+
+	glDisableVertexAttribArray(shader_program->get_position_attribute());
+	glDisableVertexAttribArray(shader_program->get_tex_coordinate_attribute());
+}
 
 
 GLuint load_texture(const char* filepath)
@@ -125,65 +193,6 @@ GLuint load_texture(const char* filepath)
 	stbi_image_free(image);
 
 	return textureID;
-}
-
-
-void draw_text(ShaderProgram* shader_program, GLuint font_texture_id, std::string text,
-	float font_size, float spacing, glm::vec3 position)
-{
-	float width = 1.0f / FONTBANK_SIZE;
-	float height = 1.0f / FONTBANK_SIZE;
-
-	std::vector<float> vertices;
-	std::vector<float> texture_coordinates;
-
-	for (int i = 0; i < text.size(); i++)
-	{
-		int spritesheet_index = (int)text[i];
-		float offset = (font_size + spacing) * i;
-
-		float u_coordinate = (float)(spritesheet_index % FONTBANK_SIZE) / FONTBANK_SIZE;
-		float v_coordinate = (float) (spritesheet_index / FONTBANK_SIZE) / FONTBANK_SIZE;
-
-		vertices.insert(vertices.end(), 
-		{
-			offset + (-0.5f * font_size), 0.5f * font_size,
-			offset + (-0.5f * font_size), -0.5f * font_size,
-			offset + (0.5f * font_size), 0.5f * font_size,
-			offset + (0.5f * font_size), -0.5f * font_size,
-			offset + (0.5f * font_size), 0.5f * font_size,
-			offset + (-0.5f * font_size), -0.5f * font_size,
-		});
-
-		texture_coordinates.insert(texture_coordinates.end(), 
-		{
-			u_coordinate, v_coordinate,
-			u_coordinate, v_coordinate + height,
-			u_coordinate + width, v_coordinate,
-			u_coordinate + width, v_coordinate + height,
-			u_coordinate + width, v_coordinate,
-			u_coordinate, v_coordinate + height,
-		});
-	}
-
-	glm::mat4 model_matrix = glm::mat4(1.0f);
-	model_matrix = glm::translate(model_matrix, position);
-
-	shader_program->set_model_matrix(model_matrix);
-	glUseProgram(shader_program->get_program_id());
-
-	glVertexAttribPointer(shader_program->get_position_attribute(), 2, GL_FLOAT, false, 0, vertices.data());
-    glEnableVertexAttribArray(shader_program->get_position_attribute());
-		    
-    glVertexAttribPointer(shader_program->get_tex_coordinate_attribute(), 2, GL_FLOAT, false, 0, 
-		texture_coordinates.data());
-	glEnableVertexAttribArray(shader_program->get_tex_coordinate_attribute());
-		    
-    glBindTexture(GL_TEXTURE_2D, font_texture_id);
-	glDrawArrays(GL_TRIANGLES, 0, (int) (text.size() * 6));
-		    
-	glDisableVertexAttribArray(shader_program->get_position_attribute());
-	glDisableVertexAttribArray(shader_program->get_tex_coordinate_attribute());
 }
 
 
@@ -422,10 +431,17 @@ void render()
 	if (MISSION_FAILED)
 	{
 		g_state.explosion->render(&g_program);
+
+		draw_text(&g_program, font_texture_id, "MISSION FAILED", 0.5f, 0.05f, glm::vec3(-3.5f, 2.0f, 0.0f));
 	}
 	else
 	{
 		g_state.ship->render(&g_program);
+
+		if (!GAME_ONGOING)
+		{
+			draw_text(&g_program, font_texture_id, "MISSION ACCOMPLISHED", 0.5f, 0.05f, glm::vec3(-3.5f, 2.0f, 0.0f));
+		}
 	}
 
 	SDL_GL_SwapWindow(g_display_window);
