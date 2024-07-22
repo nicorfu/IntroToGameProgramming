@@ -66,6 +66,8 @@ constexpr GLint TEXTURE_BORDER = 0;
 const char V_SHADER_PATH[] = "shaders/vertex_textured.glsl";
 const char F_SHADER_PATH[] = "shaders/fragment_textured.glsl";
 
+//const char _FILEPATH[] = ".png";
+
 glm::mat4 g_view_matrix;
 glm::mat4 g_projection_matrix;
 
@@ -117,11 +119,47 @@ void process_input()
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
 	{
-		if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE)
+		switch (event.type)
 		{
-			g_game_is_running = false;
+			case SDL_QUIT:
+			case SDL_WINDOWEVENT_CLOSE:
+				g_game_is_running = false;
+				break;
+
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym) 
+				{
+					case SDLK_ESCAPE:
+						g_game_is_running = false;
+						break;
+
+					default:
+						break;
+				}
 		}
 	}
+
+	/*
+	if (GAME_ONGOING)
+	{
+		const Uint8* key_state = SDL_GetKeyboardState(NULL);
+
+		if (key_state[SDL_SCANCODE_LEFT])
+		{
+		}
+		else if (key_state[SDL_SCANCODE_RIGHT])
+		{
+		}
+		else if (key_state[SDL_SCANCODE_SPACE])
+		{
+		}
+
+		if (glm::length(g_state.player->m_movement) > 1.0f)
+		{
+			g_state.player->m_movement = glm::normalize(g_state.player->m_movement);
+		}
+	}
+	*/
 }
 
 
@@ -142,6 +180,8 @@ void render()
 void shutdown()
 {
 	SDL_Quit();
+
+	delete g_state.player;
 }
 
 
