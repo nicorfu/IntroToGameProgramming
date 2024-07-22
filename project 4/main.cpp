@@ -24,8 +24,10 @@
 #include "ShaderProgram.h"
 #include "stb_image.h"
 #include "cmath"
+#include <cstdlib>
 #include <ctime>
 #include <vector>
+#include "Entity.h"
 
 
 enum AppStatus { RUNNING, TERMINATED };
