@@ -146,10 +146,6 @@
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="spider web.png" />
-    <Image Include="spider-man.png" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

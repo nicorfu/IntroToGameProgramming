@@ -39,12 +39,4 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="spider-man.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="spider web.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
 </Project>
