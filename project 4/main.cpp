@@ -14,7 +14,6 @@
 #define GL_SILENCE_DEPRECATION
 #define STB_IMAGE_IMPLEMENTATION
 #define GL_GLEXT_PROTOTYPES 1
-#define FIXED_TIMESTEP 0.0166666f
 #define LOG(argument) std::cout << argument << '\n'
 
 #include <iostream>
@@ -29,11 +28,23 @@
 #include <ctime>
 #include <vector>
 #include "Entity.h"
+#include "Map.h"
+
+#define FIXED_TIMESTEP 0.0166666f
+#define LEVEL1_WIDTH 14
+#define LEVEL1_HEIGHT 5
 
 
 struct GameState
 {
 	Entity* player;
+
+	Entity* map;
+};
+
+unsigned int LEVEL_1_DATA[] =
+{
+	0
 };
 
 GameState g_state;
@@ -67,6 +78,7 @@ const char V_SHADER_PATH[] = "shaders/vertex_textured.glsl";
 const char F_SHADER_PATH[] = "shaders/fragment_textured.glsl";
 
 //const char _FILEPATH[] = ".png";
+//const char MAP_TILESET_FILEPATH[] = ".png";
 
 glm::mat4 g_view_matrix;
 glm::mat4 g_projection_matrix;
@@ -108,6 +120,9 @@ void initialize()
 	glUseProgram(g_shader_program.get_program_id());
 
 	glClearColor(BG_RED, BG_GREEN, BG_BLUE, BG_OPACITY);
+
+	//GLuint map_texture_id = load_texture(MAP_TILESET_FILEPATH);
+	//g_state.map = new Map(LEVEL1_WIDTH, LEVEL1_HEIGHT, LEVEL_1_DATA, map_texture_id, 1.0f, 4, 1);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -165,13 +180,32 @@ void process_input()
 
 void update()
 {
+	float ticks = (float)SDL_GetTicks() / MILLISECONDS_IN_SECOND;
+	float delta_time = ticks - g_previous_ticks;
+	g_previous_ticks = ticks;
 
+	delta_time += g_accumulator;
+
+	if (delta_time < FIXED_TIMESTEP)
+	{
+		g_accumulator = delta_time;
+		return;
+	}
+
+	while (delta_time >= FIXED_TIMESTEP)
+	{
+		g_state.player->update(FIXED_TIMESTEP, g_state.player, NULL, 0, g_state.map);
+		delta_time -= FIXED_TIMESTEP;
+	}
 }
 
 
 void render()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	g_state.player->render(&g_shader_program);
+	g_state.map->render(&g_shader_program);
 
 	SDL_GL_SwapWindow(g_display_window);
 }
@@ -182,6 +216,7 @@ void shutdown()
 	SDL_Quit();
 
 	delete g_state.player;
+	delete g_state.map;
 }
 
 
