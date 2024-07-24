@@ -64,6 +64,26 @@ void Map::build()
 	m_bottom_bound = -(m_tile_size * m_height) + (m_tile_size / 2);
 }
 
-void Map::render(ShaderProgram* program);
+void Map::render(ShaderProgram* program)
+{
+	glm::mat4 model_matrix = glm::mat4(1.0f);
+	program->set_model_matrix(model_matrix);
 
-bool Map::is_solid(glm::vec3 position, float* penetration_x, float* penetration_y);
+	glUseProgram(program->get_program_id());
+
+	glVertexAttribPointer(program->get_position_attribute(), 2, GL_FLOAT, false, 0, m_vertices.data());
+	glEnableVertexAttribArray(program->get_position_attribute());
+	glVertexAttribPointer(program->get_tex_coordinate_attribute(), 2, GL_FLOAT, false, 0, m_texture_coordinates.data());
+	glEnableVertexAttribArray(program->get_tex_coordinate_attribute());
+
+	glBindTexture(GL_TEXTURE_2D, m_texture_id);
+
+	glDrawArrays(GL_TRIANGLES, 0, (int)m_vertices.size() / 2);
+	glDisableVertexAttribArray(program->get_position_attribute());
+	glDisableVertexAttribArray(program->get_tex_coordinate_attribute());
+}
+
+bool Map::is_solid(glm::vec3 position, float* penetration_x, float* penetration_y)
+{
+
+}
