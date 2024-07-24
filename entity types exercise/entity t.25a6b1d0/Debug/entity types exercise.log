@@ -1,2 +1,5 @@
-﻿  Entity.cpp
+﻿  Effects.cpp
+  Entity.cpp
+  main.cpp
+  Generating Code...
   entity types exercise.vcxproj -> C:\Users\nico\Desktop\IntroToGameProgramming\entity types exercise\Debug\entity types exercise.exe

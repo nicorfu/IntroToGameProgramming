@@ -19,6 +19,7 @@
 #include <vector>
 #include <cstdlib>
 #include "Entity.h"
+#include "Effects.h"
 
 // ––––– STRUCTS AND ENUMS ––––– //
 struct GameState
@@ -26,6 +27,8 @@ struct GameState
     Entity* player;
     Entity* platforms;
 };
+
+Effects* g_effects;
 
 // ––––– CONSTANTS ––––– //
 constexpr int WINDOW_WIDTH = 640,
@@ -80,6 +83,9 @@ float g_previous_ticks = 0.0f;
 float g_accumulator = 0.0f;
 
 int falling_p = rand() % PLATFORM_COUNT;
+
+bool g_is_colliding_bottom = false;
+
 // ––––– GENERAL FUNCTIONS ––––– //
 GLuint load_texture(const char* filepath)
 {
@@ -215,6 +221,8 @@ void initialise()
     // Jumping
     g_state.player->set_jumping_power(3.0f);
 
+    g_effects = new Effects(g_projection_matrix, g_view_matrix);
+
     // ––––– GENERAL ––––– //
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -236,7 +244,7 @@ void process_input()
 
         case SDL_KEYDOWN:
             switch (event.key.keysym.sym) {
-            case SDLK_q:
+            case SDLK_ESCAPE:
                 // Quit the game with a keystroke
                 g_game_is_running = false;
                 break;
@@ -308,6 +316,16 @@ void update()
     {
         g_state.player->update(FIXED_TIMESTEP, NULL, g_state.platforms, PLATFORM_COUNT);
         g_state.platforms[falling_p].update(FIXED_TIMESTEP, NULL, g_state.player, 1);
+
+        g_effects->update(FIXED_TIMESTEP);
+
+        if (g_is_colliding_bottom == false && g_state.player->get_collided_bottom())
+        {
+            g_effects->start(SHAKE, 1.0f);
+        }
+
+        g_is_colliding_bottom = g_state.player->get_collided_bottom();
+
         delta_time -= FIXED_TIMESTEP;
     }
 
