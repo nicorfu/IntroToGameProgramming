@@ -1,8 +1,13 @@
-enum EntityType { PLATFORM, PLAYER };
+enum EntityType { PLATFORM, PLAYER, ENEMY };
+enum AIType { WALKER, GUARD};
+enum AIState { WALKING, IDLE, ATTACKING};
 
 class Entity
 {
 private:
+	EntityType m_entity_type;
+	AIType m_ai_type;
+	AIState m_ai_state;
 	bool m_is_active = true;
 
 	glm::vec3 m_scale;
@@ -28,7 +33,11 @@ public:
 
 	Entity();
 
-	void update(float delta_time, Entity* collidable_entities, int collidable_entity_count);
+	void ai_activate(Entity *player);
+	void ai_walk();
+	void ai_guard(Entity* player);
+
+	void update(float delta_time, Entity* player, Entity* collidable_entities, int collidable_entity_count);
 	void render(ShaderProgram* program);
 
 	void const check_collision_y(Entity* collidable_entities, int collidable_entity_count);
@@ -68,6 +77,18 @@ public:
 	{
 		return m_height;
 	};
+	EntityType const get_entity_type() const
+	{
+		return m_entity_type;
+	}
+	AIType const get_ai_type() const
+	{
+		return m_ai_type;
+	}
+	AIState const get_ai_state() const
+	{
+		return m_ai_state;
+	}
 
 	void const set_scale(glm::vec3 new_scale)
 	{
@@ -97,4 +118,16 @@ public:
 	{
 		m_height = new_height;
 	};
+	void const set_entity_type(EntityType new_entity_type)
+	{
+		m_entity_type = new_entity_type;
+	}
+	void const set_ai_type(AIType new_ai_type)
+	{
+		m_ai_type = new_ai_type;
+	}
+	void const set_ai_state(AIState new_ai_state)
+	{
+		m_ai_state = new_ai_state;
+	}
 };

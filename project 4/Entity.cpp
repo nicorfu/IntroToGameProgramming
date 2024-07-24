@@ -35,7 +35,63 @@ Entity::Entity()
 }
 
 
-void Entity::update(float delta_time, Entity* collidable_entities, int collidable_entity_count)
+void Entity::ai_activate(Entity *player)
+{
+	switch (m_ai_type)
+	{
+		case WALKER:
+			ai_walk();
+			break;
+
+		case GUARD:
+			ai_guard(player);
+			break;
+
+		default:
+			break;
+	}
+
+}
+
+
+void Entity::ai_walk()
+{
+	m_movement = glm::vec3(-1.0f, 0.0f, 0.0f);
+}
+
+
+void Entity::ai_guard(Entity *player)
+{
+	switch (m_ai_state)
+	{
+		case IDLE:
+			if (glm::distance(m_position, player->get_position()) < 3.0f)
+			{
+				m_ai_state = WALKING;
+			}
+			break;
+
+		case WALKING:
+			if (m_position.x > player->get_position().x) 
+			{
+				m_movement = glm::vec3(-1.0f, 0.0f, 0.0f);
+			}
+			else 
+			{
+				m_movement = glm::vec3(1.0f, 0.0f, 0.0f);
+			}
+			break;
+
+		case ATTACKING:
+			break;
+
+		default:
+			break;
+	}
+}
+
+
+void Entity::update(float delta_time, Entity* player, Entity* collidable_entities, int collidable_entity_count)
 {
 	if (!m_is_active)
 	{
@@ -46,6 +102,11 @@ void Entity::update(float delta_time, Entity* collidable_entities, int collidabl
 	m_collided_bottom = false;
 	m_collided_left = false;
 	m_collided_right = false;
+
+	if (m_entity_type == ENEMY)
+	{
+		ai_activate(player);
+	}
 
 	m_velocity += m_acceleration * delta_time;
 	//m_velocity.x = m_movement.x * m_speed;
@@ -60,6 +121,25 @@ void Entity::update(float delta_time, Entity* collidable_entities, int collidabl
 	m_model_matrix = glm::mat4(1.0f);
 	m_model_matrix = glm::translate(m_model_matrix, m_position);
 	m_model_matrix = glm::scale(m_model_matrix, m_scale);
+}
+
+
+bool const Entity::check_collision(Entity* other) const
+{
+	if (other == this)
+	{
+		return false;
+	}
+
+	if (!m_is_active || !other->m_is_active)
+	{
+		return false;
+	}
+
+	float x_distance = fabs(m_position.x - other->m_position.x) - ((m_width + other->m_width) / 2.0f);
+	float y_distance = fabs(m_position.y - other->m_position.y) - ((m_height + other->m_height) / 2.0f);
+
+	return x_distance < 0.0f && y_distance < 0.0f;
 }
 
 
@@ -139,18 +219,4 @@ void Entity::render(ShaderProgram* program)
 
 	glDisableVertexAttribArray(program->get_position_attribute());
 	glDisableVertexAttribArray(program->get_tex_coordinate_attribute());
-}
-
-
-bool const Entity::check_collision(Entity* other) const
-{
-	if (!m_is_active || !other->m_is_active)
-	{
-		return false;
-	}
-
-	float x_distance = fabs(m_position.x - other->m_position.x) - ((m_width + other->m_width) / 2.0f);
-	float y_distance = fabs(m_position.y - other->m_position.y) - ((m_height + other->m_height) / 2.0f);
-
-	return x_distance < 0.0f && y_distance < 0.0f;
 }

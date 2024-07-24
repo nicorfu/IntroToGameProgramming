@@ -33,11 +33,13 @@
 #define FIXED_TIMESTEP 0.0166666f
 #define LEVEL1_WIDTH 14
 #define LEVEL1_HEIGHT 5
+#define ENEMY_COUNT 3
 
 
 struct GameState
 {
 	Entity* player;
+	Entity* enemies;
 
 	Entity* map;
 };
@@ -89,11 +91,45 @@ float g_accumulator = 0.0f;
 
 constexpr int FONTBANK_SIZE = 16;
 
+GLuint load_texture(const char* filepath);
 void initialize();
 void process_input();
 void update();
 void render();
 void shutdown();
+
+
+GLuint load_texture(const char* filepath)
+{
+	int width;
+	int height;
+	int num_components;
+
+	unsigned char* image = stbi_load(filepath, &width, &height, &num_components, STBI_rgb_alpha);
+
+	if (image == NULL)
+	{
+		LOG("Can't load image. Smh. Check filepath.");
+		assert(false);
+	}
+
+	GLuint textureID;
+	glGenTextures(NUMBER_OF_TEXTURES, &textureID);
+	glBindTexture(GL_TEXTURE_2D, textureID);
+
+	glTexImage2D(GL_TEXTURE_2D, LEVEL_OF_DETAIL, GL_RGBA, width, height, TEXTURE_BORDER,
+		GL_RGBA, GL_UNSIGNED_BYTE, image);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	stbi_image_free(image);
+
+	return textureID;
+}
 
 
 void initialize()
@@ -122,7 +158,30 @@ void initialize()
 	glClearColor(BG_RED, BG_GREEN, BG_BLUE, BG_OPACITY);
 
 	//GLuint map_texture_id = load_texture(MAP_TILESET_FILEPATH);
+	 
 	//g_state.map = new Map(LEVEL1_WIDTH, LEVEL1_HEIGHT, LEVEL_1_DATA, map_texture_id, 1.0f, 4, 1);
+
+	//GLuint player_texture_id = load_texture(PLAYER_FILEPATH);
+
+	//g_state.player = new Entity();
+
+	//g_state.player->set_entity_type(PLAYER);
+
+	//GLuint enemy_texture_id = load_texture(ENEMY_FILEPATH);
+
+	//g_state.enemies = new Entity();
+
+	for (int i = 0; i < ENEMY_COUNT; i++)
+	{
+		//g_state.enemies[i] = Entity(enemy_texture_id, 1.0f, 1.0f, 1.0f, ENEMY, GUARD, IDLE);
+	}
+
+	g_state.enemies[0].set_position(glm::vec3(3.0f, 0.0f, 0.0f));
+	g_state.enemies[0].set_movement(glm::vec3(0.0f));
+	g_state.enemies[0].set_acceleration(glm::vec3(0.0f, -9.81f, 0.0f));
+	g_state.enemies[0].set_entity_type(ENEMY);
+	g_state.enemies[0].set_ai_type(GUARD);
+	g_state.enemies[0].set_ai_state(IDLE);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -195,6 +254,10 @@ void update()
 	while (delta_time >= FIXED_TIMESTEP)
 	{
 		g_state.player->update(FIXED_TIMESTEP, g_state.player, NULL, 0, g_state.map);
+		for (int i = 0; i < ENEMY_COUNT; i++)
+		{
+			//g_state.enemies[i].update(FIXED_TIMESTEP, g_state.player, g_state.platforms, PLATFORM_COUNT);
+		}
 		delta_time -= FIXED_TIMESTEP;
 	}
 }
@@ -204,8 +267,13 @@ void render()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	g_state.player->render(&g_shader_program);
 	g_state.map->render(&g_shader_program);
+	g_state.player->render(&g_shader_program);
+
+	for (int i = 0; i < ENEMY_COUNT; i++)
+	{
+		g_state.enemies[i].render(&g_shader_program);
+	}
 
 	SDL_GL_SwapWindow(g_display_window);
 }
@@ -215,8 +283,9 @@ void shutdown()
 {
 	SDL_Quit();
 
-	delete g_state.player;
 	delete g_state.map;
+	delete g_state.player;
+	delete g_state.enemies;
 }
 
 

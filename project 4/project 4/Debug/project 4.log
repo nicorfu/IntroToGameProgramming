@@ -1,12 +1,11 @@
 ﻿  Entity.cpp
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\Entity.h(65,10): warning C4244: 'return': conversion from 'const float' to 'const int', possible loss of data
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\Entity.h(69,10): warning C4244: 'return': conversion from 'const float' to 'const int', possible loss of data
-  main.cpp
-C:\Users\nico\Desktop\IntroToGameProgramming\project 4\Entity.h(65,10): warning C4244: 'return': conversion from 'const float' to 'const int', possible loss of data
-C:\Users\nico\Desktop\IntroToGameProgramming\project 4\Entity.h(69,10): warning C4244: 'return': conversion from 'const float' to 'const int', possible loss of data
   Map.cpp
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\Map.cpp(101,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\Map.cpp(102,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-  ShaderProgram.cpp
+  main.cpp
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\Entity.h(65,10): warning C4244: 'return': conversion from 'const float' to 'const int', possible loss of data
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\Entity.h(69,10): warning C4244: 'return': conversion from 'const float' to 'const int', possible loss of data
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(197,19): error C2660: 'Entity::update': function does not take 5 arguments
   Generating Code...
-  project 4.vcxproj -> C:\Users\nico\Desktop\IntroToGameProgramming\project 4\Debug\project 4.exe
