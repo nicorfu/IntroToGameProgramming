@@ -131,8 +131,40 @@ Entity::Entity(EntityType entity_type, AIType ai_type, AIState ai_state, GLuint 
 }
 
 Entity::~Entity()
-{
+{ }
 
+void Entity::draw_sprite_from_texture_atlas(ShaderProgram* program, GLuint texture_id, int index)
+{
+	float u_coord = (float)(index % m_animation_cols) / (float)m_animation_cols;
+	float v_coord = (float)(index / m_animation_cols) / (float)m_animation_rows;
+
+	float width = 1.0f / (float)m_animation_cols;
+	float height = 1.0f / (float)m_animation_rows;
+
+	float tex_coords[] =
+	{
+		u_coord, v_coord + height, u_coord + width, v_coord + height, u_coord + width, v_coord,
+		u_coord, v_coord + height, u_coord + width, v_coord, u_coord, v_coord
+	};
+
+	float vertices[] =
+	{
+		-0.5, -0.5, 0.5, -0.5,  0.5, 0.5,
+		-0.5, -0.5, 0.5,  0.5, -0.5, 0.5
+	};
+
+	glBindTexture(GL_TEXTURE_2D, texture_id);
+
+	glVertexAttribPointer(program->get_position_attribute(), 2, GL_FLOAT, false, 0, vertices);
+	glEnableVertexAttribArray(program->get_position_attribute());
+
+	glVertexAttribPointer(program->get_tex_coordinate_attribute(), 2, GL_FLOAT, false, 0, tex_coords);
+	glEnableVertexAttribArray(program->get_tex_coordinate_attribute());
+
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	glDisableVertexAttribArray(program->get_position_attribute());
+	glDisableVertexAttribArray(program->get_tex_coordinate_attribute());
 }
 
 void Entity::ai_activate(Entity *player)
