@@ -2,7 +2,7 @@
 
 
 Map::Map(int width, int height, unsigned int* level_data, GLuint texture_id, float tile_size, int tile_count_x,
-	int tile_count_y)
+		 int tile_count_y)
 {
 	m_width = width;
 	m_height = height;
@@ -93,6 +93,7 @@ bool Map::is_solid(glm::vec3 position, float* penetration_x, float* penetration_
 	{
 		return false;
 	}
+
 	if (position.y > m_top_bound || position.y < m_bottom_bound)
 	{
 		return false;
@@ -105,12 +106,14 @@ bool Map::is_solid(glm::vec3 position, float* penetration_x, float* penetration_
 	{
 		return false;
 	}
+
 	if (tile_y < 0 || tile_y >= m_height)
 	{
 		return false;
 	}
 
 	int tile = m_level_data[tile_y * m_width + tile_x];
+
 	if (tile == 0)
 	{
 		return false;
@@ -122,5 +125,5 @@ bool Map::is_solid(glm::vec3 position, float* penetration_x, float* penetration_
 	*penetration_x = (m_tile_size / 2) - fabs(position.x - tile_center_x);
 	*penetration_y = (m_tile_size / 2) - fabs(position.y - tile_center_y);
 
-	return false;
+	return true;
 }

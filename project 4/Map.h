@@ -31,14 +31,14 @@ private:
 	std::vector<float> m_vertices;
 	std::vector<float> m_texture_coordinates;
 
-	float m_left_bound;
-	float m_right_bound;
 	float m_top_bound;
 	float m_bottom_bound;
+	float m_left_bound;
+	float m_right_bound;
 
 public:
 	Map(int width, int height, unsigned int* level_data, GLuint texture_id, float tile_size, int tile_count_x,
-																							 int tile_count_y);
+		int tile_count_y);
 
 	void build();
 	void render(ShaderProgram *program);
@@ -49,6 +49,7 @@ public:
 	{
 		return m_width;
 	}
+
 	int const get_height() const
 	{
 		return m_height;
@@ -58,6 +59,7 @@ public:
 	{
 		return m_level_data;
 	}
+
 	GLuint const get_texture_id() const
 	{
 		return m_texture_id;
@@ -67,10 +69,12 @@ public:
 	{ 
 		return m_tile_size; 
 	}
+
 	int   const get_tile_count_x() const 
 	{ 
 		return m_tile_count_x; 
 	}
+
 	int   const get_tile_count_y() const 
 	{ 
 		return m_tile_count_y; 
@@ -80,25 +84,29 @@ public:
 	{ 
 		return m_vertices; 
 	}
+
 	std::vector<float> const get_texture_coordinates() const 
 	{ 
 		return m_texture_coordinates; 
+	}
+
+	float const get_top_bound()    const
+	{
+		return m_top_bound;
+	}
+
+	float const get_bottom_bound() const
+	{
+		return m_bottom_bound;
 	}
 
 	float const get_left_bound()   const 
 	{ 
 		return m_left_bound; 
 	}
+
 	float const get_right_bound()  const 
 	{ 
 		return m_right_bound; 
-	}
-	float const get_top_bound()    const 
-	{ 
-		return m_top_bound; 
-	}
-	float const get_bottom_bound() const 
-	{ 
-		return m_bottom_bound; 
 	}
 };
