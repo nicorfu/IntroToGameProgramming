@@ -22,6 +22,7 @@
 #include "ShaderProgram.h"
 #include "Entity.h"
 
+
 Entity::Entity()
 {
 	m_texture_id = 0;
@@ -44,6 +45,7 @@ Entity::Entity()
 		}
 	}
 }
+
 
 Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 acceleration, float width, 
 		       float height, float speed, float jump_power, int animation_cols, int animation_rows, int animation_frames, 
@@ -70,6 +72,7 @@ Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::
 	face_right();
 	set_walking(walking);
 }
+
 
 Entity::Entity(EntityType entity_type, GLuint texture_id, float width, float height, float speed)
 {
@@ -98,6 +101,7 @@ Entity::Entity(EntityType entity_type, GLuint texture_id, float width, float hei
 		}
 	}
 }
+
 
 Entity::Entity(EntityType entity_type, AIType ai_type, AIState ai_state, GLuint texture_id, float width, float height,
 	float speed)
@@ -130,8 +134,10 @@ Entity::Entity(EntityType entity_type, AIType ai_type, AIState ai_state, GLuint 
 	}
 }
 
+
 Entity::~Entity()
 { }
+
 
 void Entity::draw_sprite_from_texture_atlas(ShaderProgram* program, GLuint texture_id, int index)
 {
@@ -166,6 +172,7 @@ void Entity::draw_sprite_from_texture_atlas(ShaderProgram* program, GLuint textu
 	glDisableVertexAttribArray(program->get_position_attribute());
 	glDisableVertexAttribArray(program->get_tex_coordinate_attribute());
 }
+
 
 void Entity::ai_activate(Entity *player)
 {
@@ -223,39 +230,6 @@ void Entity::ai_guard(Entity *player)
 }
 
 
-void Entity::update(float delta_time, Entity* player, Entity* collidable_entities, int collidable_entity_count)
-{
-	if (!m_is_active)
-	{
-		return;
-	}
-
-	m_collided_top = false;
-	m_collided_bottom = false;
-	m_collided_left = false;
-	m_collided_right = false;
-
-	if (m_entity_type == ENEMY)
-	{
-		ai_activate(player);
-	}
-
-	m_velocity += m_acceleration * delta_time;
-	//m_velocity.x = m_movement.x * m_speed;
-	//m_velocity += m_acceleration * delta_time;
-
-	m_position.y += m_velocity.y * delta_time;
-	check_collision_y(collidable_entities, collidable_entity_count);
-
-	m_position.x += m_velocity.x * delta_time;
-	check_collision_x(collidable_entities, collidable_entity_count);
-
-	m_model_matrix = glm::mat4(1.0f);
-	m_model_matrix = glm::translate(m_model_matrix, m_position);
-	m_model_matrix = glm::scale(m_model_matrix, m_scale);
-}
-
-
 bool const Entity::check_collision(Entity* other) const
 {
 	if (other == this)
@@ -275,34 +249,6 @@ bool const Entity::check_collision(Entity* other) const
 }
 
 
-void const Entity::check_collision_y(Entity* collidable_entities, int collidable_entity_count)
-{
-	for (int i = 0; i < collidable_entity_count; i++)
-	{
-		Entity* collidable_entity = &collidable_entities[i];
-
-		if (check_collision(collidable_entity))
-		{
-			float y_distance = fabs(m_position.y - collidable_entity->m_position.y);
-			float y_overlap = fabs(y_distance - (m_height / 2.0f) - (collidable_entity->m_height / 2.0f));
-
-			if (m_velocity.y > 0)
-			{
-				m_position.y -= y_overlap;
-				m_velocity.y = 0;
-				m_collided_top = true;
-			}
-			else if (m_velocity.y < 0)
-			{
-				m_position.y += y_overlap;
-				m_velocity.y = 0;
-				m_collided_bottom = true;
-			}
-		}
-	}
-}
-
-
 void const Entity::check_collision_x(Entity* collidable_entities, int collidable_entity_count)
 {
 	for (int i = 0; i < collidable_entity_count; i++)
@@ -318,16 +264,112 @@ void const Entity::check_collision_x(Entity* collidable_entities, int collidable
 			{
 				m_position.x -= x_overlap;
 				m_velocity.x = 0;
+
 				m_collided_right = true;
 			}
 			else if (m_velocity.x < 0)
 			{
 				m_position.x += x_overlap;
 				m_velocity.x = 0;
+
 				m_collided_left = true;
 			}
 		}
 	}
+}
+
+
+void const Entity::check_collision_y(Entity* collidable_entities, int collidable_entity_count)
+{
+	for (int i = 0; i < collidable_entity_count; i++)
+	{
+		Entity* collidable_entity = &collidable_entities[i];
+
+		if (check_collision(collidable_entity))
+		{
+			float y_distance = fabs(m_position.y - collidable_entity->m_position.y);
+			float y_overlap = fabs(y_distance - (m_height / 2.0f) - (collidable_entity->m_height / 2.0f));
+
+			if (m_velocity.y > 0)
+			{
+				m_position.y -= y_overlap;
+				m_velocity.y = 0;
+
+				m_collided_top = true;
+			}
+			else if (m_velocity.y < 0)
+			{
+				m_position.y += y_overlap;
+				m_velocity.y = 0;
+
+				m_collided_bottom = true;
+			}
+		}
+	}
+}
+
+
+void Entity::update(float delta_time, Entity* player, Entity* collidable_entities, int collidable_entity_count, Map* map)
+{
+	if (!m_is_active)
+	{
+		return;
+	}
+
+	m_collided_top = false;
+	m_collided_bottom = false;
+	m_collided_left = false;
+	m_collided_right = false;
+
+	if (m_entity_type == ENEMY)
+	{
+		ai_activate(player);
+	}
+
+	if (m_animation_indices != nullptr)
+	{
+		if (glm::length(m_movement) != 0)
+		{
+			m_animation_time += delta_time;
+
+			float frames_per_sec = (float)1 / SECONDS_PER_FRAME;
+
+			if (m_animation_time >= frames_per_sec)
+			{
+				m_animation_time = 0.0f;
+
+				m_animation_index++;
+
+				if (m_animation_index >= m_animation_frames)
+				{
+					m_animation_index = 0;
+				}
+			}
+		}
+	}
+
+	m_velocity.x = m_movement.x * m_speed;
+	m_velocity += m_acceleration * delta_time;
+
+	m_position.x += m_velocity.x * delta_time;
+	check_collision_x(collidable_entities, collidable_entity_count);
+	check_collision_x(map);
+
+	m_position.y += m_velocity.y * delta_time;
+	check_collision_y(collidable_entities, collidable_entity_count);
+	check_collision_y(map);
+
+	if (m_is_jumping)
+	{
+		m_is_jumping = false;
+
+		m_velocity.y += m_jump_power;
+	}
+
+	m_model_matrix = glm::mat4(1.0f);
+
+	m_model_matrix = glm::translate(m_model_matrix, m_position);
+	m_model_matrix = glm::scale(m_model_matrix, m_scale);
 }
 
 
