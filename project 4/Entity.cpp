@@ -309,6 +309,91 @@ void const Entity::check_collision_y(Entity* collidable_entities, int collidable
 }
 
 
+void const Entity::check_collision_x(Map* map)
+{
+	glm::vec3 left = glm::vec3(m_position.x - (m_width / 2), m_position.y, m_position.z);
+	glm::vec3 right = glm::vec3(m_position.x + (m_width / 2), m_position.y, m_position.z);
+
+	float penetration_x = 0;
+	float penetration_y = 0;
+
+	if (map->is_solid(left, &penetration_x, &penetration_y) && m_velocity.x < 0)
+	{
+		m_position.x += penetration_x;
+		m_velocity.x = 0;
+
+		m_collided_left = true;
+	}
+
+	else if (map->is_solid(right, &penetration_x, &penetration_y) && m_velocity.x > 0)
+	{
+		m_position.x -= penetration_x;
+		m_velocity.x = 0;
+
+		m_collided_right = true;
+	}
+}
+
+
+void const Entity::check_collision_y(Map* map)
+{
+	glm::vec3 top = glm::vec3(m_position.x, m_position.y + (m_height / 2), m_position.z);
+	glm::vec3 top_left = glm::vec3(m_position.x - (m_width / 2), m_position.y + (m_height / 2), m_position.z);
+	glm::vec3 top_right = glm::vec3(m_position.x + (m_width / 2), m_position.y + (m_height / 2), m_position.z);
+
+	glm::vec3 bottom = glm::vec3(m_position.x, m_position.y - (m_height / 2), m_position.z);
+	glm::vec3 bottom_left = glm::vec3(m_position.x - (m_width / 2), m_position.y - (m_height / 2), m_position.z);
+	glm::vec3 bottom_right = glm::vec3(m_position.x + (m_width / 2), m_position.y - (m_height / 2), m_position.z);
+
+	float penetration_x = 0;
+	float penetration_y = 0;
+
+	if (map->is_solid(top, &penetration_x, &penetration_y) && m_velocity.y > 0)
+	{
+		m_position.y -= penetration_y;
+		m_velocity.y = 0;
+
+		m_collided_top = true;
+	}
+	else if (map->is_solid(top_left, &penetration_x, &penetration_y) && m_velocity.y > 0)
+	{
+		m_position.y -= penetration_y;
+		m_velocity.y = 0;
+
+		m_collided_top = true;
+	}
+	else if (map->is_solid(top_right, &penetration_x, &penetration_y) && m_velocity.y > 0)
+	{
+		m_position.y -= penetration_y;
+		m_velocity.y = 0;
+
+		m_collided_top = true;
+	}
+
+	if (map->is_solid(bottom, &penetration_x, &penetration_y) && m_velocity.y < 0)
+	{
+		m_position.y += penetration_y;
+		m_velocity.y = 0;
+
+		m_collided_bottom = true;
+	}
+	else if (map->is_solid(bottom_left, &penetration_x, &penetration_y) && m_velocity.y < 0)
+	{
+		m_position.y += penetration_y;
+		m_velocity.y = 0;
+
+		m_collided_bottom = true;
+	}
+	else if (map->is_solid(bottom_right, &penetration_x, &penetration_y) && m_velocity.y < 0)
+	{
+		m_position.y += penetration_y;
+		m_velocity.y = 0;
+
+		m_collided_bottom = true;
+	}
+}
+
+
 void Entity::update(float delta_time, Entity* player, Entity* collidable_entities, int collidable_entity_count, Map* map)
 {
 	if (!m_is_active)
