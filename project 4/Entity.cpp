@@ -494,3 +494,58 @@ void Entity::render(ShaderProgram* program)
 	glDisableVertexAttribArray(program->get_position_attribute());
 	glDisableVertexAttribArray(program->get_tex_coordinate_attribute());
 }
+
+
+void Entity::ai_activate(Entity* player)
+{
+	switch (m_ai_type)
+	{
+		case WALKER:
+			ai_walk();
+			break;
+
+		case GUARD:
+			ai_guard(player);
+			break;
+
+		default:
+			break;
+	}
+}
+
+
+void Entity::ai_walk()
+{
+	m_movement = glm::vec3(-1.0f, 0.0f, 0.0f);
+}
+
+
+void Entity::ai_guard(Entity* player)
+{
+	switch (m_ai_state)
+	{
+		case IDLE:
+			if (glm::distance(m_position, player->get_position()) < 3.0f)
+			{
+				m_ai_state = WALKING;
+				break;
+			}
+
+		case WALKING:
+			if (m_position.x > player->get_position().x)
+			{
+				m_movement = glm::vec3(-1.0f, 0.0f, 0.0f);
+			}
+			else
+			{
+				m_movement = glm::vec3(1.0f, 0.0f, 0.0f);
+			}
+			break;
+
+		case ATTACKING:
+			break;
+
+		default:
+			break;
+	}
+}
