@@ -465,9 +465,19 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
 
 void Entity::render(ShaderProgram* program)
 {
-	if (!m_is_active) return;
+	if (!m_is_active)
+	{
+		return;
+	}
 
 	program->set_model_matrix(m_model_matrix);
+
+	if (m_animation_indices != nullptr)
+	{
+		draw_sprite_from_texture_atlas(program, m_texture_id, m_animation_indices[m_animation_index]);
+			
+		return;
+	}
 
 	float vertices[] = { -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5 };
 	float tex_coords[] = { 0.0,  1.0, 1.0,  1.0, 1.0, 0.0,  0.0,  1.0, 1.0, 0.0,  0.0, 0.0 };
