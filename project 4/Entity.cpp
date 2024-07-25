@@ -22,18 +22,118 @@
 #include "ShaderProgram.h"
 #include "Entity.h"
 
-
 Entity::Entity()
 {
+	m_texture_id = 0;
+	m_model_matrix = glm::mat4(1.0f);
+	m_scale = glm::vec3(1.0f, 1.0f, 0.0f);
 	m_position = glm::vec3(0.0f);
+	m_movement = glm::vec3(0.0f);
 	m_velocity = glm::vec3(0.0f);
 	m_acceleration = glm::vec3(0.0f);
+	m_animation_cols = 0;
+	m_animation_rows = 0;
+	m_animation_frames = 0;
+	m_animation_index = 0;
 
-	m_movement = glm::vec3(0.0f);
-	m_speed = 0;
-	m_model_matrix = glm::mat4(1.0f);
+	for (int i = 0; i < SECONDS_PER_FRAME; i++)
+	{
+		for (int j = 0; j < SECONDS_PER_FRAME; j++)
+		{
+			m_walking[i][j] = 0;
+		}
+	}
 }
 
+Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 acceleration, float width, 
+		       float height, float speed, float jump_power, int animation_cols, int animation_rows, int animation_frames, 
+		       int animation_index, float animation_time, int walking[4][4])
+{
+	m_entity_type = entity_type;
+	m_texture_id = texture_id;
+	m_model_matrix = glm::mat4(1.0f);
+	m_scale = scale;
+	m_position = glm::vec3(0.0f, 0.0f, 0.0f);
+	m_movement = glm::vec3(0.0f, 0.0f, 0.0f);
+	m_velocity = glm::vec3(0.0f, 0.0f, 0.0f);
+	m_acceleration = acceleration;
+	m_width = width;
+	m_height = height;
+	m_speed = speed;
+	m_jump_power = jump_power;
+	m_animation_cols = animation_cols;
+	m_animation_rows = animation_rows;
+	m_animation_frames = animation_frames;
+	m_animation_index = animation_index;
+	m_animation_time = animation_time;
+
+	face_right();
+	set_walking(walking);
+}
+
+Entity::Entity(EntityType entity_type, GLuint texture_id, float width, float height, float speed)
+{
+	m_entity_type = entity_type;
+	m_texture_id = texture_id;
+	m_model_matrix = glm::mat4(1.0f);
+	m_scale = glm::vec3(1.0f, 1.0f, 0.0f);
+	m_position = glm::vec3(0.0f, 0.0f, 0.0f);
+	m_movement = glm::vec3(0.0f, 0.0f, 0.0f);
+	m_velocity = glm::vec3(0.0f, 0.0f, 0.0f);
+	m_acceleration = glm::vec3(0.0f, 0.0f, 0.0f);
+	m_width = width;
+	m_height = height;
+	m_speed = speed;
+	m_animation_cols = 0;
+	m_animation_rows = 0;
+	m_animation_frames = 0;
+	m_animation_index = 0;
+	m_animation_time = 0.0f;
+
+	for (int i = 0; i < SECONDS_PER_FRAME; i++)
+	{
+		for (int j = 0; j < SECONDS_PER_FRAME; j++)
+		{
+			m_walking[i][j] = 0;
+		}
+	}
+}
+
+Entity::Entity(EntityType entity_type, AIType ai_type, AIState ai_state, GLuint texture_id, float width, float height,
+	float speed)
+{
+	m_entity_type = entity_type;
+	m_ai_type = ai_type;
+	m_ai_state = ai_state;
+	m_texture_id = texture_id;
+	m_model_matrix = glm::mat4(1.0f);
+	m_scale = glm::vec3(1.0f, 1.0f, 0.0f);
+	m_position = glm::vec3(0.0f, 0.0f, 0.0f);
+	m_movement = glm::vec3(0.0f, 0.0f, 0.0f);
+	m_velocity = glm::vec3(0.0f, 0.0f, 0.0f);
+	m_acceleration = glm::vec3(0.0f, 0.0f, 0.0f);
+	m_width = width;
+	m_height = height;
+	m_speed = speed;
+	m_animation_cols = 0;
+	m_animation_rows = 0;
+	m_animation_frames = 0;
+	m_animation_index = 0;
+	m_animation_time = 0.0f;
+
+	for (int i = 0; i < SECONDS_PER_FRAME; i++)
+	{
+		for (int j = 0; j < SECONDS_PER_FRAME; j++)
+		{
+			m_walking[i][j] = 0;
+		}
+	}
+}
+
+Entity::~Entity()
+{
+
+}
 
 void Entity::ai_activate(Entity *player)
 {
