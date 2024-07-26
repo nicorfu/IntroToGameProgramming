@@ -83,6 +83,8 @@ const char F_SHADER_PATH[] = "shaders/fragment_textured.glsl";
 const char MAP_TILESET_FILEPATH[] = "assets/visual/tiles_spritesheet.png";
 const char PLAYER_FILEPATH[] = "assets/visual/osiris_spritesheet.png";
 
+const char FONTSHEET_FILEPATH[] = "assets/visual/font.png";
+
 glm::mat4 g_view_matrix;
 glm::mat4 g_projection_matrix;
 
@@ -179,11 +181,32 @@ void initialize()
 
 	glm::vec3 acceleration = glm::vec3(0.0f, GRAVITY * GRAVITY_FACTOR, 0.0f);
 
-	//GLuint player_texture_id = load_texture(PLAYER_FILEPATH);
+	GLuint player_texture_id = load_texture(PLAYER_FILEPATH);
 
-	//g_state.player = new Entity();
+	std::vector<std::vector<int>> player_animation =
+	{
+		{0,  0,  1,  1,  0,  0,  1,  1 },	// idle
+		{16, 17, 18, 19, 16, 17, 18, 19},   // walking
+		{56, 57, 58, 59, 60, 61, 62, 63}	// dying
+	};
 
-	//int player_walking_animation
+	g_state.player = new Entity
+	(
+		PLAYER,
+		player_texture_id,
+		glm::vec3(1.0f, 1.0f, 0.0f),
+		glm::vec3(0.0f, acceleration, 0.0f),
+		1.0f,
+		1.0f,
+		1.0f,
+		5.0f,
+		8,
+		3,
+		8,
+		0,
+		0.0f,
+		player_animation
+	);
 
 	g_state.player->set_jump_power(5.0f);
 

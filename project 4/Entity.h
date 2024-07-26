@@ -10,15 +10,13 @@ enum EntityType { PLATFORM, PLAYER, ENEMY };
 enum AIType { WALKER, GUARD};
 enum AIState { WALKING, IDLE, ATTACKING};
 
-enum AnimationDirection { LEFT, RIGHT };
+enum AnimationAction { LEFT, RIGHT };
 
 
 class Entity
 {
 private:
 	bool m_is_active = true;
-
-	int m_walking[4][4];
 
 	EntityType m_entity_type;
 
@@ -48,8 +46,10 @@ private:
 	int m_animation_frames;
 	int m_animation_index;
 
-	int* m_animation_indices = nullptr;
+	std::vector<int> m_animation_indices;
 	float m_animation_time = 0.0f;
+
+	std::vector<std::vector<int>> m_animation;
 
 	bool m_collided_top = false;
 	bool m_collided_bottom = false;
@@ -63,7 +63,7 @@ public:
 
 	Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 acceleration, float width, float height, 
 		   float speed, float jump_power, int animation_cols, int animation_rows, int animation_frames, int animation_index, 
-		   float animation_time, int walking[4][4]);
+		   float animation_time, std::vector<std::vector<int>> animation);
 
 	Entity(EntityType entity_type, GLuint texture_id, float width, float height, float speed);
 
@@ -95,12 +95,12 @@ public:
 
 	void face_left()
 	{
-		m_animation_indices = m_walking[LEFT];
+		m_animation_indices = m_animation[LEFT];
 	}
 
 	void face_right()
 	{
-		m_animation_indices = m_walking[RIGHT];
+		m_animation_indices = m_animation[RIGHT];
 	}
 
 	void move_left()
@@ -300,13 +300,13 @@ public:
 		m_animation_time = new_animation_time; 
 	}
 
-	void set_walking(int walking[4][4])
+	void set_animation(std::vector<std::vector<int>> new_animation)
 	{
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < m_animation_rows; i++)
 		{
-			for (int j = 0; j < 4; j++)
+			for (int j = 0; j < m_animation_cols; j++)
 			{
-				m_walking[i][j] = walking[i][j];
+				m_animation[i][j] = new_animation[i][j];
 			}
 		}
 	}

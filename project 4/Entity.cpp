@@ -36,20 +36,12 @@ Entity::Entity()
 	m_animation_rows = 0;
 	m_animation_frames = 0;
 	m_animation_index = 0;
-
-	for (int i = 0; i < SECONDS_PER_FRAME; i++)
-	{
-		for (int j = 0; j < SECONDS_PER_FRAME; j++)
-		{
-			m_walking[i][j] = 0;
-		}
-	}
 }
 
 
 Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 acceleration, float width, 
 		       float height, float speed, float jump_power, int animation_cols, int animation_rows, int animation_frames, 
-		       int animation_index, float animation_time, int walking[4][4])
+		       int animation_index, float animation_time, std::vector<std::vector<int>> animation)
 {
 	m_entity_type = entity_type;
 	m_texture_id = texture_id;
@@ -68,9 +60,10 @@ Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::
 	m_animation_frames = animation_frames;
 	m_animation_index = animation_index;
 	m_animation_time = animation_time;
+	m_animation = std::vector<std::vector<int>>(animation_rows, std::vector<int>(animation_cols));
 
 	face_right();
-	set_walking(walking);
+	set_animation(animation);
 }
 
 
@@ -92,14 +85,6 @@ Entity::Entity(EntityType entity_type, GLuint texture_id, float width, float hei
 	m_animation_frames = 0;
 	m_animation_index = 0;
 	m_animation_time = 0.0f;
-
-	for (int i = 0; i < SECONDS_PER_FRAME; i++)
-	{
-		for (int j = 0; j < SECONDS_PER_FRAME; j++)
-		{
-			m_walking[i][j] = 0;
-		}
-	}
 }
 
 
@@ -124,14 +109,6 @@ Entity::Entity(EntityType entity_type, AIType ai_type, AIState ai_state, GLuint 
 	m_animation_frames = 0;
 	m_animation_index = 0;
 	m_animation_time = 0.0f;
-
-	for (int i = 0; i < SECONDS_PER_FRAME; i++)
-	{
-		for (int j = 0; j < SECONDS_PER_FRAME; j++)
-		{
-			m_walking[i][j] = 0;
-		}
-	}
 }
 
 
@@ -171,62 +148,6 @@ void Entity::draw_sprite_from_texture_atlas(ShaderProgram* program, GLuint textu
 
 	glDisableVertexAttribArray(program->get_position_attribute());
 	glDisableVertexAttribArray(program->get_tex_coordinate_attribute());
-}
-
-
-void Entity::ai_activate(Entity *player)
-{
-	switch (m_ai_type)
-	{
-		case WALKER:
-			ai_walk();
-			break;
-
-		case GUARD:
-			ai_guard(player);
-			break;
-
-		default:
-			break;
-	}
-
-}
-
-
-void Entity::ai_walk()
-{
-	m_movement = glm::vec3(-1.0f, 0.0f, 0.0f);
-}
-
-
-void Entity::ai_guard(Entity *player)
-{
-	switch (m_ai_state)
-	{
-		case IDLE:
-			if (glm::distance(m_position, player->get_position()) < 3.0f)
-			{
-				m_ai_state = WALKING;
-			}
-			break;
-
-		case WALKING:
-			if (m_position.x > player->get_position().x) 
-			{
-				m_movement = glm::vec3(-1.0f, 0.0f, 0.0f);
-			}
-			else 
-			{
-				m_movement = glm::vec3(1.0f, 0.0f, 0.0f);
-			}
-			break;
-
-		case ATTACKING:
-			break;
-
-		default:
-			break;
-	}
 }
 
 
@@ -416,7 +337,7 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
 		ai_activate(player);
 	}
 
-	if (m_animation_indices != nullptr)
+	if (!m_animation_indices.empty())
 	{
 		if (glm::length(m_movement) != 0)
 		{
@@ -472,7 +393,7 @@ void Entity::render(ShaderProgram* program)
 
 	program->set_model_matrix(m_model_matrix);
 
-	if (m_animation_indices != nullptr)
+	if (!m_animation_indices.empty())
 	{
 		draw_sprite_from_texture_atlas(program, m_texture_id, m_animation_indices[m_animation_index]);
 			
