@@ -31,7 +31,7 @@
 #include "Map.h"
 
 #define FIXED_TIMESTEP 0.0166666f
-#define LEVEL_WIDTH 14
+#define LEVEL_WIDTH 7
 #define LEVEL_HEIGHT 5
 #define ENEMY_COUNT 1
 #define GRAVITY -9.81
@@ -47,7 +47,11 @@ struct GameState
 
 unsigned int LEVEL_DATA[] =
 {
-	0
+	9, 9, 9, 9, 9, 9, 9,
+	9, 9, 9, 9, 9, 9, 9,
+	9, 9, 9, 9, 9, 9, 9,
+	9, 9, 9, 9, 9, 9, 9,
+	9, 9, 9, 9, 9, 9, 9
 };
 
 GameState g_state;
@@ -179,7 +183,7 @@ void initialize()
 	 
 	g_state.map = new Map(LEVEL_WIDTH, LEVEL_HEIGHT, LEVEL_DATA, map_texture_id, 1.0f, 12, 13);
 
-	glm::vec3 acceleration = glm::vec3(0.0f, GRAVITY * GRAVITY_FACTOR, 0.0f);
+	glm::vec3 grav_acceleration = glm::vec3(0.0f, GRAVITY * GRAVITY_FACTOR, 0.0f);
 
 	GLuint player_texture_id = load_texture(PLAYER_FILEPATH);
 	
@@ -195,7 +199,7 @@ void initialize()
 		PLAYER,
 		player_texture_id,
 		glm::vec3(1.0f, 1.0f, 0.0f),
-		glm::vec3(0.0f, acceleration, 0.0f),
+		grav_acceleration,
 		1.0f,
 		1.0f,
 		1.0f,
