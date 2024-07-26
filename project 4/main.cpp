@@ -31,8 +31,8 @@
 #include "Map.h"
 
 #define FIXED_TIMESTEP 0.0166666f
-#define LEVEL1_WIDTH 14
-#define LEVEL1_HEIGHT 5
+#define LEVEL_WIDTH 14
+#define LEVEL_HEIGHT 5
 #define ENEMY_COUNT 1
 #define GRAVITY -9.81
 
@@ -45,7 +45,7 @@ struct GameState
 	Map* map;
 };
 
-unsigned int LEVEL_1_DATA[] =
+unsigned int LEVEL_DATA[] =
 {
 	0
 };
@@ -80,11 +80,13 @@ constexpr GLint TEXTURE_BORDER = 0;
 const char V_SHADER_PATH[] = "shaders/vertex_textured.glsl";
 const char F_SHADER_PATH[] = "shaders/fragment_textured.glsl";
 
+const char MAP_TILESET_FILEPATH[] = "assets/visual/tiles_spritesheet.png";
 //const char _FILEPATH[] = ".png";
-//const char MAP_TILESET_FILEPATH[] = ".png";
 
 glm::mat4 g_view_matrix;
 glm::mat4 g_projection_matrix;
+
+const float GRAVITY_FACTOR = 0.5f;
 
 const float MILLISECONDS_IN_SECOND = 1000.0f;
 float g_previous_ticks = 0.0f;
@@ -173,9 +175,9 @@ void initialize()
 
 	//GLuint map_texture_id = load_texture(MAP_TILESET_FILEPATH);
 	 
-	//g_state.map = new Map(LEVEL1_WIDTH, LEVEL1_HEIGHT, LEVEL_1_DATA, map_texture_id, 1.0f, 4, 1);
+	//g_state.map = new Map(LEVEL_WIDTH, LEVEL_HEIGHT, LEVEL_DATA, map_texture_id, 1.0f, 4, 1);
 
-	glm::vec3 acceleration = glm::vec3(0.0f, GRAVITY, 0.0f);
+	glm::vec3 acceleration = glm::vec3(0.0f, GRAVITY * GRAVITY_FACTOR, 0.0f);
 
 	//GLuint player_texture_id = load_texture(PLAYER_FILEPATH);
 
