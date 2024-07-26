@@ -41,7 +41,7 @@ Entity::Entity()
 
 Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 acceleration, float width, 
 		       float height, float speed, float jump_power, int animation_cols, int animation_rows, int animation_frames, 
-		       int animation_index, float animation_time, std::vector<std::vector<int>> animation)
+		       int animation_index, float animation_time, int animation[3][8])//std::vector<std::vector<int>> animation)
 {
 	m_entity_type = entity_type;
 	m_texture_id = texture_id;
@@ -60,7 +60,7 @@ Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::
 	m_animation_frames = animation_frames;
 	m_animation_index = animation_index;
 	m_animation_time = animation_time;
-	m_animation = std::vector<std::vector<int>>(animation_rows, std::vector<int>(animation_cols));
+	//m_animation = std::vector<std::vector<int>>(animation_rows, std::vector<int>(animation_cols));
 
 	face_right();
 	set_animation(animation);
@@ -337,7 +337,7 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
 		ai_activate(player);
 	}
 
-	if (!m_animation_indices.empty())
+	if (m_animation_indices != nullptr)//!m_animation_indices.empty())
 	{
 		if (glm::length(m_movement) != 0)
 		{
@@ -393,7 +393,7 @@ void Entity::render(ShaderProgram* program)
 
 	program->set_model_matrix(m_model_matrix);
 
-	if (!m_animation_indices.empty())
+	if (m_animation_indices != nullptr)//!m_animation_indices.empty())
 	{
 		draw_sprite_from_texture_atlas(program, m_texture_id, m_animation_indices[m_animation_index]);
 			

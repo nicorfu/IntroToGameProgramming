@@ -182,8 +182,15 @@ void initialize()
 	glm::vec3 acceleration = glm::vec3(0.0f, GRAVITY * GRAVITY_FACTOR, 0.0f);
 
 	GLuint player_texture_id = load_texture(PLAYER_FILEPATH);
-
+	/*
 	std::vector<std::vector<int>> player_animation =
+	{
+		{0,  0,  1,  1,  0,  0,  1,  1 },	// idle
+		{16, 17, 18, 19, 16, 17, 18, 19},   // walking
+		{56, 57, 58, 59, 60, 61, 62, 63}	// dying
+	};
+	*/
+	int player_animation[3][8] = 
 	{
 		{0,  0,  1,  1,  0,  0,  1,  1 },	// idle
 		{16, 17, 18, 19, 16, 17, 18, 19},   // walking

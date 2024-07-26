@@ -1,8 +1,15 @@
-﻿  main.cpp
-C:\Users\nico\Desktop\IntroToGameProgramming\project 4\Entity.h(180,10): warning C4244: 'return': conversion from 'const float' to 'const int', possible loss of data
-C:\Users\nico\Desktop\IntroToGameProgramming\project 4\Entity.h(185,10): warning C4244: 'return': conversion from 'const float' to 'const int', possible loss of data
+﻿  Entity.cpp
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\Entity.h(183,10): warning C4244: 'return': conversion from 'const float' to 'const int', possible loss of data
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\Entity.h(188,10): warning C4244: 'return': conversion from 'const float' to 'const int', possible loss of data
+  main.cpp
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\Entity.h(183,10): warning C4244: 'return': conversion from 'const float' to 'const int', possible loss of data
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\Entity.h(188,10): warning C4244: 'return': conversion from 'const float' to 'const int', possible loss of data
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\glm\detail\type_vec3.inl(55,7): error C2440: 'static_cast': cannot convert from 'Y' to 'float'
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\glm\detail\type_vec3.inl(55,7): error C2440:         with
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\glm\detail\type_vec3.inl(55,7): error C2440:         [
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\glm\detail\type_vec3.inl(55,7): error C2440:             Y=glm::vec3
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\glm\detail\type_vec3.inl(55,7): error C2440:         ]
+  Map.cpp
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\Map.cpp(112,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\Map.cpp(113,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  Generating Code...
