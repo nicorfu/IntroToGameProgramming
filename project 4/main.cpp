@@ -342,7 +342,7 @@ void render()
 
 	for (int i = 0; i < ENEMY_COUNT; i++)
 	{
-		g_state.enemies[i].render(&g_shader_program);
+		//g_state.enemies[i].render(&g_shader_program);
 	}
 
 	SDL_GL_SwapWindow(g_display_window);
@@ -355,7 +355,8 @@ void shutdown()
 
 	delete g_state.map;
 	delete g_state.player;
-	delete [] g_state.enemies;
+	//delete [] g_state.enemies;
+	delete g_state.enemies;
 }
 
 
