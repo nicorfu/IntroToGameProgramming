@@ -1,3 +1,5 @@
+#include <GL/glew.h>
+
 #ifndef ENTITY_H
 #define ENTITY_H
 
@@ -46,13 +48,11 @@ private:
 	int m_animation_frames;
 	int m_animation_index;
 
-	//std::vector<int> m_animation_indices;
-	int* m_animation_indices = nullptr;
+	std::vector<int> m_animation_indices;
 
 	float m_animation_time = 0.0f;
 
-	//std::vector<std::vector<int>> m_animation;
-	int m_animation[3][8];
+	std::vector<std::vector<int>> m_animation;
 
 	bool m_collided_top = false;
 	bool m_collided_bottom = false;
@@ -66,7 +66,7 @@ public:
 
 	Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 acceleration, float width, float height,
 		float speed, float jump_power, int animation_cols, int animation_rows, int animation_frames, int animation_index,
-		float animation_time, int animation[3][8]);//std::vector<std::vector<int>> animation);
+		float animation_time, std::vector<std::vector<int>> animation);
 
 	Entity(EntityType entity_type, GLuint texture_id, float width, float height, float speed);
 
@@ -180,12 +180,12 @@ public:
 
 	int const get_width() const
 	{
-		return m_width;
+		return int(m_width);
 	}
 
 	int const get_height() const
 	{
-		return m_height;
+		return int(m_height);
 	}
 
 	float const get_speed() const
@@ -303,7 +303,7 @@ public:
 		m_animation_time = new_animation_time; 
 	}
 
-	void set_animation(int new_animation[3][8])//std::vector<std::vector<int>> new_animation)
+	void set_animation(std::vector<std::vector<int>> new_animation)
 	{
 		for (int i = 0; i < m_animation_rows; i++)
 		{

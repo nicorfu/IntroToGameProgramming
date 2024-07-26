@@ -8,6 +8,9 @@
 * Academic Misconduct.
 **/
 
+
+#include <GL/glew.h>
+
 #include "Map.h"
 
 
@@ -109,8 +112,8 @@ bool Map::is_solid(glm::vec3 position, float* penetration_x, float* penetration_
 		return false;
 	}
 
-	int tile_x = floor((position.x + (m_tile_size / 2)) / m_tile_size);
-	int tile_y = -(ceil(position.y - (m_tile_size / 2))) / m_tile_size;
+	int tile_x = int(floor((position.x + (m_tile_size / 2)) / m_tile_size));
+	int tile_y = int( - (ceil(position.y - (m_tile_size / 2))) / m_tile_size);
 
 	if (tile_x < 0 || tile_x >= m_width)
 	{

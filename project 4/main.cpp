@@ -182,15 +182,8 @@ void initialize()
 	glm::vec3 acceleration = glm::vec3(0.0f, GRAVITY * GRAVITY_FACTOR, 0.0f);
 
 	GLuint player_texture_id = load_texture(PLAYER_FILEPATH);
-	/*
+	
 	std::vector<std::vector<int>> player_animation =
-	{
-		{0,  0,  1,  1,  0,  0,  1,  1 },	// idle
-		{16, 17, 18, 19, 16, 17, 18, 19},   // walking
-		{56, 57, 58, 59, 60, 61, 62, 63}	// dying
-	};
-	*/
-	int player_animation[3][8] = 
 	{
 		{0,  0,  1,  1,  0,  0,  1,  1 },	// idle
 		{16, 17, 18, 19, 16, 17, 18, 19},   // walking
@@ -224,15 +217,17 @@ void initialize()
 	for (int i = 0; i < ENEMY_COUNT; i++)
 	{
 		//g_state.enemies[i] = Entity(enemy_texture_id, 1.0f, 1.0f, 1.0f, ENEMY, GUARD, IDLE);
-		g_state.enemies[i].set_jump_power(3.0f);
+		//g_state.enemies[i].set_jump_power(3.0f);
 	}
 
+	/*
 	g_state.enemies[0].set_position(glm::vec3(3.0f, 0.0f, 0.0f));
 	g_state.enemies[0].set_movement(glm::vec3(0.0f));
 	g_state.enemies[0].set_acceleration(glm::vec3(0.0f, -9.81f, 0.0f));
 	g_state.enemies[0].set_entity_type(ENEMY);
 	g_state.enemies[0].set_ai_type(GUARD);
 	g_state.enemies[0].set_ai_state(IDLE);
+	*/
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
