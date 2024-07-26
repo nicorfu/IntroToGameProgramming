@@ -81,7 +81,7 @@ const char V_SHADER_PATH[] = "shaders/vertex_textured.glsl";
 const char F_SHADER_PATH[] = "shaders/fragment_textured.glsl";
 
 const char MAP_TILESET_FILEPATH[] = "assets/visual/tiles_spritesheet.png";
-//const char _FILEPATH[] = ".png";
+const char PLAYER_FILEPATH[] = "assets/visual/osiris_spritesheet.png";
 
 glm::mat4 g_view_matrix;
 glm::mat4 g_projection_matrix;
@@ -173,9 +173,9 @@ void initialize()
 
 	glClearColor(BG_RED, BG_GREEN, BG_BLUE, BG_OPACITY);
 
-	//GLuint map_texture_id = load_texture(MAP_TILESET_FILEPATH);
+	GLuint map_texture_id = load_texture(MAP_TILESET_FILEPATH);
 	 
-	//g_state.map = new Map(LEVEL_WIDTH, LEVEL_HEIGHT, LEVEL_DATA, map_texture_id, 1.0f, 4, 1);
+	g_state.map = new Map(LEVEL_WIDTH, LEVEL_HEIGHT, LEVEL_DATA, map_texture_id, 1.0f, 12, 13);
 
 	glm::vec3 acceleration = glm::vec3(0.0f, GRAVITY * GRAVITY_FACTOR, 0.0f);
 
