@@ -66,9 +66,9 @@ public:
 
 	Entity();
 
-	Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 acceleration, float width, float height,
-		float speed, float jump_power, int animation_cols, int animation_rows, int animation_frames, int animation_index,
-		float animation_time, int animation[3][8]);
+	Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 position, glm::vec3 acceleration, 
+		float width, float height, float speed, float jump_power, int animation_cols, int animation_rows, 
+		int animation_frames, int animation_index, float animation_time, int animation[3][8]);
 
 	Entity(EntityType entity_type, GLuint texture_id, float width, float height, float speed);
 

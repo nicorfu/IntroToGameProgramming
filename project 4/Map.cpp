@@ -31,6 +31,7 @@ Map::Map(int width, int height, unsigned int* level_data, GLuint texture_id, flo
 
 	build();
 
+	/*
 	m_x_offset = 5.0f - (m_tile_size / 2.0f);
 	m_y_offset = 4.0f - (m_tile_size / 2.0f) - (m_height - 1) * m_tile_size;
 
@@ -38,6 +39,7 @@ Map::Map(int width, int height, unsigned int* level_data, GLuint texture_id, flo
 	m_right_bound -= m_x_offset;
 	m_top_bound -= m_y_offset;
 	m_bottom_bound -= m_y_offset;
+	*/
 }
 
 void Map::build()
@@ -83,7 +85,6 @@ void Map::build()
 	}
 
 	m_left_bound = 0 - (m_tile_size / 2);
-	//m_left_bound = 0 - (m_width / 2);
 	m_right_bound = (m_tile_size * m_width) - (m_tile_size / 2);
 	m_top_bound = 0 + (m_tile_size / 2);
 	m_bottom_bound = -(m_tile_size * m_height) + (m_tile_size / 2);
@@ -91,9 +92,9 @@ void Map::build()
 
 void Map::render(ShaderProgram* program)
 {
-	model_matrix = glm::mat4(1.0f);
+	glm::mat4 model_matrix = glm::mat4(1.0f);
 
-	center();
+	//model_matrix = glm::translate(model_matrix, glm::vec3(0.0f - m_x_offset, 0.0f - m_y_offset, 0.0f));
 
 	program->set_model_matrix(model_matrix);
 
@@ -128,7 +129,7 @@ bool Map::is_solid(glm::vec3 position, float* penetration_x, float* penetration_
 
 	int tile_x = int(floor((position.x + (m_tile_size / 2)) / m_tile_size));
 	int tile_y = int( - (ceil(position.y - (m_tile_size / 2))) / m_tile_size);
-
+	
 	if (tile_x < 0 || tile_x >= m_width)
 	{
 		return false;
@@ -153,9 +154,4 @@ bool Map::is_solid(glm::vec3 position, float* penetration_x, float* penetration_
 	*penetration_y = (m_tile_size / 2) - fabs(position.y - tile_center_y);
 
 	return true;
-}
-
-void Map::center()
-{
-	model_matrix = glm::translate(model_matrix, glm::vec3(0.0f - m_x_offset, 0.0f - m_y_offset, 0.0f));
 }

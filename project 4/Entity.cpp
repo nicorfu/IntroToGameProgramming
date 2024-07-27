@@ -39,15 +39,15 @@ Entity::Entity()
 }
 
 
-Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 acceleration, float width, 
-		       float height, float speed, float jump_power, int animation_cols, int animation_rows, int animation_frames, 
-		       int animation_index, float animation_time, int animation[3][8])
+Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 position, glm::vec3 acceleration, 
+			   float width, float height, float speed, float jump_power, int animation_cols, int animation_rows, 
+			   int animation_frames, int animation_index, float animation_time, int animation[3][8])
 {
 	m_entity_type = entity_type;
 	m_texture_id = texture_id;
 	m_model_matrix = glm::mat4(1.0f);
 	m_scale = scale;
-	m_position = glm::vec3(0.0f, 0.0f, 0.0f);
+	m_position = position;
 	m_movement = glm::vec3(0.0f, 0.0f, 0.0f);
 	m_velocity = glm::vec3(0.0f, 0.0f, 0.0f);
 	m_acceleration = acceleration;

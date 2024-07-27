@@ -32,7 +32,7 @@
 
 #define FIXED_TIMESTEP 0.0166666f
 #define LEVEL_WIDTH 20
-#define LEVEL_HEIGHT 10
+#define LEVEL_HEIGHT 4
 #define ENEMY_COUNT 1
 #define GRAVITY -9.81
 
@@ -82,12 +82,6 @@ const int TILE_COUNT_Y = 15;
 
 unsigned int LEVEL_DATA[] =
 {
-	-1, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-	-1, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-	-1, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-	-1, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-	-1, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-	-1, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 	-1, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 	-1, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 	0,   1,   2,   1,   2,   1,   2,   1,   2,   1,  2,  1,  2,  1,  2,  1,  2,  1,  2,  3,
@@ -197,6 +191,7 @@ void initialize()
 	GLuint player_texture_id = load_texture(PLAYER_FILEPATH);
 
 	glm::vec3 player_scale = glm::vec3(1.0f, 1.25f, 0.0f) * 1.3f;
+	glm::vec3 player_position = glm::vec3(3.0f, 0.0f, 0.0f);
 	
 	int player_animation[3][8] =
 	{
@@ -210,6 +205,7 @@ void initialize()
 		PLAYER,
 		player_texture_id,
 		player_scale,
+		player_position,
 		acceleration,
 		1.0f,
 		1.75f,
