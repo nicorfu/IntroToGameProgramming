@@ -33,6 +33,7 @@
 
 #define FIXED_TIMESTEP 0.0166666f
 #define ENEMY_COUNT 1
+#define WALK_SFX_COUNT 2
 #define GRAVITY -9.81
 #define GRAVITY_FACTOR 0.95
 
@@ -46,6 +47,7 @@ struct GameState
 
 	Mix_Chunk* jump_sfx;
 	Mix_Chunk* land_sfx;
+	Mix_Chunk* walk_sfx[WALK_SFX_COUNT];
 };
 
 GameState g_state;
@@ -111,6 +113,8 @@ const char FONTSHEET_FILEPATH[] = "assets/visual/font.png";
 
 const char JUMP_SFX_FILEPATH[] = "assets/audio/jump.wav";
 const char LAND_SFX_FILEPATH[] = "assets/audio/land.wav";
+const char WALK1_SFX_FILEPATH[] = "assets/audio/grass_walk_1.wav";
+const char WALK2_SFX_FILEPATH[] = "assets/audio/grass_walk_2.wav";
 
 glm::mat4 g_view_matrix;
 glm::mat4 g_projection_matrix;
@@ -201,9 +205,17 @@ void initialize()
 	Mix_OpenAudio(CD_QUAL_FREQ, MIX_DEFAULT_FORMAT, AUDIO_CHAN_AMT, AUDIO_BUFF_SIZE);
 
 	g_state.jump_sfx = Mix_LoadWAV(JUMP_SFX_FILEPATH);
-	Mix_VolumeChunk(g_state.jump_sfx, int(MIX_MAX_VOLUME * 0.75));
+	Mix_VolumeChunk(g_state.jump_sfx, int(MIX_MAX_VOLUME * 0.6));
 
 	g_state.land_sfx = Mix_LoadWAV(LAND_SFX_FILEPATH);
+	Mix_VolumeChunk(g_state.land_sfx, int(MIX_MAX_VOLUME * 0.75));
+
+	g_state.walk_sfx[0] = Mix_LoadWAV(WALK1_SFX_FILEPATH);
+	g_state.walk_sfx[1] = Mix_LoadWAV(WALK2_SFX_FILEPATH);
+	for (int i = 0; i < WALK_SFX_COUNT; i++)
+	{
+		Mix_VolumeChunk(g_state.walk_sfx[i], int(MIX_MAX_VOLUME * 0.15));
+	}
 
 	GLuint map_texture_id = load_texture(MAP_TILESET_FILEPATH);
 	 
@@ -241,7 +253,8 @@ void initialize()
 		0,
 		0.0f,
 		player_animation,
-		g_state.land_sfx
+		g_state.land_sfx,
+		g_state.walk_sfx
 	);
 
 	//GLuint enemy_texture_id = load_texture(ENEMY_FILEPATH);
@@ -293,7 +306,7 @@ void process_input()
 					case SDLK_SPACE:
 						if (g_state.player->get_collided_bottom())
 						{
-							Mix_PlayChannel(-1, g_state.jump_sfx, 0);
+							Mix_PlayChannel(1, g_state.jump_sfx, 0);
 							g_state.player->jump();
 						}
 						break;

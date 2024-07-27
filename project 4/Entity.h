@@ -8,6 +8,8 @@
 #include "ShaderProgram.h"
 #include <SDL_mixer.h>
 
+#define WALK_SFX_COUNT 2
+
 
 enum EntityType { PLATFORM, PLAYER, ENEMY };
 enum AIType { WALKER, GUARD};
@@ -64,6 +66,8 @@ private:
 	Mix_Chunk* m_land_sfx;
 	bool m_play_land = false;
 
+	Mix_Chunk* m_walk_sfx[WALK_SFX_COUNT];
+
 public:
 	static constexpr int SECONDS_PER_FRAME = 6;
 
@@ -71,7 +75,8 @@ public:
 
 	Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 position, glm::vec3 acceleration, 
 		float width, float height, float speed, float jump_power, int animation_cols, int animation_rows, 
-		int animation_frames, int animation_index, float animation_time, int animation[3][8], Mix_Chunk* land_sfx);
+		int animation_frames, int animation_index, float animation_time, int animation[3][8], Mix_Chunk* land_sfx,
+		Mix_Chunk* walk_sfx[2]);
 
 	Entity(EntityType entity_type, GLuint texture_id, float width, float height, float speed);
 
@@ -84,6 +89,8 @@ public:
 
 	void draw_text(ShaderProgram* shader_program, std::string text, float font_size, float spacing, glm::vec3 position, 
 		int fontbank_size);
+
+	int get_random_sfx_index(int sfx_count);
 
 	bool const check_collision(Entity* other) const;
 	void const check_collision_x(Entity* collidable_entities, int collidable_entity_count);
@@ -127,6 +134,11 @@ public:
 
 		m_animation_indices = m_animation[MOVING];
 		face_left();
+
+		if (m_collided_bottom)
+		{
+			Mix_PlayChannel(-1, m_walk_sfx[get_random_sfx_index(WALK_SFX_COUNT)], 0);
+		}
 	}
 
 	void move_right()
@@ -135,6 +147,11 @@ public:
 
 		m_animation_indices = m_animation[MOVING];
 		face_right();
+
+		if (m_collided_bottom)
+		{
+			Mix_PlayChannel(-1, m_walk_sfx[get_random_sfx_index(WALK_SFX_COUNT)], 0);
+		}
 	}
 
 	void const jump()
@@ -330,6 +347,14 @@ public:
 			{
 				m_animation[i][j] = new_animation[i][j];
 			}
+		}
+	}
+
+	void set_walk_sfx(Mix_Chunk* new_walk_sfx[WALK_SFX_COUNT])
+	{
+		for (int i = 0; i < WALK_SFX_COUNT; i++)
+		{
+			m_walk_sfx[i] = new_walk_sfx[i];
 		}
 	}
 };

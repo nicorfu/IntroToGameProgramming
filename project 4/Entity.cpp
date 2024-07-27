@@ -42,7 +42,8 @@ Entity::Entity()
 
 Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 position, glm::vec3 acceleration, 
 			   float width, float height, float speed, float jump_power, int animation_cols, int animation_rows, 
-			   int animation_frames, int animation_index, float animation_time, int animation[3][8], Mix_Chunk* land_sfx)
+			   int animation_frames, int animation_index, float animation_time, int animation[3][8], Mix_Chunk* land_sfx,
+			   Mix_Chunk* walk_sfx[2])
 {
 	m_entity_type = entity_type;
 	m_texture_id = texture_id;
@@ -66,6 +67,7 @@ Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::
 	m_animation_indices = m_animation[IDLE];
 
 	m_land_sfx = land_sfx;
+	set_walk_sfx(walk_sfx);
 }
 
 
@@ -213,6 +215,14 @@ void Entity::draw_text(ShaderProgram* shader_program, std::string text, float fo
 
 	glDisableVertexAttribArray(shader_program->get_position_attribute());
 	glDisableVertexAttribArray(shader_program->get_tex_coordinate_attribute());
+}
+
+
+int Entity::get_random_sfx_index(int sfx_count)
+{
+	srand(time(nullptr));
+
+	return rand() % sfx_count;
 }
 
 
@@ -438,7 +448,7 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
 
 	if (m_collided_bottom && m_play_land)
 	{
-		Mix_PlayChannel(-1, m_land_sfx, 0);
+		Mix_PlayChannel(2, m_land_sfx, 0);
 
 		m_play_land = false;
 	}
