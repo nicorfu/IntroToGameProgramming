@@ -191,7 +191,7 @@ void initialize()
 
 	glm::vec3 player_scale = glm::vec3(1.0f, 1.25f, 0.0f) * 1.3f;
 	glm::vec3 player_position = glm::vec3(4.5f, -0.5f, 0.0f);
-	const float player_speed = 2.15f;
+	const float player_speed = 2.3f;
 	
 	int player_animation[3][8] =
 	{
