@@ -35,6 +35,7 @@
 #define LEVEL_HEIGHT 4
 #define ENEMY_COUNT 1
 #define GRAVITY -9.81
+#define GRAVITY_FACTOR 0.95
 
 
 struct GameState
@@ -94,8 +95,6 @@ const char FONTSHEET_FILEPATH[] = "assets/visual/font.png";
 
 glm::mat4 g_view_matrix;
 glm::mat4 g_projection_matrix;
-
-const float GRAVITY_FACTOR = 0.5f;
 
 const float MILLISECONDS_IN_SECOND = 1000.0f;
 float g_previous_ticks = 0.0f;
@@ -192,7 +191,7 @@ void initialize()
 
 	glm::vec3 player_scale = glm::vec3(1.0f, 1.25f, 0.0f) * 1.3f;
 	glm::vec3 player_position = glm::vec3(3.0f, 0.0f, 0.0f);
-	const float player_speed = 1.7f;
+	const float player_speed = 2.15f;
 	
 	int player_animation[3][8] =
 	{
@@ -211,7 +210,7 @@ void initialize()
 		1.0f,
 		1.5f,
 		player_speed,
-		5.0f,
+		5.2f,
 		8,
 		9,
 		8,
