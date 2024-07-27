@@ -190,7 +190,7 @@ void initialize()
 	GLuint player_texture_id = load_texture(PLAYER_FILEPATH);
 
 	glm::vec3 player_scale = glm::vec3(1.0f, 1.25f, 0.0f) * 1.3f;
-	glm::vec3 player_position = glm::vec3(3.0f, 0.0f, 0.0f);
+	glm::vec3 player_position = glm::vec3(4.5f, -0.5f, 0.0f);
 	const float player_speed = 2.15f;
 	
 	int player_animation[3][8] =
@@ -331,8 +331,12 @@ void update()
 
 	g_accumulator = delta_time;
 
-	g_view_matrix = glm::mat4(1.0f);
-	g_view_matrix = glm::translate(g_view_matrix, glm::vec3(-g_state.player->get_position().x, 0.0f, 0.0f));
+	
+	if (g_state.player->get_position().x >= 4.5f)
+	{
+		g_view_matrix = glm::mat4(1.0f);
+		g_view_matrix = glm::translate(g_view_matrix, glm::vec3(-g_state.player->get_position().x, 0.0f, 0.0f));
+	}
 }
 
 
