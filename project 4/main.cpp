@@ -192,6 +192,7 @@ void initialize()
 
 	glm::vec3 player_scale = glm::vec3(1.0f, 1.25f, 0.0f) * 1.3f;
 	glm::vec3 player_position = glm::vec3(3.0f, 0.0f, 0.0f);
+	const float player_speed = 1.7f;
 	
 	int player_animation[3][8] =
 	{
@@ -208,8 +209,8 @@ void initialize()
 		player_position,
 		acceleration,
 		1.0f,
-		1.75f,
-		1.0f,
+		1.5f,
+		player_speed,
 		5.0f,
 		8,
 		9,
@@ -245,6 +246,8 @@ void initialize()
 
 void process_input()
 {
+	g_state.player->dont_move();
+
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
 	{
@@ -292,6 +295,7 @@ void process_input()
 		}
 		else if (key_state[SDL_SCANCODE_SPACE])
 		{
+
 		}
 
 		if (glm::length(g_state.player->get_movement()) > 1.0f)

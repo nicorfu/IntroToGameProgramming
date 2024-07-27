@@ -62,7 +62,7 @@ private:
 	bool m_collided_right = false;
 
 public:
-	static constexpr int SECONDS_PER_FRAME = 4;
+	static constexpr int SECONDS_PER_FRAME = 6;
 
 	Entity();
 
@@ -109,6 +109,13 @@ public:
 	void face_right()
 	{
 		m_facing_left = false;
+	}
+
+	void dont_move()
+	{
+		m_movement.x = 0.0f;
+
+		m_animation_indices = m_animation[IDLE];
 	}
 
 	void move_left()
