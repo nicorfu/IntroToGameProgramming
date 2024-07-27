@@ -43,6 +43,9 @@ struct GameState
 	Entity* enemies;
 
 	Map* map;
+
+	Mix_Chunk* jump_sfx;
+	//Mix_Chunk* land_sfx;
 };
 
 GameState g_state;
@@ -90,9 +93,24 @@ unsigned int LEVEL_DATA[] =
 	21,  22,  22,  22,  22,  22,  22,  22,  22,  22, 22,  22,  22,  22,  22,  22,  22,  22,  22,  22
 };
 
+constexpr int FONTBANK_SIZE = 16;
+
+constexpr int CD_QUAL_FREQ = 44100;
+constexpr int AUDIO_CHAN_AMT = 2;
+constexpr int AUDIO_BUFF_SIZE = 512;
+
+constexpr int PLAY_ONCE = 0;
+constexpr int NEXT_CHNL = -1;
+constexpr int MUTE_VOL = 0;
+constexpr int MILS_IN_SEC = 1000;
+constexpr int ALL_SFX_CHN = -1;
+
 const char PLAYER_FILEPATH[] = "assets/visual/osiris_spritesheet.png";
 
 const char FONTSHEET_FILEPATH[] = "assets/visual/font.png";
+
+const char JUMP_SFX_FILEPATH[] = "assets/audio/jump.wav";
+//const char LAND_SFX_FILEPATH[] = "assets/audio/land.wav";
 
 glm::mat4 g_view_matrix;
 glm::mat4 g_projection_matrix;
@@ -100,12 +118,6 @@ glm::mat4 g_projection_matrix;
 const float MILLISECONDS_IN_SECOND = 1000.0f;
 float g_previous_ticks = 0.0f;
 float g_accumulator = 0.0f;
-
-constexpr int FONTBANK_SIZE = 16;
-
-constexpr int CD_QUAL_FREQ = 44100;
-constexpr int AUDIO_CHAN_AMT = 2;
-constexpr int AUDIO_BUFF_SIZE = 4096;
 
 GLuint load_texture(const char* filepath);
 void initialize();
@@ -243,6 +255,13 @@ void initialize()
 	g_state.enemies[0].set_ai_state(IDLE);
 	*/
 
+	Mix_OpenAudio(CD_QUAL_FREQ, MIX_DEFAULT_FORMAT, AUDIO_CHAN_AMT, AUDIO_BUFF_SIZE);
+
+	g_state.jump_sfx = Mix_LoadWAV(JUMP_SFX_FILEPATH);
+	Mix_VolumeChunk(g_state.jump_sfx, int(MIX_MAX_VOLUME * 0.75));
+
+	//g_state.land_sfx = Mix_LoadWAV(LAND_SFX_FILEPATH);
+
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
@@ -273,6 +292,7 @@ void process_input()
 					case SDLK_SPACE:
 						if (g_state.player->get_collided_bottom())
 						{
+							Mix_PlayChannel(NEXT_CHNL, g_state.jump_sfx, PLAY_ONCE);
 							g_state.player->jump();
 						}
 						break;
@@ -371,6 +391,8 @@ void shutdown()
 	delete g_state.player;
 	//delete [] g_state.enemies;
 	delete g_state.enemies;
+
+	Mix_FreeChunk(g_state.jump_sfx);
 }
 
 

@@ -6,6 +6,7 @@
 #include "Map.h"
 #include "glm/glm.hpp"
 #include "ShaderProgram.h"
+#include <SDL_mixer.h>
 
 
 enum EntityType { PLATFORM, PLAYER, ENEMY };
