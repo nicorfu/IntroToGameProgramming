@@ -31,8 +31,6 @@
 #include "Map.h"
 
 #define FIXED_TIMESTEP 0.0166666f
-#define LEVEL_WIDTH 20
-#define LEVEL_HEIGHT 4
 #define ENEMY_COUNT 1
 #define GRAVITY -9.81
 #define GRAVITY_FACTOR 0.95
@@ -81,6 +79,8 @@ const float TILE_SIZE = 1.0f;
 const int TILE_COUNT_X = 21;
 const int TILE_COUNT_Y = 15;
 
+const int LEVEL_WIDTH = 20;
+const int LEVEL_HEIGHT = 4;
 unsigned int LEVEL_DATA[] =
 {
 	-1, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -264,6 +264,7 @@ void process_input()
 						g_game_is_running = false;
 						break;
 
+					case SDLK_UP:
 					case SDLK_SPACE:
 						if (g_state.player->get_collided_bottom())
 						{
@@ -284,17 +285,13 @@ void process_input()
 	{
 		const Uint8* key_state = SDL_GetKeyboardState(NULL);
 
-		if (key_state[SDL_SCANCODE_LEFT])
+		if (key_state[SDL_SCANCODE_LEFT] || key_state[SDL_SCANCODE_A])
 		{
 			g_state.player->move_left();
 		}
-		else if (key_state[SDL_SCANCODE_RIGHT])
+		else if (key_state[SDL_SCANCODE_RIGHT] || key_state[SDL_SCANCODE_D])
 		{
 			g_state.player->move_right();
-		}
-		else if (key_state[SDL_SCANCODE_SPACE])
-		{
-
 		}
 
 		if (glm::length(g_state.player->get_movement()) > 1.0f)
