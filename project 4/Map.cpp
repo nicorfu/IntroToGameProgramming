@@ -11,6 +11,8 @@
 
 #include <GL/glew.h>
 
+#include "glm/mat4x4.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 #include "Map.h"
 
 
@@ -38,7 +40,7 @@ void Map::build()
 		{
 			int tile = m_level_data[y_coord * m_width + x_coord];
 
-			if (tile == 0)
+			if (tile == -1)
 			{
 				continue;
 			}
@@ -80,7 +82,10 @@ void Map::build()
 
 void Map::render(ShaderProgram* program)
 {
-	glm::mat4 model_matrix = glm::mat4(1.0f);
+	model_matrix = glm::mat4(1.0f);
+
+	center();
+
 	program->set_model_matrix(model_matrix);
 
 	glUseProgram(program->get_program_id());
@@ -127,7 +132,7 @@ bool Map::is_solid(glm::vec3 position, float* penetration_x, float* penetration_
 
 	int tile = m_level_data[tile_y * m_width + tile_x];
 
-	if (tile == 0)
+	if (tile == -1)
 	{
 		return false;
 	}
@@ -139,4 +144,12 @@ bool Map::is_solid(glm::vec3 position, float* penetration_x, float* penetration_
 	*penetration_y = (m_tile_size / 2) - fabs(position.y - tile_center_y);
 
 	return true;
+}
+
+void Map::center()
+{
+	float x_offset = 5.0f - (m_tile_size / 2.0f);
+	float y_offset = 3.75 - (m_tile_size / 2.0f) - (m_height - 1) * m_tile_size;
+
+	model_matrix = glm::translate(model_matrix, glm::vec3(0.0f - x_offset, 0.0f - y_offset, 0.0f));
 }

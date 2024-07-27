@@ -24,6 +24,8 @@ private:
 	unsigned int* m_level_data;
 	GLuint m_texture_id;
 
+	glm::mat4 model_matrix;
+
 	float m_tile_size;
 	int m_tile_count_x;
 	int m_tile_count_y;
@@ -42,6 +44,8 @@ public:
 
 	void build();
 	void render(ShaderProgram *program);
+
+	void center();
 
 	bool is_solid(glm::vec3 position, float *penetration_x, float *penetration_y);
 

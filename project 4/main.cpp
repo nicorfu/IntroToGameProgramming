@@ -31,7 +31,7 @@
 #include "Map.h"
 
 #define FIXED_TIMESTEP 0.0166666f
-#define LEVEL_WIDTH 7
+#define LEVEL_WIDTH 20
 #define LEVEL_HEIGHT 5
 #define ENEMY_COUNT 1
 #define GRAVITY -9.81
@@ -43,15 +43,6 @@ struct GameState
 	Entity* enemies;
 
 	Map* map;
-};
-
-unsigned int LEVEL_DATA[] =
-{
-	9, 9, 9, 9, 9, 9, 9,
-	9, 9, 9, 9, 9, 9, 9,
-	9, 9, 9, 9, 9, 9, 9,
-	9, 9, 9, 9, 9, 9, 9,
-	9, 9, 9, 9, 9, 9, 9
 };
 
 GameState g_state;
@@ -84,7 +75,19 @@ constexpr GLint TEXTURE_BORDER = 0;
 const char V_SHADER_PATH[] = "shaders/vertex_textured.glsl";
 const char F_SHADER_PATH[] = "shaders/fragment_textured.glsl";
 
-const char MAP_TILESET_FILEPATH[] = "assets/visual/tiles_spritesheet.png";
+const char MAP_TILESET_FILEPATH[] = "assets/visual/oak_woods_tileset.png";
+const int TILE_COUNT_X = 21;
+const int TILE_COUNT_Y = 15;
+
+unsigned int LEVEL_DATA[] =
+{
+	0,   1,   2,   1,   2,   1,   2,   1,   2,   1,  2,  1,  2,  1,  2,  1,  2,  1,  2,  3,
+	21,  22,  22,  22,  22,  22,  22,  22,  22,  22, 22,  22,  22,  22,  22,  22,  22,  22,  22,  22,
+	21,  22,  22,  22,  22,  22,  22,  22,  22,  22, 22,  22,  22,  22,  22,  22,  22,  22,  22,  22,
+	42,  22,  22,  22,  22,  22,  22,  22,  22,  22, 22,  22,  22,  22,  22,  22,  22,  22,  22,  22,
+	42,  22,  22,  22,  22,  22,  22,  22,  22,  22, 22,  22,  22,  22,  22,  22,  22,  22,  22,  22
+};
+
 const char PLAYER_FILEPATH[] = "assets/visual/osiris_spritesheet.png";
 
 const char FONTSHEET_FILEPATH[] = "assets/visual/font.png";
@@ -181,7 +184,7 @@ void initialize()
 
 	GLuint map_texture_id = load_texture(MAP_TILESET_FILEPATH);
 	 
-	g_state.map = new Map(LEVEL_WIDTH, LEVEL_HEIGHT, LEVEL_DATA, map_texture_id, 1.0f, 12, 13);
+	g_state.map = new Map(LEVEL_WIDTH, LEVEL_HEIGHT, LEVEL_DATA, map_texture_id, 0.5f, TILE_COUNT_X, TILE_COUNT_Y);
 
 	glm::vec3 grav_acceleration = glm::vec3(0.0f, GRAVITY * GRAVITY_FACTOR, 0.0f);
 

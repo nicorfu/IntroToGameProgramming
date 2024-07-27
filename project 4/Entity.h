@@ -77,6 +77,9 @@ public:
 
 	void draw_sprite_from_texture_atlas(ShaderProgram* program, GLuint texture_id, int index);
 
+	void draw_text(ShaderProgram* shader_program, std::string text, float font_size, float spacing, glm::vec3 position, 
+		int fontbank_size);
+
 	bool const check_collision(Entity* other) const;
 	void const check_collision_x(Entity* collidable_entities, int collidable_entity_count);
 	void const check_collision_y(Entity* collidable_entities, int collidable_entity_count);
