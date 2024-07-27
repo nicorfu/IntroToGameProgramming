@@ -15,7 +15,7 @@ enum EntityType { PLATFORM, PLAYER, ENEMY };
 enum AIType { WALKER, GUARD};
 enum AIState { WALKING, IDLING, ATTACKING};
 
-enum AnimationAction { IDLE, MOVING, DYING };
+enum AnimationAction { IDLE, MOVE, DIE, ATTACK };
 
 class Entity
 {
@@ -54,7 +54,7 @@ private:
 
 	float m_animation_time = 0.0f;
 
-	int m_animation[3][8];
+	int m_animation[4][8];
 
 	bool m_facing_left = false;
 
@@ -75,7 +75,7 @@ public:
 
 	Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 position, glm::vec3 acceleration, 
 		float width, float height, float speed, float jump_power, int animation_cols, int animation_rows, 
-		int animation_frames, int animation_index, float animation_time, int animation[3][8], Mix_Chunk* land_sfx,
+		int animation_frames, int animation_index, float animation_time, int animation[4][8], Mix_Chunk* land_sfx,
 		Mix_Chunk* walk_sfx[2]);
 
 	Entity(EntityType entity_type, GLuint texture_id, float width, float height, float speed);
@@ -132,7 +132,7 @@ public:
 	{
 		m_movement.x = -1.0f;
 
-		m_animation_indices = m_animation[MOVING];
+		m_animation_indices = m_animation[MOVE];
 		face_left();
 
 		if (m_collided_bottom)
@@ -145,7 +145,7 @@ public:
 	{
 		m_movement.x = 1.0f;
 
-		m_animation_indices = m_animation[MOVING];
+		m_animation_indices = m_animation[MOVE];
 		face_right();
 
 		if (m_collided_bottom)

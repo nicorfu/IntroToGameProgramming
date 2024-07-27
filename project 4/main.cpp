@@ -86,13 +86,15 @@ const int TILE_COUNT_X = 21;
 const int TILE_COUNT_Y = 15;
 
 const int LEVEL_WIDTH = 20;
-const int LEVEL_HEIGHT = 4;
+const int LEVEL_HEIGHT = 6;
 unsigned int LEVEL_DATA[] =
 {
-	-1, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-	-1, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+	52, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+	94, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+	94, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 	0,   1,   2,   1,   2,   1,   2,   1,   2,   1,  2,  1,  2,  1,  2,  1,  2,  1,  2,  3,
-	21,  22,  22,  22,  22,  22,  22,  22,  22,  22, 22,  22,  22,  22,  22,  22,  22,  22,  22,  22
+	21,  64,  64,  64,  64,  64,  64,  64,  64,  64, 64,  64,  64,  64,  64,  64,  64,  64,  64,  64,
+	210,  210,  210,  210,  210,  210,  210,  210,  210,  210, 210,  210,  210,  210,  210,  210,  210,  210,  210,  210
 };
 
 constexpr int FONTBANK_SIZE = 16;
@@ -214,7 +216,7 @@ void initialize()
 	g_state.walk_sfx[1] = Mix_LoadWAV(WALK2_SFX_FILEPATH);
 	for (int i = 0; i < WALK_SFX_COUNT; i++)
 	{
-		Mix_VolumeChunk(g_state.walk_sfx[i], int(MIX_MAX_VOLUME * 0.15));
+		Mix_VolumeChunk(g_state.walk_sfx[i], int(MIX_MAX_VOLUME * 0.1));
 	}
 
 	GLuint map_texture_id = load_texture(MAP_TILESET_FILEPATH);
@@ -226,14 +228,15 @@ void initialize()
 	GLuint player_texture_id = load_texture(PLAYER_FILEPATH);
 
 	glm::vec3 player_scale = glm::vec3(1.0f, 1.25f, 0.0f) * 1.3f;
-	glm::vec3 player_position = glm::vec3(4.5f, -0.5f, 0.0f);
+	glm::vec3 player_position = glm::vec3(4.75f, -0.5f, 0.0f);
 	const float player_speed = 2.3f;
 	
-	int player_animation[3][8] =
+	int player_animation[4][8] =
 	{
 		{0,  0,  1,  1,  0,  0,  1,  1 },	// idle
 		{16, 17, 18, 19, 16, 17, 18, 19},   // moving
-		{56, 57, 58, 59, 60, 61, 62, 63}	// dying
+		{56, 57, 58, 59, 60, 61, 62, 63},	// dying
+		{64, 65, 66, 67, 68, 69, 70, 71}    // attacking
 	};
 
 	g_state.player = new Entity
@@ -371,7 +374,7 @@ void update()
 	g_accumulator = delta_time;
 
 	
-	if (g_state.player->get_position().x >= 4.5f)
+	if (g_state.player->get_position().x >= 4.75f)
 	{
 		g_view_matrix = glm::mat4(1.0f);
 		g_view_matrix = glm::translate(g_view_matrix, glm::vec3(-g_state.player->get_position().x, 0.0f, 0.0f));

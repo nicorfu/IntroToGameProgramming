@@ -1,5 +1,7 @@
-﻿  main.cpp
-C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(92,2): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+﻿  Entity.cpp
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\Entity.cpp(171,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\Entity.cpp(223,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  main.cpp
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(92,6): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(92,11): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(92,16): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
@@ -19,7 +21,6 @@ C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(92,74): warning 
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(92,78): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(92,82): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(92,86): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
-C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(93,2): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(93,6): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(93,11): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(93,16): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
@@ -39,4 +40,24 @@ C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(93,74): warning 
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(93,78): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(93,82): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(93,86): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(94,6): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(94,11): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(94,16): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(94,21): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(94,26): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(94,31): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(94,36): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(94,41): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(94,46): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(94,50): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(94,54): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(94,58): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(94,62): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(94,66): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(94,70): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(94,74): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(94,78): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(94,82): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(94,86): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+  Generating Code...
   project 4.vcxproj -> C:\Users\nico\Desktop\IntroToGameProgramming\project 4\Debug\project 4.exe

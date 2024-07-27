@@ -42,7 +42,7 @@ Entity::Entity()
 
 Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 position, glm::vec3 acceleration, 
 			   float width, float height, float speed, float jump_power, int animation_cols, int animation_rows, 
-			   int animation_frames, int animation_index, float animation_time, int animation[3][8], Mix_Chunk* land_sfx,
+			   int animation_frames, int animation_index, float animation_time, int animation[4][8], Mix_Chunk* land_sfx,
 			   Mix_Chunk* walk_sfx[2])
 {
 	m_entity_type = entity_type;
