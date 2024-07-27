@@ -15,7 +15,6 @@ enum AIState { WALKING, IDLING, ATTACKING};
 
 enum AnimationAction { IDLE, MOVING, DYING };
 
-
 class Entity
 {
 private:
@@ -62,6 +61,9 @@ private:
 	bool m_collided_left = false;
 	bool m_collided_right = false;
 
+	Mix_Chunk* m_land_sfx;
+	bool m_play_land = false;
+
 public:
 	static constexpr int SECONDS_PER_FRAME = 6;
 
@@ -69,7 +71,7 @@ public:
 
 	Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 position, glm::vec3 acceleration, 
 		float width, float height, float speed, float jump_power, int animation_cols, int animation_rows, 
-		int animation_frames, int animation_index, float animation_time, int animation[3][8]);
+		int animation_frames, int animation_index, float animation_time, int animation[3][8], Mix_Chunk* land_sfx);
 
 	Entity(EntityType entity_type, GLuint texture_id, float width, float height, float speed);
 

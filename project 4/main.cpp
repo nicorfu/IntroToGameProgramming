@@ -45,7 +45,7 @@ struct GameState
 	Map* map;
 
 	Mix_Chunk* jump_sfx;
-	//Mix_Chunk* land_sfx;
+	Mix_Chunk* land_sfx;
 };
 
 GameState g_state;
@@ -110,7 +110,7 @@ const char PLAYER_FILEPATH[] = "assets/visual/osiris_spritesheet.png";
 const char FONTSHEET_FILEPATH[] = "assets/visual/font.png";
 
 const char JUMP_SFX_FILEPATH[] = "assets/audio/jump.wav";
-//const char LAND_SFX_FILEPATH[] = "assets/audio/land.wav";
+const char LAND_SFX_FILEPATH[] = "assets/audio/land.wav";
 
 glm::mat4 g_view_matrix;
 glm::mat4 g_projection_matrix;
@@ -198,6 +198,13 @@ void initialize()
 
 	glClearColor(BG_RED, BG_GREEN, BG_BLUE, BG_OPACITY);
 
+	Mix_OpenAudio(CD_QUAL_FREQ, MIX_DEFAULT_FORMAT, AUDIO_CHAN_AMT, AUDIO_BUFF_SIZE);
+
+	g_state.jump_sfx = Mix_LoadWAV(JUMP_SFX_FILEPATH);
+	Mix_VolumeChunk(g_state.jump_sfx, int(MIX_MAX_VOLUME * 0.75));
+
+	g_state.land_sfx = Mix_LoadWAV(LAND_SFX_FILEPATH);
+
 	GLuint map_texture_id = load_texture(MAP_TILESET_FILEPATH);
 	 
 	g_state.map = new Map(LEVEL_WIDTH, LEVEL_HEIGHT, LEVEL_DATA, map_texture_id, TILE_SIZE, TILE_COUNT_X, TILE_COUNT_Y);
@@ -233,7 +240,8 @@ void initialize()
 		8,
 		0,
 		0.0f,
-		player_animation
+		player_animation,
+		g_state.land_sfx
 	);
 
 	//GLuint enemy_texture_id = load_texture(ENEMY_FILEPATH);
@@ -254,13 +262,6 @@ void initialize()
 	g_state.enemies[0].set_ai_type(GUARD);
 	g_state.enemies[0].set_ai_state(IDLE);
 	*/
-
-	Mix_OpenAudio(CD_QUAL_FREQ, MIX_DEFAULT_FORMAT, AUDIO_CHAN_AMT, AUDIO_BUFF_SIZE);
-
-	g_state.jump_sfx = Mix_LoadWAV(JUMP_SFX_FILEPATH);
-	Mix_VolumeChunk(g_state.jump_sfx, int(MIX_MAX_VOLUME * 0.75));
-
-	//g_state.land_sfx = Mix_LoadWAV(LAND_SFX_FILEPATH);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -292,7 +293,7 @@ void process_input()
 					case SDLK_SPACE:
 						if (g_state.player->get_collided_bottom())
 						{
-							Mix_PlayChannel(NEXT_CHNL, g_state.jump_sfx, PLAY_ONCE);
+							Mix_PlayChannel(-1, g_state.jump_sfx, 0);
 							g_state.player->jump();
 						}
 						break;

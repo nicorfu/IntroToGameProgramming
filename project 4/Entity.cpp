@@ -21,6 +21,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "ShaderProgram.h"
 #include "Entity.h"
+#include <SDL_mixer.h>
 
 
 Entity::Entity()
@@ -41,7 +42,7 @@ Entity::Entity()
 
 Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 position, glm::vec3 acceleration, 
 			   float width, float height, float speed, float jump_power, int animation_cols, int animation_rows, 
-			   int animation_frames, int animation_index, float animation_time, int animation[3][8])
+			   int animation_frames, int animation_index, float animation_time, int animation[3][8], Mix_Chunk* land_sfx)
 {
 	m_entity_type = entity_type;
 	m_texture_id = texture_id;
@@ -63,6 +64,8 @@ Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::
 
 	set_animation(animation);
 	m_animation_indices = m_animation[IDLE];
+
+	m_land_sfx = land_sfx;
 }
 
 
@@ -433,11 +436,20 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
 	check_collision_y(collidable_entities, collidable_entity_count);
 	check_collision_y(map);
 
+	if (m_collided_bottom && m_play_land)
+	{
+		Mix_PlayChannel(-1, m_land_sfx, 0);
+
+		m_play_land = false;
+	}
+
 	if (m_is_jumping)
 	{
 		m_is_jumping = false;
 
 		m_velocity.y += m_jump_power;
+
+		m_play_land = true;
 	}
 
 	m_model_matrix = glm::mat4(1.0f);
