@@ -61,8 +61,8 @@ Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::
 	m_animation_index = animation_index;
 	m_animation_time = animation_time;
 
-	face_right();
 	set_animation(animation);
+	m_animation_indices = m_animation[IDLE];
 }
 
 
@@ -507,7 +507,7 @@ void Entity::ai_guard(Entity* player)
 {
 	switch (m_ai_state)
 	{
-		case IDLE:
+		case IDLING:
 			if (glm::distance(m_position, player->get_position()) < 3.0f)
 			{
 				m_ai_state = WALKING;

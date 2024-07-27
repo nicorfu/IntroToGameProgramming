@@ -10,9 +10,9 @@
 
 enum EntityType { PLATFORM, PLAYER, ENEMY };
 enum AIType { WALKER, GUARD};
-enum AIState { WALKING, IDLE, ATTACKING};
+enum AIState { WALKING, IDLING, ATTACKING};
 
-enum AnimationAction { LEFT, RIGHT };
+enum AnimationAction { IDLE, MOVING, DYING };
 
 
 class Entity
@@ -103,23 +103,25 @@ public:
 
 	void face_left()
 	{
-		m_animation_indices = m_animation[LEFT];
+		m_facing_left = true;
 	}
 
 	void face_right()
 	{
-		m_animation_indices = m_animation[RIGHT];
+		m_facing_left = false;
 	}
 
 	void move_left()
 	{
 		m_movement.x = -1.0f;
+
 		face_left();
 	}
 
 	void move_right()
 	{
 		m_movement.x = 1.0f;
+
 		face_right();
 	}
 
