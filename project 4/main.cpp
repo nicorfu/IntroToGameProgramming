@@ -17,6 +17,7 @@
 #define LOG(argument) std::cout << argument << '\n'
 
 #include <iostream>
+#include <SDL_mixer.h>
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include "glm/mat4x4.hpp"
