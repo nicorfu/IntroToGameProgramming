@@ -278,27 +278,27 @@ void process_input()
 		}
 	}
 
-	/*
 	if (GAME_ONGOING)
 	{
 		const Uint8* key_state = SDL_GetKeyboardState(NULL);
 
 		if (key_state[SDL_SCANCODE_LEFT])
 		{
+			g_state.player->move_left();
 		}
 		else if (key_state[SDL_SCANCODE_RIGHT])
 		{
+			g_state.player->move_right();
 		}
 		else if (key_state[SDL_SCANCODE_SPACE])
 		{
 		}
 
-		if (glm::length(g_state.player->m_movement) > 1.0f)
+		if (glm::length(g_state.player->get_movement()) > 1.0f)
 		{
 			g_state.player->normalize_movement();
 		}
 	}
-	*/
 }
 
 

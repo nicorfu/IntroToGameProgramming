@@ -115,6 +115,7 @@ public:
 	{
 		m_movement.x = -1.0f;
 
+		m_animation_indices = m_animation[MOVING];
 		face_left();
 	}
 
@@ -122,6 +123,7 @@ public:
 	{
 		m_movement.x = 1.0f;
 
+		m_animation_indices = m_animation[MOVING];
 		face_right();
 	}
 
