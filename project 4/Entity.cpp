@@ -426,6 +426,11 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
 
 			if (m_animation_index >= m_animation_frames)
 			{
+				if (m_attacking)
+				{
+					m_attacking = false;
+					dont_move();
+				}
 				m_animation_index = 0;
 			}
 		}

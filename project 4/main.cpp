@@ -236,7 +236,7 @@ void initialize()
 		{0,  0,  1,  1,  0,  0,  1,  1 },	// idle
 		{16, 17, 18, 19, 16, 17, 18, 19},   // moving
 		{56, 57, 58, 59, 60, 61, 62, 63},	// dying
-		{64, 65, 66, 67, 68, 69, 70, 71}    // attacking
+		{66, 68, 70,  0,  0,  1,  1,  0}    // attacking
 	};
 
 	g_state.player = new Entity
@@ -312,6 +312,10 @@ void process_input()
 							Mix_PlayChannel(1, g_state.jump_sfx, 0);
 							g_state.player->jump();
 						}
+						break;
+
+					case SDLK_f:
+						g_state.player->attack();
 						break;
 
 					default:

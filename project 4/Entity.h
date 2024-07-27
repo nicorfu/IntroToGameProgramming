@@ -57,6 +57,7 @@ private:
 	int m_animation[4][8];
 
 	bool m_facing_left = false;
+	bool m_attacking = false;
 
 	bool m_collided_top = false;
 	bool m_collided_bottom = false;
@@ -125,7 +126,10 @@ public:
 	{
 		m_movement.x = 0.0f;
 
-		m_animation_indices = m_animation[IDLE];
+		if (!m_attacking)
+		{
+			m_animation_indices = m_animation[IDLE];
+		}
 	}
 
 	void move_left()
@@ -152,6 +156,14 @@ public:
 		{
 			Mix_PlayChannel(-1, m_walk_sfx[get_random_sfx_index(WALK_SFX_COUNT)], 0);
 		}
+	}
+
+	void attack()
+	{
+		m_animation_indices = m_animation[ATTACK];
+		m_animation_index = 0;
+
+		m_attacking = true;
 	}
 
 	void const jump()
@@ -339,9 +351,9 @@ public:
 		m_animation_time = new_animation_time; 
 	}
 
-	void set_animation(int new_animation[3][8])
+	void set_animation(int new_animation[4][8])
 	{
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 4; i++)
 		{
 			for (int j = 0; j < 8; j++)
 			{
