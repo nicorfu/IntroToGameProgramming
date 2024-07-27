@@ -35,8 +35,8 @@ private:
 	glm::vec3 m_velocity;
 	glm::vec3 m_acceleration;
 
-	float m_width = 1;
-	float m_height = 1;
+	float m_width = 1.0f;
+	float m_height = 1.0f;
 
 	float m_speed;
 	float m_jump_power;

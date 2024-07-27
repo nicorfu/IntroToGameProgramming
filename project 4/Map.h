@@ -38,6 +38,9 @@ private:
 	float m_left_bound;
 	float m_right_bound;
 
+	float m_x_offset;
+	float m_y_offset;
+
 public:
 	Map(int width, int height, unsigned int* level_data, GLuint texture_id, float tile_size, int tile_count_x,
 		int tile_count_y);

@@ -1,5 +1,6 @@
 ﻿  Entity.cpp
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\Entity.cpp(166,20): warning C4018: '<': signed/unsigned mismatch
+  Map.cpp
   main.cpp
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(85,2): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(85,6): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
