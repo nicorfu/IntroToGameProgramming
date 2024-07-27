@@ -34,6 +34,8 @@
 #define FIXED_TIMESTEP 0.0166666f
 #define ENEMY_COUNT 1
 #define WALK_SFX_COUNT 2
+#define HIT_SFX_COUNT 3
+#define GRUNT_SFX_COUNT 4
 #define GRAVITY -9.81
 #define GRAVITY_FACTOR 0.95
 
@@ -48,6 +50,8 @@ struct GameState
 	Mix_Chunk* jump_sfx;
 	Mix_Chunk* land_sfx;
 	Mix_Chunk* walk_sfx[WALK_SFX_COUNT];
+	Mix_Chunk* punch_sfx[HIT_SFX_COUNT];
+	Mix_Chunk* osiris_grunt_sfx[GRUNT_SFX_COUNT];
 };
 
 GameState g_state;
@@ -117,12 +121,20 @@ const char JUMP_SFX_FILEPATH[] = "assets/audio/jump.wav";
 const char LAND_SFX_FILEPATH[] = "assets/audio/land.wav";
 const char WALK1_SFX_FILEPATH[] = "assets/audio/grass_walk_1.wav";
 const char WALK2_SFX_FILEPATH[] = "assets/audio/grass_walk_2.wav";
+const char PUNCH1_SFX_FILEPATH[] = "assets/audio/punch_1.wav";
+const char PUNCH2_SFX_FILEPATH[] = "assets/audio/punch_2.wav";
+const char PUNCH3_SFX_FILEPATH[] = "assets/audio/punch_3.wav";
+const char OSIRISGRUNT1_SFX_FILEPATH[] = "assets/audio/osiris_grunt_1.wav";
+const char OSIRISGRUNT2_SFX_FILEPATH[] = "assets/audio/osiris_grunt_2.wav";
+const char OSIRISGRUNT3_SFX_FILEPATH[] = "assets/audio/osiris_grunt_3.wav";
+const char OSIRISGRUNT4_SFX_FILEPATH[] = "assets/audio/osiris_grunt_4.wav";
 
 glm::mat4 g_view_matrix;
 glm::mat4 g_projection_matrix;
 
 const float MILLISECONDS_IN_SECOND = 1000.0f;
 float g_previous_ticks = 0.0f;
+float g_curr_ticks = 0.0f;
 float g_accumulator = 0.0f;
 
 GLuint load_texture(const char* filepath);
@@ -219,6 +231,23 @@ void initialize()
 		Mix_VolumeChunk(g_state.walk_sfx[i], int(MIX_MAX_VOLUME * 0.1));
 	}
 
+	g_state.punch_sfx[0] = Mix_LoadWAV(PUNCH1_SFX_FILEPATH);
+	g_state.punch_sfx[1] = Mix_LoadWAV(PUNCH2_SFX_FILEPATH);
+	g_state.punch_sfx[2] = Mix_LoadWAV(PUNCH3_SFX_FILEPATH);
+	for (int i = 0; i < HIT_SFX_COUNT; i++)
+	{
+		Mix_VolumeChunk(g_state.punch_sfx[i], int(MIX_MAX_VOLUME * 0.8));
+	}
+
+	g_state.osiris_grunt_sfx[0] = Mix_LoadWAV(OSIRISGRUNT1_SFX_FILEPATH);
+	g_state.osiris_grunt_sfx[1] = Mix_LoadWAV(OSIRISGRUNT2_SFX_FILEPATH);
+	g_state.osiris_grunt_sfx[2] = Mix_LoadWAV(OSIRISGRUNT3_SFX_FILEPATH);
+	g_state.osiris_grunt_sfx[3] = Mix_LoadWAV(OSIRISGRUNT4_SFX_FILEPATH);
+	for (int i = 0; i < GRUNT_SFX_COUNT; i++)
+	{
+		Mix_VolumeChunk(g_state.osiris_grunt_sfx[i], int(MIX_MAX_VOLUME * 0.75));
+	}
+
 	GLuint map_texture_id = load_texture(MAP_TILESET_FILEPATH);
 	 
 	g_state.map = new Map(LEVEL_WIDTH, LEVEL_HEIGHT, LEVEL_DATA, map_texture_id, TILE_SIZE, TILE_COUNT_X, TILE_COUNT_Y);
@@ -257,7 +286,9 @@ void initialize()
 		0.0f,
 		player_animation,
 		g_state.land_sfx,
-		g_state.walk_sfx
+		g_state.walk_sfx,
+		g_state.punch_sfx,
+		g_state.osiris_grunt_sfx
 	);
 
 	//GLuint enemy_texture_id = load_texture(ENEMY_FILEPATH);
@@ -315,7 +346,12 @@ void process_input()
 						break;
 
 					case SDLK_f:
-						g_state.player->attack();
+						if ((g_curr_ticks - g_state.player->get_last_attack_time()) >= 0.7f)
+						{
+							g_state.player->attack();
+
+							g_state.player->set_last_attack_time(g_curr_ticks);
+						}
 						break;
 
 					default:
@@ -350,9 +386,9 @@ void process_input()
 
 void update()
 {
-	float ticks = (float)SDL_GetTicks() / MILLISECONDS_IN_SECOND;
-	float delta_time = ticks - g_previous_ticks;
-	g_previous_ticks = ticks;
+	g_curr_ticks = (float)SDL_GetTicks() / MILLISECONDS_IN_SECOND;
+	float delta_time = g_curr_ticks - g_previous_ticks;
+	g_previous_ticks = g_curr_ticks;
 
 	delta_time += g_accumulator;
 

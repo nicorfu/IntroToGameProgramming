@@ -9,6 +9,8 @@
 #include <SDL_mixer.h>
 
 #define WALK_SFX_COUNT 2
+#define HIT_SFX_COUNT 3
+#define GRUNT_SFX_COUNT 4
 
 
 enum EntityType { PLATFORM, PLAYER, ENEMY };
@@ -59,6 +61,8 @@ private:
 	bool m_facing_left = false;
 	bool m_attacking = false;
 
+	float m_last_attack_time = 0.0f;
+
 	bool m_collided_top = false;
 	bool m_collided_bottom = false;
 	bool m_collided_left = false;
@@ -68,6 +72,8 @@ private:
 	bool m_play_land = false;
 
 	Mix_Chunk* m_walk_sfx[WALK_SFX_COUNT];
+	Mix_Chunk* m_hit_sfx[HIT_SFX_COUNT];
+	Mix_Chunk* m_grunt_sfx[GRUNT_SFX_COUNT];
 
 public:
 	static constexpr int SECONDS_PER_FRAME = 6;
@@ -77,7 +83,7 @@ public:
 	Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 position, glm::vec3 acceleration, 
 		float width, float height, float speed, float jump_power, int animation_cols, int animation_rows, 
 		int animation_frames, int animation_index, float animation_time, int animation[4][8], Mix_Chunk* land_sfx,
-		Mix_Chunk* walk_sfx[2]);
+		Mix_Chunk* walk_sfx[2], Mix_Chunk* hit_sfx[3], Mix_Chunk* grunt_sfx[4]);
 
 	Entity(EntityType entity_type, GLuint texture_id, float width, float height, float speed);
 
@@ -160,6 +166,8 @@ public:
 
 	void attack()
 	{
+		Mix_PlayChannel(4, m_grunt_sfx[get_random_sfx_index(GRUNT_SFX_COUNT)], 0);
+
 		m_animation_indices = m_animation[ATTACK];
 		m_animation_index = 0;
 
@@ -261,6 +269,11 @@ public:
 		return m_collided_right;
 	}
 
+	float const get_last_attack_time() const
+	{
+		return m_last_attack_time;
+	}
+
 	void const set_entity_type(EntityType new_entity_type)
 	{
 		m_entity_type = new_entity_type;
@@ -351,6 +364,11 @@ public:
 		m_animation_time = new_animation_time; 
 	}
 
+	void const set_last_attack_time(float new_attack_time)
+	{
+		m_last_attack_time = new_attack_time;
+	}
+
 	void set_animation(int new_animation[4][8])
 	{
 		for (int i = 0; i < 4; i++)
@@ -367,6 +385,22 @@ public:
 		for (int i = 0; i < WALK_SFX_COUNT; i++)
 		{
 			m_walk_sfx[i] = new_walk_sfx[i];
+		}
+	}
+
+	void set_hit_sfx(Mix_Chunk* new_hit_sfx[HIT_SFX_COUNT])
+	{
+		for (int i = 0; i < HIT_SFX_COUNT; i++)
+		{
+			m_hit_sfx[i] = new_hit_sfx[i];
+		}
+	}
+
+	void set_grunt_sfx(Mix_Chunk* new_grunt_sfx[GRUNT_SFX_COUNT])
+	{
+		for (int i = 0; i < GRUNT_SFX_COUNT; i++)
+		{
+			m_grunt_sfx[i] = new_grunt_sfx[i];
 		}
 	}
 };
