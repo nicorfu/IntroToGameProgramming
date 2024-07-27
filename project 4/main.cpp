@@ -103,6 +103,10 @@ float g_accumulator = 0.0f;
 
 constexpr int FONTBANK_SIZE = 16;
 
+constexpr int CD_QUAL_FREQ = 44100;
+constexpr int AUDIO_CHAN_AMT = 2;
+constexpr int AUDIO_BUFF_SIZE = 4096;
+
 GLuint load_texture(const char* filepath);
 void initialize();
 void process_input();
@@ -146,7 +150,7 @@ GLuint load_texture(const char* filepath)
 
 void initialize()
 {
-	SDL_Init(SDL_INIT_VIDEO);
+	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 
 	g_display_window = SDL_CreateWindow("Rise of the AI", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 										WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
