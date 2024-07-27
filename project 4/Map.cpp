@@ -30,16 +30,6 @@ Map::Map(int width, int height, unsigned int* level_data, GLuint texture_id, flo
 	m_tile_count_y = tile_count_y;
 
 	build();
-
-	/*
-	m_x_offset = 5.0f - (m_tile_size / 2.0f);
-	m_y_offset = 4.0f - (m_tile_size / 2.0f) - (m_height - 1) * m_tile_size;
-
-	m_left_bound -= m_x_offset;
-	m_right_bound -= m_x_offset;
-	m_top_bound -= m_y_offset;
-	m_bottom_bound -= m_y_offset;
-	*/
 }
 
 void Map::build()
@@ -93,8 +83,6 @@ void Map::build()
 void Map::render(ShaderProgram* program)
 {
 	glm::mat4 model_matrix = glm::mat4(1.0f);
-
-	//model_matrix = glm::translate(model_matrix, glm::vec3(0.0f - m_x_offset, 0.0f - m_y_offset, 0.0f));
 
 	program->set_model_matrix(model_matrix);
 
