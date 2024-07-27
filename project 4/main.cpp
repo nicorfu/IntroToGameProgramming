@@ -32,7 +32,7 @@
 
 #define FIXED_TIMESTEP 0.0166666f
 #define LEVEL_WIDTH 20
-#define LEVEL_HEIGHT 5
+#define LEVEL_HEIGHT 10
 #define ENEMY_COUNT 1
 #define GRAVITY -9.81
 
@@ -58,9 +58,9 @@ ShaderProgram g_shader_program;
 constexpr int WINDOW_WIDTH = 1100;
 constexpr int WINDOW_HEIGHT = 710;
 
-constexpr float BG_RED = 11.0f / 255.0f;
-constexpr float BG_GREEN = 4.0f / 255.0f;
-constexpr float BG_BLUE = 4.0f / 255.0f;
+constexpr float BG_RED = 0.0f / 255.0f;
+constexpr float BG_GREEN = 202.0f / 255.0f;
+constexpr float BG_BLUE = 251.0f / 255.0f;
 constexpr float BG_OPACITY = 1.0f;
 
 constexpr int VIEWPORT_X = 0;
@@ -76,16 +76,22 @@ const char V_SHADER_PATH[] = "shaders/vertex_textured.glsl";
 const char F_SHADER_PATH[] = "shaders/fragment_textured.glsl";
 
 const char MAP_TILESET_FILEPATH[] = "assets/visual/oak_woods_tileset.png";
+const float TILE_SIZE = 1.0f;
 const int TILE_COUNT_X = 21;
 const int TILE_COUNT_Y = 15;
 
 unsigned int LEVEL_DATA[] =
 {
+	-1, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+	-1, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+	-1, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+	-1, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+	-1, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+	-1, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+	-1, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+	-1, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 	0,   1,   2,   1,   2,   1,   2,   1,   2,   1,  2,  1,  2,  1,  2,  1,  2,  1,  2,  3,
-	21,  22,  22,  22,  22,  22,  22,  22,  22,  22, 22,  22,  22,  22,  22,  22,  22,  22,  22,  22,
-	21,  22,  22,  22,  22,  22,  22,  22,  22,  22, 22,  22,  22,  22,  22,  22,  22,  22,  22,  22,
-	42,  22,  22,  22,  22,  22,  22,  22,  22,  22, 22,  22,  22,  22,  22,  22,  22,  22,  22,  22,
-	42,  22,  22,  22,  22,  22,  22,  22,  22,  22, 22,  22,  22,  22,  22,  22,  22,  22,  22,  22
+	21,  22,  22,  22,  22,  22,  22,  22,  22,  22, 22,  22,  22,  22,  22,  22,  22,  22,  22,  22
 };
 
 const char PLAYER_FILEPATH[] = "assets/visual/osiris_spritesheet.png";
@@ -173,7 +179,7 @@ void initialize()
 	g_shader_program.load(V_SHADER_PATH, F_SHADER_PATH);
 
 	g_view_matrix = glm::mat4(1.0f);
-	g_projection_matrix = glm::ortho(-5.0f, 5.0f, -3.75f, 3.75f, -1.0f, 1.0f);
+	g_projection_matrix = glm::ortho(-5.0f, 5.0f, -4.0f, 4.0f, -1.0f, 1.0f);
 
 	g_shader_program.set_projection_matrix(g_projection_matrix);
 	g_shader_program.set_view_matrix(g_view_matrix);
@@ -184,13 +190,13 @@ void initialize()
 
 	GLuint map_texture_id = load_texture(MAP_TILESET_FILEPATH);
 	 
-	g_state.map = new Map(LEVEL_WIDTH, LEVEL_HEIGHT, LEVEL_DATA, map_texture_id, 0.5f, TILE_COUNT_X, TILE_COUNT_Y);
+	g_state.map = new Map(LEVEL_WIDTH, LEVEL_HEIGHT, LEVEL_DATA, map_texture_id, TILE_SIZE, TILE_COUNT_X, TILE_COUNT_Y);
 
-	glm::vec3 grav_acceleration = glm::vec3(0.0f, GRAVITY * GRAVITY_FACTOR, 0.0f);
+	glm::vec3 acceleration = glm::vec3(0.0f, GRAVITY * GRAVITY_FACTOR, 0.0f);
 
 	GLuint player_texture_id = load_texture(PLAYER_FILEPATH);
 	
-	std::vector<std::vector<int>> player_animation =
+	int player_animation[3][8] =
 	{
 		{0,  0,  1,  1,  0,  0,  1,  1 },	// idle
 		{16, 17, 18, 19, 16, 17, 18, 19},   // walking
@@ -201,21 +207,19 @@ void initialize()
 	(
 		PLAYER,
 		player_texture_id,
-		glm::vec3(1.0f, 1.0f, 0.0f),
-		grav_acceleration,
+		glm::vec3(1.0f, 1.25f, 0.0f),
+		acceleration,
 		1.0f,
-		1.0f,
+		1.75f,
 		1.0f,
 		5.0f,
 		8,
-		3,
+		9,
 		8,
 		0,
 		0.0f,
 		player_animation
 	);
-
-	g_state.player->set_jump_power(5.0f);
 
 	//GLuint enemy_texture_id = load_texture(ENEMY_FILEPATH);
 

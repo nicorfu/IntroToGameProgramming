@@ -48,11 +48,13 @@ private:
 	int m_animation_frames;
 	int m_animation_index;
 
-	std::vector<int> m_animation_indices;
+	int* m_animation_indices = nullptr;
 
 	float m_animation_time = 0.0f;
 
-	std::vector<std::vector<int>> m_animation;
+	int m_animation[3][8];
+
+	bool m_facing_left = false;
 
 	bool m_collided_top = false;
 	bool m_collided_bottom = false;
@@ -66,7 +68,7 @@ public:
 
 	Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 acceleration, float width, float height,
 		float speed, float jump_power, int animation_cols, int animation_rows, int animation_frames, int animation_index,
-		float animation_time, std::vector<std::vector<int>> animation);
+		float animation_time, int animation[3][8]);
 
 	Entity(EntityType entity_type, GLuint texture_id, float width, float height, float speed);
 
@@ -75,7 +77,7 @@ public:
 
 	~Entity();
 
-	void draw_sprite_from_texture_atlas(ShaderProgram* program, GLuint texture_id, int index);
+	void draw_sprite_from_texture_atlas(ShaderProgram* program, GLuint texture_id, int index, bool facing_left);
 
 	void draw_text(ShaderProgram* shader_program, std::string text, float font_size, float spacing, glm::vec3 position, 
 		int fontbank_size);
@@ -306,11 +308,11 @@ public:
 		m_animation_time = new_animation_time; 
 	}
 
-	void set_animation(std::vector<std::vector<int>> new_animation)
+	void set_animation(int new_animation[3][8])
 	{
-		for (int i = 0; i < m_animation_rows; i++)
+		for (int i = 0; i < 3; i++)
 		{
-			for (int j = 0; j < m_animation_cols; j++)
+			for (int j = 0; j < 8; j++)
 			{
 				m_animation[i][j] = new_animation[i][j];
 			}

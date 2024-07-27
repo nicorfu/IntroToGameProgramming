@@ -149,7 +149,7 @@ bool Map::is_solid(glm::vec3 position, float* penetration_x, float* penetration_
 void Map::center()
 {
 	float x_offset = 5.0f - (m_tile_size / 2.0f);
-	float y_offset = 3.75 - (m_tile_size / 2.0f) - (m_height - 1) * m_tile_size;
+	float y_offset = 4.0f - (m_tile_size / 2.0f) - (m_height - 1) * m_tile_size;
 
 	model_matrix = glm::translate(model_matrix, glm::vec3(0.0f - x_offset, 0.0f - y_offset, 0.0f));
 }
