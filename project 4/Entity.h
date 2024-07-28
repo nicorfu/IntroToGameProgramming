@@ -103,12 +103,13 @@ public:
 	void const check_collision_x(Map* map);
 	void const check_collision_y(Map* map);
 
-	void update(float delta_time, Entity* player, Entity* collidable_entities, int collidable_entity_count, Map *map);
+	void update(float delta_time, Entity* player, Entity* collidable_entities, int collidable_entity_count, Map *map, 
+		float curr_ticks);
 	void render(ShaderProgram* program);
 
-	void ai_activate(Entity *player);
+	void ai_activate(Entity *player, float curr_ticks);
 	void ai_walk();
-	void ai_guard(Entity* player);	
+	void ai_guard(Entity* player, float curr_ticks);	
 
 	void normalize_movement()
 	{

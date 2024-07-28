@@ -442,11 +442,11 @@ void update()
 
 	while (delta_time >= FIXED_TIMESTEP)
 	{
-		g_state.player->update(FIXED_TIMESTEP, g_state.player, NULL, 0, g_state.map);
+		g_state.player->update(FIXED_TIMESTEP, g_state.player, NULL, 0, g_state.map, g_curr_ticks);
 
 		for (int i = 0; i < ENEMY_COUNT; i++)
 		{
-			g_state.enemies[i].update(FIXED_TIMESTEP, g_state.player, NULL, 0, g_state.map);
+			g_state.enemies[i].update(FIXED_TIMESTEP, g_state.player, NULL, 0, g_state.map, g_curr_ticks);
 		}
 
 		delta_time -= FIXED_TIMESTEP;

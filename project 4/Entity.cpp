@@ -373,7 +373,8 @@ void const Entity::check_collision_y(Map* map)
 }
 
 
-void Entity::update(float delta_time, Entity* player, Entity* collidable_entities, int collidable_entity_count, Map* map)
+void Entity::update(float delta_time, Entity* player, Entity* collidable_entities, int collidable_entity_count, Map* map, 
+	float curr_ticks)
 {
 	if (!m_is_active)
 	{
@@ -387,7 +388,7 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
 
 	if (m_entity_type == ENEMY)
 	{
-		ai_activate(player);
+		ai_activate(player, curr_ticks);
 	}
 
 	if (m_animation_indices != nullptr)
@@ -487,7 +488,7 @@ void Entity::render(ShaderProgram* program)
 }
 
 
-void Entity::ai_activate(Entity* player)
+void Entity::ai_activate(Entity* player, float curr_ticks)
 {
 	switch (m_ai_type)
 	{
@@ -496,7 +497,7 @@ void Entity::ai_activate(Entity* player)
 			break;
 
 		case GUARD:
-			ai_guard(player);
+			ai_guard(player, curr_ticks);
 			break;
 
 		default:
@@ -511,7 +512,7 @@ void Entity::ai_walk()
 }
 
 
-void Entity::ai_guard(Entity* player)
+void Entity::ai_guard(Entity* player, float curr_ticks)
 {
 	switch (m_ai_state)
 	{
@@ -536,11 +537,22 @@ void Entity::ai_guard(Entity* player)
 			{
 				m_ai_state = ATTACKING;
 			}
+			if (glm::distance(m_position, player->get_position()) > 3.0f)
+			{
+				m_ai_state = IDLING;
+			}
 			break;
 
 		case ATTACKING:
-			attack();
-			m_ai_state = WALKING;
+			if ((curr_ticks - m_last_attack_time) >= 1.0f && (m_velocity.x == 0.0f))
+			{
+				attack();
+				m_last_attack_time = curr_ticks;
+			}
+			if (glm::distance(m_position, player->get_position()) > 1.0f)
+			{
+				m_ai_state = WALKING;
+			}
 			break;
 
 		default:
