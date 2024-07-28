@@ -173,11 +173,19 @@ public:
 
 		for (int i = 0; i < hittable_entity_count; i++)
 		{
-			if (glm::distance(m_position, hittable_entities[i].m_position) < m_lethal_distance)
+			if (glm::distance(m_position, hittable_entities[i].m_position) < m_lethal_distance && hittable_entities[i].m_is_active)
 			{
 				Mix_PlayChannel((m_entity_type == PLAYER) ? 5 : 6, m_hit_sfx[get_random_sfx_index(HIT_SFX_COUNT)], 0);
 
-				hittable_entities[i].m_ai_state = DYING;
+				if (hittable_entities[i].m_entity_type == ENEMY)
+				{
+					hittable_entities[i].m_ai_state = DYING;
+				}
+				else
+				{
+					hittable_entities[i].die();
+				}
+				break;
 			}
 		}
 
@@ -208,6 +216,11 @@ public:
 	{
 		m_is_active = false;
 	};
+
+	bool const get_is_active() const
+	{
+		return m_is_active;
+	}
 
 	EntityType const get_entity_type() const
 	{
@@ -292,6 +305,11 @@ public:
 	float const get_last_attack_time() const
 	{
 		return m_last_attack_time;
+	}
+
+	bool const get_dying() const
+	{
+		return m_dying;
 	}
 
 	void const set_entity_type(EntityType new_entity_type)

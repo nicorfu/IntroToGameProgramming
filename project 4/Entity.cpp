@@ -547,7 +547,7 @@ void Entity::ai_guard(Entity* player, float curr_ticks)
 			break;
 
 		case ATTACKING:
-			if ((curr_ticks - m_last_attack_time) >= 1.0f && (m_velocity.x == 0.0f))
+			if ((curr_ticks - m_last_attack_time) >= 1.5f && (m_velocity.x == 0.0f) && player->m_is_active)
 			{
 				attack(player, 1);
 				m_last_attack_time = curr_ticks;

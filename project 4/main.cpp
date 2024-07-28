@@ -369,7 +369,14 @@ void initialize()
 
 void process_input()
 {
-	g_state.player->dont_move();
+	if (!g_state.player->get_dying())
+	{
+		g_state.player->dont_move();
+	}
+	else
+	{
+		GAME_ONGOING = false;
+	}
 
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
@@ -390,7 +397,7 @@ void process_input()
 
 					case SDLK_UP:
 					case SDLK_SPACE:
-						if (g_state.player->get_collided_bottom())
+						if (GAME_ONGOING && g_state.player->get_collided_bottom())
 						{
 							Mix_PlayChannel(1, g_state.jump_sfx, 0);
 							g_state.player->jump();
@@ -398,7 +405,7 @@ void process_input()
 						break;
 
 					case SDLK_f:
-						if ((g_curr_ticks - g_state.player->get_last_attack_time()) >= 0.7f && 
+						if (GAME_ONGOING && (g_curr_ticks - g_state.player->get_last_attack_time()) >= 0.7f &&
 							(g_state.player->get_velocity().x == 0.0f))
 						{
 							g_state.player->attack(g_state.enemies, ENEMY_COUNT);
