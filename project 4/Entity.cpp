@@ -62,6 +62,7 @@ Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::
 	m_animation_frames = animation_frames;
 	m_animation_index = animation_index;
 	m_animation_time = animation_time;
+	m_lethal_distance = (entity_type == PLAYER) ? 1.7f : 1.5f;
 
 	set_animation(animation);
 	m_animation_indices = m_animation[IDLE];
@@ -544,7 +545,7 @@ void Entity::ai_guard(Entity* player, float curr_ticks)
 		case ATTACKING:
 			if ((curr_ticks - m_last_attack_time) >= 1.0f && (m_velocity.x == 0.0f))
 			{
-				attack();
+				attack(player, 1);
 				m_last_attack_time = curr_ticks;
 			}
 			if (glm::distance(m_position, player->get_position()) > 1.5f)

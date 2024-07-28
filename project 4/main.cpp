@@ -51,6 +51,7 @@ struct GameState
 	Mix_Chunk* land_sfx;
 	Mix_Chunk* walk_sfx[WALK_SFX_COUNT];
 	Mix_Chunk* punch_sfx[HIT_SFX_COUNT];
+	Mix_Chunk* skull_sfx[HIT_SFX_COUNT];
 	Mix_Chunk* osiris_grunt_sfx[GRUNT_SFX_COUNT];
 	Mix_Chunk* irina_grunt_sfx[GRUNT_SFX_COUNT];
 };
@@ -126,6 +127,9 @@ const char WALK2_SFX_FILEPATH[] = "assets/audio/grass_walk_2.wav";
 const char PUNCH1_SFX_FILEPATH[] = "assets/audio/punch_1.wav";
 const char PUNCH2_SFX_FILEPATH[] = "assets/audio/punch_2.wav";
 const char PUNCH3_SFX_FILEPATH[] = "assets/audio/punch_3.wav";
+const char SKULL1_SFX_FILEPATH[] = "assets/audio/bone_hit_1.wav";
+const char SKULL2_SFX_FILEPATH[] = "assets/audio/bone_hit_2.wav";
+const char SKULL3_SFX_FILEPATH[] = "assets/audio/bone_hit_3.wav";
 const char OSIRISGRUNT1_SFX_FILEPATH[] = "assets/audio/osiris_grunt_1.wav";
 const char OSIRISGRUNT2_SFX_FILEPATH[] = "assets/audio/osiris_grunt_2.wav";
 const char OSIRISGRUNT3_SFX_FILEPATH[] = "assets/audio/osiris_grunt_3.wav";
@@ -242,7 +246,15 @@ void initialize()
 	g_state.punch_sfx[2] = Mix_LoadWAV(PUNCH3_SFX_FILEPATH);
 	for (int i = 0; i < HIT_SFX_COUNT; i++)
 	{
-		Mix_VolumeChunk(g_state.punch_sfx[i], int(MIX_MAX_VOLUME * 0.8));
+		Mix_VolumeChunk(g_state.punch_sfx[i], int(MIX_MAX_VOLUME * 1.0));
+	}
+
+	g_state.skull_sfx[0] = Mix_LoadWAV(SKULL1_SFX_FILEPATH);
+	g_state.skull_sfx[1] = Mix_LoadWAV(SKULL2_SFX_FILEPATH);
+	g_state.skull_sfx[2] = Mix_LoadWAV(SKULL3_SFX_FILEPATH);
+	for (int i = 0; i < HIT_SFX_COUNT; i++)
+	{
+		Mix_VolumeChunk(g_state.skull_sfx[i], int(MIX_MAX_VOLUME * 0.8));
 	}
 
 	g_state.osiris_grunt_sfx[0] = Mix_LoadWAV(OSIRISGRUNT1_SFX_FILEPATH);
@@ -342,7 +354,7 @@ void initialize()
 			enemy_animation,
 			g_state.land_sfx,
 			g_state.walk_sfx,
-			g_state.punch_sfx,
+			g_state.skull_sfx,
 			g_state.irina_grunt_sfx
 		);
 	}
@@ -389,7 +401,7 @@ void process_input()
 						if ((g_curr_ticks - g_state.player->get_last_attack_time()) >= 0.7f && 
 							(g_state.player->get_velocity().x == 0.0f))
 						{
-							g_state.player->attack();
+							g_state.player->attack(g_state.enemies, ENEMY_COUNT);
 
 							g_state.player->set_last_attack_time(g_curr_ticks);
 						}
@@ -493,6 +505,7 @@ void shutdown()
 	Mix_FreeChunk(g_state.land_sfx);
 	Mix_FreeChunk(*g_state.walk_sfx);
 	Mix_FreeChunk(*g_state.punch_sfx);
+	Mix_FreeChunk(*g_state.skull_sfx);
 	Mix_FreeChunk(*g_state.osiris_grunt_sfx);
 	Mix_FreeChunk(*g_state.irina_grunt_sfx);
 }

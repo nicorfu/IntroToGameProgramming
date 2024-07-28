@@ -62,6 +62,7 @@ private:
 	bool m_attacking = false;
 
 	float m_last_attack_time = 0.0f;
+	float m_lethal_distance;
 
 	bool m_collided_top = false;
 	bool m_collided_bottom = false;
@@ -162,14 +163,28 @@ public:
 		}
 	}
 
-	void attack()
+	void attack(Entity* hittable_entities, int hittable_entity_count)
 	{
-		Mix_PlayChannel(-1, m_grunt_sfx[get_random_sfx_index(GRUNT_SFX_COUNT)], 0);
+		Mix_PlayChannel((m_entity_type == PLAYER) ? 3 : 4, m_grunt_sfx[get_random_sfx_index(GRUNT_SFX_COUNT)], 0);
 
 		m_animation_indices = m_animation[ATTACK];
 		m_animation_index = 0;
 
+		for (int i = 0; i < hittable_entity_count; i++)
+		{
+			if (glm::distance(m_position, hittable_entities[i].m_position) < m_lethal_distance)
+			{
+				Mix_PlayChannel((m_entity_type == PLAYER) ? 5 : 6, m_hit_sfx[get_random_sfx_index(HIT_SFX_COUNT)], 0);
+
+				hittable_entities[i].die();
+			}
+		}
+
 		m_attacking = true;
+	}
+
+	void die()
+	{
 	}
 
 	void const jump()
