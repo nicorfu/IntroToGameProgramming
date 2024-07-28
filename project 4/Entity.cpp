@@ -212,6 +212,11 @@ bool const Entity::check_collision(Entity* other) const
 		return false;
 	}
 
+	if (this->get_dying() || other->get_dying())
+	{
+		return false;
+	}
+
 	if (!m_is_active || !other->m_is_active)
 	{
 		return false;
@@ -559,10 +564,6 @@ void Entity::ai_guard(Entity* player, float curr_ticks)
 			{
 				attack(player, 1);
 				m_last_attack_time = curr_ticks;
-			}
-			else if (!m_attacking)
-			{
-				m_ai_state = WALKING;
 			}
 			if (glm::distance(m_position, player->get_position()) >= 1.8f)
 			{

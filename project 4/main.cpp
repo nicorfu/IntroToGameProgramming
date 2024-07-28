@@ -37,7 +37,7 @@
 #define HIT_SFX_COUNT 3
 #define GRUNT_SFX_COUNT 4
 #define GRAVITY -9.81
-#define GRAVITY_FACTOR 0.95
+#define GRAVITY_FACTOR 1.0
 
 
 struct GameState
@@ -91,16 +91,16 @@ const float TILE_SIZE = 1.0f;
 const int TILE_COUNT_X = 21;
 const int TILE_COUNT_Y = 15;
 
-const int LEVEL_WIDTH = 20;
+const int LEVEL_WIDTH = 26;
 const int LEVEL_HEIGHT = 6;
 unsigned int LEVEL_DATA[] =
 {
-	 52,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,  -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
-	 94,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,    0,   1,    2,    1,    2,    1,    3,   -1,   -1,   -1,   -1,
-	 94,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   21, 255,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
-	  0,    1,    2,    1,    2,    1,    2,    1,  139,  213, 212,   22,    2,    1,    2,    1,    2,    1,    2,    3,
-	 21,   64,   64,   64,   64,   64,   64,   64,   64,  276, 253,   64,   64,   64,   64,   64,   64,   64,   64,   64,
-	210,  210,  210,  210,  210,  210,  210,  210,  210,  210, 210,  210,  210,  210,  210,  210,  210,  210,  210,  210
+	 52,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,  -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   68,  180,  181,   70,   -1,
+	 94,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,    0,   1,    2,    1,    2,    1,    3,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+	 94,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   21, 255,  254,   22,  255,  255,  252,  138,    1,    3,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+	  0,    1,    2,    1,    2,    1,    2,    1,  139,  213, 212,  275,  255,  254,  273,  231,  275,   255,   24,  -1,   -1,   -1,   -1,   -1,   -1,   -1,
+	 21,   22,   22,   22,   22,   22,   22,   22,   22,  276, 253,   22,   22,   22,   22,   22,   22,   22,  252,  138,    3,   -1,   -1,   -1,   -1,   -1,
+	 22,   22,   22,   22,   22,   22,   22,   22,   22,   22,  22,   22,   22,   22,    22,  22,   22,   22,   22,   22,   22,  - 1,   -1,   -1,   -1,   -1
 };
 
 constexpr int FONTBANK_SIZE = 16;
@@ -284,7 +284,7 @@ void initialize()
 	GLuint player_texture_id = load_texture(PLAYER_FILEPATH);
 
 	glm::vec3 player_scale = glm::vec3(1.0f, 1.25f, 0.0f) * 1.3f;
-	glm::vec3 player_position = glm::vec3(4.75f, -0.5f, 0.0f);
+	glm::vec3 player_position = glm::vec3(10.75f, -0.5f, 0.0f);
 	const float player_speed = 2.3f;
 	
 	int player_animation[4][8] =
@@ -321,7 +321,7 @@ void initialize()
 	GLuint enemy_texture_id = load_texture(ENEMY_FILEPATH);
 
 	glm::vec3 enemy_scale = glm::vec3(1.0f, 1.25f, 0.0f) * 4.0f;
-	glm::vec3 enemy1_position = glm::vec3(14.0f, -0.5f, 0.0f);
+	glm::vec3 enemy1_position = glm::vec3(1.0f, -0.5f, 0.0f);
 	const float enemy_speed = 0.75f;
 
 	int enemy_animation[4][8] =
@@ -491,12 +491,13 @@ void render()
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	g_state.map->render(&g_shader_program);
-	g_state.player->render(&g_shader_program);
 
 	for (int i = 0; i < ENEMY_COUNT; i++)
 	{
 		g_state.enemies[i].render(&g_shader_program);
 	}
+
+	g_state.player->render(&g_shader_program);
 
 	SDL_GL_SwapWindow(g_display_window);
 }
