@@ -532,9 +532,15 @@ void Entity::ai_guard(Entity* player)
 			{
 				move_right();
 			}
+			if (glm::distance(m_position, player->get_position()) < 1.0f)
+			{
+				m_ai_state = ATTACKING;
+			}
 			break;
 
 		case ATTACKING:
+			attack();
+			m_ai_state = WALKING;
 			break;
 
 		default:

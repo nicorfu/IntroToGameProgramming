@@ -45,7 +45,7 @@ private:
 	float m_speed;
 	float m_jump_power;
 
-	bool m_is_jumping;
+	bool m_is_jumping = false;
 
 	int m_animation_cols;
 	int m_animation_rows;
@@ -163,7 +163,7 @@ public:
 
 	void attack()
 	{
-		Mix_PlayChannel(4, m_grunt_sfx[get_random_sfx_index(GRUNT_SFX_COUNT)], 0);
+		Mix_PlayChannel(-1, m_grunt_sfx[get_random_sfx_index(GRUNT_SFX_COUNT)], 0);
 
 		m_animation_indices = m_animation[ATTACK];
 		m_animation_index = 0;
