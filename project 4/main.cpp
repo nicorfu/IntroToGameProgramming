@@ -254,7 +254,7 @@ void initialize()
 	g_state.skull_sfx[2] = Mix_LoadWAV(SKULL3_SFX_FILEPATH);
 	for (int i = 0; i < HIT_SFX_COUNT; i++)
 	{
-		Mix_VolumeChunk(g_state.skull_sfx[i], int(MIX_MAX_VOLUME * 0.8));
+		Mix_VolumeChunk(g_state.skull_sfx[i], int(MIX_MAX_VOLUME * 0.7));
 	}
 
 	g_state.osiris_grunt_sfx[0] = Mix_LoadWAV(OSIRISGRUNT1_SFX_FILEPATH);

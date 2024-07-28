@@ -15,7 +15,7 @@
 
 enum EntityType { PLATFORM, PLAYER, ENEMY };
 enum AIType { WALKER, GUARD};
-enum AIState { WALKING, IDLING, ATTACKING};
+enum AIState { WALKING, IDLING, ATTACKING, DYING};
 
 enum AnimationAction { IDLE, MOVE, DIE, ATTACK };
 
@@ -60,6 +60,7 @@ private:
 
 	bool m_facing_left = false;
 	bool m_attacking = false;
+	bool m_dying = false;
 
 	float m_last_attack_time = 0.0f;
 	float m_lethal_distance;
@@ -176,7 +177,7 @@ public:
 			{
 				Mix_PlayChannel((m_entity_type == PLAYER) ? 5 : 6, m_hit_sfx[get_random_sfx_index(HIT_SFX_COUNT)], 0);
 
-				hittable_entities[i].die();
+				hittable_entities[i].m_ai_state = DYING;
 			}
 		}
 
@@ -185,6 +186,12 @@ public:
 
 	void die()
 	{
+		m_animation_indices = m_animation[DIE];
+		m_animation_index = 0;
+
+		m_movement = glm::vec3(0.0f);
+
+		m_dying = true;
 	}
 
 	void const jump()

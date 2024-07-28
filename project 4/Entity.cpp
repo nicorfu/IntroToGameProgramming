@@ -411,6 +411,10 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
 					m_attacking = false;
 					dont_move();
 				}
+				if (m_dying)
+				{
+					deactivate();
+				}
 				m_animation_index = 0;
 			}
 		}
@@ -551,6 +555,13 @@ void Entity::ai_guard(Entity* player, float curr_ticks)
 			if (glm::distance(m_position, player->get_position()) > 1.5f)
 			{
 				m_ai_state = WALKING;
+			}
+			break;
+
+		case DYING:
+			if (!m_dying)
+			{
+				die();
 			}
 			break;
 
