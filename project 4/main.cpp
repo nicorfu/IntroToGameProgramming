@@ -52,6 +52,7 @@ struct GameState
 	Mix_Chunk* walk_sfx[WALK_SFX_COUNT];
 	Mix_Chunk* punch_sfx[HIT_SFX_COUNT];
 	Mix_Chunk* osiris_grunt_sfx[GRUNT_SFX_COUNT];
+	Mix_Chunk* irina_grunt_sfx[GRUNT_SFX_COUNT];
 };
 
 GameState g_state;
@@ -294,8 +295,8 @@ void initialize()
 
 	GLuint enemy_texture_id = load_texture(ENEMY_FILEPATH);
 
-	glm::vec3 enemy_scale = glm::vec3(1.0f, 1.25f, 0.0f) * 1.3f;
-	const float enemy_speed = 2.0f;
+	glm::vec3 enemy_scale = glm::vec3(1.0f, 1.25f, 0.0f) * 5.0f;
+	const float enemy_speed = 0.75f;
 
 	int enemy_animation[4][8] =
 	{
@@ -314,10 +315,10 @@ void initialize()
 			ENEMY,
 			enemy_texture_id,
 			enemy_scale,
-			glm::vec3(7.0f, 0.0f, 0.0f),
+			glm::vec3(10.0f, -0.5f, 0.0f),
 			acceleration,
-			1.0f,
-			1.0f,
+			1.25f,
+			2.3f,
 			enemy_speed,
 			5.2f,
 			18,
@@ -333,8 +334,8 @@ void initialize()
 		);
 	}
 
-	g_state.enemies[0].set_ai_type(WALKER);
-	g_state.enemies[0].set_ai_state(WALKING);
+	g_state.enemies[0].set_ai_type(GUARD);
+	g_state.enemies[0].set_ai_state(IDLING);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

@@ -423,10 +423,12 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
 		m_position.x += 0.1f;
 	}
 	check_collision_x(collidable_entities, collidable_entity_count);
+	check_collision_x(player, 1);
 	check_collision_x(map);
 
 	m_position.y += m_velocity.y * delta_time;
 	check_collision_y(collidable_entities, collidable_entity_count);
+	check_collision_y(player, 1);
 	check_collision_y(map);
 
 	if (m_collided_bottom && m_play_land)
@@ -514,20 +516,21 @@ void Entity::ai_guard(Entity* player)
 	switch (m_ai_state)
 	{
 		case IDLING:
+			dont_move();
 			if (glm::distance(m_position, player->get_position()) < 3.0f)
 			{
 				m_ai_state = WALKING;
-				break;
 			}
+			break;
 
 		case WALKING:
 			if (m_position.x > player->get_position().x)
 			{
-				m_movement = glm::vec3(-1.0f, 0.0f, 0.0f);
+				move_left();
 			}
 			else
 			{
-				m_movement = glm::vec3(1.0f, 0.0f, 0.0f);
+				move_right();
 			}
 			break;
 
