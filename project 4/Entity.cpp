@@ -424,7 +424,7 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
 	m_velocity += m_acceleration * delta_time;
 
 	m_position.x += m_velocity.x * delta_time;
-	if (m_position.x < -0.25f)
+	if (m_position.x < 0.0f)
 	{
 		m_position.x += 0.1f;
 	}
