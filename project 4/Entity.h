@@ -87,9 +87,6 @@ public:
 
 	Entity(EntityType entity_type, GLuint texture_id, float width, float height, float speed);
 
-	Entity(EntityType entity_type, AIType ai_type, AIState ai_state, GLuint texture_id, float width, float height, 
-		   float speed);
-
 	~Entity();
 
 	void draw_sprite_from_texture_atlas(ShaderProgram* program, GLuint texture_id, int index, bool facing_left);

@@ -1,4 +1,7 @@
-﻿  main.cpp
+﻿  Entity.cpp
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\Entity.cpp(149,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\nico\Desktop\IntroToGameProgramming\project 4\Entity.cpp(201,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  main.cpp
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(96,6): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(96,11): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(96,16): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
@@ -56,4 +59,5 @@ C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(98,74): warning 
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(98,78): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(98,82): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
 C:\Users\nico\Desktop\IntroToGameProgramming\project 4\main.cpp(98,86): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+  Generating Code...
   project 4.vcxproj -> C:\Users\nico\Desktop\IntroToGameProgramming\project 4\Debug\project 4.exe

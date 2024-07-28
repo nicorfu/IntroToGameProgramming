@@ -94,30 +94,6 @@ Entity::Entity(EntityType entity_type, GLuint texture_id, float width, float hei
 }
 
 
-Entity::Entity(EntityType entity_type, AIType ai_type, AIState ai_state, GLuint texture_id, float width, float height,
-	float speed)
-{
-	m_entity_type = entity_type;
-	m_ai_type = ai_type;
-	m_ai_state = ai_state;
-	m_texture_id = texture_id;
-	m_model_matrix = glm::mat4(1.0f);
-	m_scale = glm::vec3(1.0f, 1.0f, 0.0f);
-	m_position = glm::vec3(0.0f, 0.0f, 0.0f);
-	m_movement = glm::vec3(0.0f, 0.0f, 0.0f);
-	m_velocity = glm::vec3(0.0f, 0.0f, 0.0f);
-	m_acceleration = glm::vec3(0.0f, 0.0f, 0.0f);
-	m_width = width;
-	m_height = height;
-	m_speed = speed;
-	m_animation_cols = 0;
-	m_animation_rows = 0;
-	m_animation_frames = 0;
-	m_animation_index = 0;
-	m_animation_time = 0.0f;
-}
-
-
 Entity::~Entity()
 { }
 
@@ -529,7 +505,7 @@ void Entity::ai_activate(Entity* player)
 
 void Entity::ai_walk()
 {
-	m_movement = glm::vec3(-1.0f, 0.0f, 0.0f);
+	move_left();
 }
 
 

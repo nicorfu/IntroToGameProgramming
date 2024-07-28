@@ -114,6 +114,7 @@ constexpr int MILS_IN_SEC = 1000;
 constexpr int ALL_SFX_CHN = -1;
 
 const char PLAYER_FILEPATH[] = "assets/visual/osiris_spritesheet.png";
+const char ENEMY_FILEPATH[] = "assets/visual/irina_spritesheet.png";
 
 const char FONTSHEET_FILEPATH[] = "assets/visual/font.png";
 
@@ -245,7 +246,7 @@ void initialize()
 	g_state.osiris_grunt_sfx[3] = Mix_LoadWAV(OSIRISGRUNT4_SFX_FILEPATH);
 	for (int i = 0; i < GRUNT_SFX_COUNT; i++)
 	{
-		Mix_VolumeChunk(g_state.osiris_grunt_sfx[i], int(MIX_MAX_VOLUME * 0.75));
+		Mix_VolumeChunk(g_state.osiris_grunt_sfx[i], int(MIX_MAX_VOLUME * 0.8));
 	}
 
 	GLuint map_texture_id = load_texture(MAP_TILESET_FILEPATH);
@@ -275,7 +276,7 @@ void initialize()
 		player_scale,
 		player_position,
 		acceleration,
-		1.0f,
+		0.58f,
 		1.5f,
 		player_speed,
 		5.2f,
@@ -291,24 +292,49 @@ void initialize()
 		g_state.osiris_grunt_sfx
 	);
 
-	//GLuint enemy_texture_id = load_texture(ENEMY_FILEPATH);
+	GLuint enemy_texture_id = load_texture(ENEMY_FILEPATH);
 
-	//g_state.enemies = new Entity();
+	glm::vec3 enemy_scale = glm::vec3(1.0f, 1.25f, 0.0f) * 1.3f;
+	const float enemy_speed = 2.0f;
+
+	int enemy_animation[4][8] =
+	{
+		{36, 39, 42, 44, 37, 40, 43, 45},	// idle
+		{54, 56, 58, 60, 55, 57, 59, 61},   // moving
+		{19, 21, 23, 25, 27, 29, 32, 35},	// dying
+		{ 6,  8, 10, 11, 12, 40, 43, 45}    // attacking
+	};
+
+	g_state.enemies = new Entity[ENEMY_COUNT];
 
 	for (int i = 0; i < ENEMY_COUNT; i++)
 	{
-		//g_state.enemies[i] = Entity(enemy_texture_id, 1.0f, 1.0f, 1.0f, ENEMY, GUARD, IDLE);
-		//g_state.enemies[i].set_jump_power(3.0f);
+		g_state.enemies[i] = Entity
+		(
+			ENEMY,
+			enemy_texture_id,
+			enemy_scale,
+			glm::vec3(7.0f, 0.0f, 0.0f),
+			acceleration,
+			1.0f,
+			1.0f,
+			enemy_speed,
+			5.2f,
+			18,
+			4,
+			8,
+			0,
+			0.0f,
+			enemy_animation,
+			g_state.land_sfx,
+			g_state.walk_sfx,
+			g_state.punch_sfx,
+			g_state.osiris_grunt_sfx
+		);
 	}
 
-	/*
-	g_state.enemies[0].set_position(glm::vec3(3.0f, 0.0f, 0.0f));
-	g_state.enemies[0].set_movement(glm::vec3(0.0f));
-	g_state.enemies[0].set_acceleration(glm::vec3(0.0f, -9.81f, 0.0f));
-	g_state.enemies[0].set_entity_type(ENEMY);
-	g_state.enemies[0].set_ai_type(GUARD);
-	g_state.enemies[0].set_ai_state(IDLE);
-	*/
+	g_state.enemies[0].set_ai_type(WALKER);
+	g_state.enemies[0].set_ai_state(WALKING);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -346,7 +372,8 @@ void process_input()
 						break;
 
 					case SDLK_f:
-						if ((g_curr_ticks - g_state.player->get_last_attack_time()) >= 0.7f)
+						if ((g_curr_ticks - g_state.player->get_last_attack_time()) >= 0.7f && 
+							(g_state.player->get_velocity().x == 0.0f))
 						{
 							g_state.player->attack();
 
@@ -405,7 +432,7 @@ void update()
 
 		for (int i = 0; i < ENEMY_COUNT; i++)
 		{
-			//g_state.enemies[i].update(FIXED_TIMESTEP, g_state.player, g_state.platforms, PLATFORM_COUNT);
+			g_state.enemies[i].update(FIXED_TIMESTEP, g_state.player, NULL, 0, g_state.map);
 		}
 
 		delta_time -= FIXED_TIMESTEP;
@@ -433,7 +460,7 @@ void render()
 
 	for (int i = 0; i < ENEMY_COUNT; i++)
 	{
-		//g_state.enemies[i].render(&g_shader_program);
+		g_state.enemies[i].render(&g_shader_program);
 	}
 
 	SDL_GL_SwapWindow(g_display_window);
@@ -446,10 +473,13 @@ void shutdown()
 
 	delete g_state.map;
 	delete g_state.player;
-	//delete [] g_state.enemies;
-	delete g_state.enemies;
+	delete [] g_state.enemies;
 
 	Mix_FreeChunk(g_state.jump_sfx);
+	Mix_FreeChunk(g_state.land_sfx);
+	Mix_FreeChunk(*g_state.walk_sfx);
+	Mix_FreeChunk(*g_state.punch_sfx);
+	Mix_FreeChunk(*g_state.osiris_grunt_sfx);
 }
 
 
