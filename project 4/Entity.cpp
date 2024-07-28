@@ -62,7 +62,7 @@ Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::
 	m_animation_frames = animation_frames;
 	m_animation_index = animation_index;
 	m_animation_time = animation_time;
-	m_lethal_distance = (entity_type == PLAYER) ? 1.7f : 1.5f;
+	m_lethal_distance = (entity_type == PLAYER) ? 1.5f : 1.4f;
 
 	set_animation(animation);
 	m_animation_indices = m_animation[IDLE];
@@ -521,7 +521,7 @@ void Entity::ai_guard(Entity* player, float curr_ticks)
 	{
 		case IDLING:
 			dont_move();
-			if (glm::distance(m_position, player->get_position()) < 3.0f)
+			if (glm::distance(m_position, player->get_position()) < 4.0f)
 			{
 				m_ai_state = WALKING;
 			}
@@ -536,11 +536,18 @@ void Entity::ai_guard(Entity* player, float curr_ticks)
 			{
 				move_right();
 			}
-			if (glm::distance(m_position, player->get_position()) < 1.75f)
+			if (glm::distance(m_position, player->get_position()) < 1.8f)
 			{
-				m_ai_state = ATTACKING;
+				if (player->get_velocity().x != 0.0f)
+				{
+					m_ai_state = ATTACKING;
+				}
+				else if(glm::distance(m_position, player->get_position()) < m_lethal_distance)
+				{
+					m_ai_state = ATTACKING;
+				}
 			}
-			if (glm::distance(m_position, player->get_position()) > 3.0f)
+			if (glm::distance(m_position, player->get_position()) >= 4.0f)
 			{
 				m_ai_state = IDLING;
 			}
@@ -553,7 +560,11 @@ void Entity::ai_guard(Entity* player, float curr_ticks)
 				attack(player, 1);
 				m_last_attack_time = curr_ticks;
 			}
-			if (glm::distance(m_position, player->get_position()) > 1.75f)
+			else if (!m_attacking)
+			{
+				m_ai_state = WALKING;
+			}
+			if (glm::distance(m_position, player->get_position()) >= 1.8f)
 			{
 				m_ai_state = WALKING;
 			}
