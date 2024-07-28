@@ -185,7 +185,7 @@ public:
 				{
 					hittable_entities[i].die();
 				}
-				break;
+				
 			}
 		}
 

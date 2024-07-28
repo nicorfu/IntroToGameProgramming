@@ -536,7 +536,7 @@ void Entity::ai_guard(Entity* player, float curr_ticks)
 			{
 				move_right();
 			}
-			if (glm::distance(m_position, player->get_position()) < 1.5f)
+			if (glm::distance(m_position, player->get_position()) < 1.75f)
 			{
 				m_ai_state = ATTACKING;
 			}
@@ -547,12 +547,13 @@ void Entity::ai_guard(Entity* player, float curr_ticks)
 			break;
 
 		case ATTACKING:
-			if ((curr_ticks - m_last_attack_time) >= 1.5f && (m_velocity.x == 0.0f) && player->m_is_active)
+			m_movement.x = 0.0f;
+			if ((curr_ticks - m_last_attack_time) >= 1.5f && player->m_is_active)
 			{
 				attack(player, 1);
 				m_last_attack_time = curr_ticks;
 			}
-			if (glm::distance(m_position, player->get_position()) > 1.5f)
+			if (glm::distance(m_position, player->get_position()) > 1.75f)
 			{
 				m_ai_state = WALKING;
 			}
