@@ -94,7 +94,7 @@ const int LEVEL_WIDTH = 20;
 const int LEVEL_HEIGHT = 6;
 unsigned int LEVEL_DATA[] =
 {
-	52, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+	48, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 	94, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 	94, -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 	0,   1,   2,   1,   2,   1,   2,   1,   2,   1,  2,  1,  2,  1,  2,  1,  2,  1,  2,  3,
@@ -260,7 +260,7 @@ void initialize()
 	g_state.irina_grunt_sfx[3] = Mix_LoadWAV(IRINAGRUNT4_SFX_FILEPATH);
 	for (int i = 0; i < GRUNT_SFX_COUNT; i++)
 	{
-		Mix_VolumeChunk(g_state.irina_grunt_sfx[i], int(MIX_MAX_VOLUME * 0.8));
+		Mix_VolumeChunk(g_state.irina_grunt_sfx[i], int(MIX_MAX_VOLUME * 0.62));
 	}
 
 	GLuint map_texture_id = load_texture(MAP_TILESET_FILEPATH);
@@ -293,7 +293,7 @@ void initialize()
 		0.58f,
 		1.5f,
 		player_speed,
-		5.2f,
+		8.0f,
 		8,
 		9,
 		8,
@@ -308,8 +308,8 @@ void initialize()
 
 	GLuint enemy_texture_id = load_texture(ENEMY_FILEPATH);
 
-	glm::vec3 enemy_scale = glm::vec3(1.0f, 1.25f, 0.0f) * 5.0f;
-	const float enemy_speed = 0.75f;
+	glm::vec3 enemy_scale = glm::vec3(1.0f, 1.25f, 0.0f) * 4.0f;
+	const float enemy_speed = 0.5f;
 
 	int enemy_animation[4][8] =
 	{
@@ -330,8 +330,8 @@ void initialize()
 			enemy_scale,
 			glm::vec3(10.0f, -0.5f, 0.0f),
 			acceleration,
-			1.25f,
-			2.3f,
+			1.5f,
+			1.8f,
 			enemy_speed,
 			5.2f,
 			18,
@@ -442,11 +442,11 @@ void update()
 
 	while (delta_time >= FIXED_TIMESTEP)
 	{
-		g_state.player->update(FIXED_TIMESTEP, g_state.player, NULL, 0, g_state.map, g_curr_ticks);
+		g_state.player->update(FIXED_TIMESTEP, g_state.player, g_state.enemies, ENEMY_COUNT, g_state.map, g_curr_ticks);
 
 		for (int i = 0; i < ENEMY_COUNT; i++)
 		{
-			g_state.enemies[i].update(FIXED_TIMESTEP, g_state.player, NULL, 0, g_state.map, g_curr_ticks);
+			g_state.enemies[i].update(FIXED_TIMESTEP, g_state.player, g_state.player, 1, g_state.map, g_curr_ticks);
 		}
 
 		delta_time -= FIXED_TIMESTEP;
