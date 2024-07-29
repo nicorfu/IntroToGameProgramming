@@ -447,6 +447,14 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
 		m_play_land = false;
 	}
 
+	if (m_ai_state != IDLING && (m_collided_left || m_collided_right))
+	{
+		if (m_velocity.y == 0.0f)
+		{
+			jump();
+		}
+	}
+
 	if (m_is_jumping)
 	{
 		m_is_jumping = false;
@@ -530,7 +538,7 @@ void Entity::ai_guard(Entity* player, float curr_ticks)
 	{
 		case IDLING:
 			dont_move();
-			if (glm::distance(m_position, player->get_position()) < 4.0f)
+			if (glm::distance(m_position, player->get_position()) < 3.5f)
 			{
 				m_ai_state = WALKING;
 			}
@@ -556,7 +564,7 @@ void Entity::ai_guard(Entity* player, float curr_ticks)
 					m_ai_state = ATTACKING;
 				}
 			}
-			if (glm::distance(m_position, player->get_position()) >= 4.0f)
+			if (glm::distance(m_position, player->get_position()) >= 3.5f)
 			{
 				m_ai_state = IDLING;
 			}

@@ -322,7 +322,7 @@ void initialize()
 
 	glm::vec3 enemy_scale = glm::vec3(1.0f, 1.25f, 0.0f) * 4.0f;
 
-	glm::vec3 enemy1_position = glm::vec3(15.0f, -0.5f, 0.0f);
+	glm::vec3 enemy1_position = glm::vec3(20.0f, -0.5f, 0.0f);
 	glm::vec3 enemy2_position = glm::vec3(23.0f, 0.5f, 0.0f);
 
 	const float enemy_speed = 0.75f;
@@ -346,10 +346,10 @@ void initialize()
 			enemy_scale,
 			glm::vec3(0.0f),
 			acceleration,
-			0.6f,
+			0.5f,
 			1.8f,
 			enemy_speed,
-			5.2f,
+			6.3f,
 			18,
 			4,
 			8,
@@ -366,6 +366,7 @@ void initialize()
 	g_state.enemies[0].set_ai_type(GUARDIAN);
 	g_state.enemies[0].set_ai_state(IDLING);
 	g_state.enemies[0].set_position(enemy1_position);
+	g_state.enemies[0].face_left();
 
 	g_state.enemies[1].set_ai_type(WAITER);
 	g_state.enemies[1].set_ai_state(IDLING);
