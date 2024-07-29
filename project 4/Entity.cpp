@@ -244,15 +244,11 @@ void const Entity::check_collision_x(Entity* collidable_entities, int collidable
 			{
 				m_position.x -= x_overlap;
 				m_velocity.x = 0;
-
-				m_collided_right = true;
 			}
 			else if (m_velocity.x < 0)
 			{
 				m_position.x += x_overlap;
 				m_velocity.x = 0;
-
-				m_collided_left = true;
 			}
 		}
 	}
@@ -509,7 +505,7 @@ void Entity::ai_activate(Entity* player, float curr_ticks)
 	switch (m_ai_type)
 	{
 		case WALKER:
-			ai_walk();
+			ai_walk(player, curr_ticks);
 			break;
 
 		case GUARDIAN:
@@ -526,9 +522,35 @@ void Entity::ai_activate(Entity* player, float curr_ticks)
 }
 
 
-void Entity::ai_walk()
+void Entity::ai_walk(Entity* player, float curr_ticks)
 {
-	move_left();
+	switch (m_ai_state)
+	{
+		case WALKING:
+			if (m_position.x <= 8.85f)
+			{
+				move_right();
+			}
+			else if (m_position.x >= 15.15f)
+			{
+				move_left();
+			}
+			if (m_facing_left)
+			{
+				move_left();
+			}
+			else
+			{
+				move_right();
+			}
+			break;
+
+		case ATTACKING:
+			break;
+
+		case DYING:
+			break;
+	}
 }
 
 

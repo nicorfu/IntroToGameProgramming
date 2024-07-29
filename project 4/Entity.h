@@ -110,7 +110,7 @@ public:
 	void render(ShaderProgram* program);
 
 	void ai_activate(Entity *player, float curr_ticks);
-	void ai_walk();
+	void ai_walk(Entity* player, float curr_ticks);
 	void ai_guard(Entity* player, float curr_ticks);	
 	void ai_wait(Entity* player, float curr_ticks);
 

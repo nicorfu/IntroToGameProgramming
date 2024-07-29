@@ -32,7 +32,7 @@
 #include "Map.h"
 
 #define FIXED_TIMESTEP 0.0166666f
-#define ENEMY_COUNT 2
+#define ENEMY_COUNT 3
 #define WALK_SFX_COUNT 2
 #define HIT_SFX_COUNT 3
 #define GRUNT_SFX_COUNT 4
@@ -324,8 +324,7 @@ void initialize()
 
 	glm::vec3 enemy1_position = glm::vec3(20.0f, -0.5f, 0.0f);
 	glm::vec3 enemy2_position = glm::vec3(23.0f, 0.5f, 0.0f);
-
-	const float enemy_speed = 0.75f;
+	glm::vec3 enemy3_position = glm::vec3(11.8f, 0.5f, 0.0f);
 
 	int enemy_animation[4][8] =
 	{
@@ -348,7 +347,7 @@ void initialize()
 			acceleration,
 			0.5f,
 			1.8f,
-			enemy_speed,
+			0.0f,
 			6.3f,
 			18,
 			4,
@@ -367,11 +366,18 @@ void initialize()
 	g_state.enemies[0].set_ai_state(IDLING);
 	g_state.enemies[0].set_position(enemy1_position);
 	g_state.enemies[0].face_left();
+	g_state.enemies[0].set_speed(0.75f);
 
 	g_state.enemies[1].set_ai_type(WAITER);
 	g_state.enemies[1].set_ai_state(IDLING);
 	g_state.enemies[1].set_position(enemy2_position);
 	g_state.enemies[1].face_left();
+
+	g_state.enemies[2].set_ai_type(WALKER);
+	g_state.enemies[2].set_ai_state(WALKING);
+	g_state.enemies[2].set_position(enemy3_position);
+	g_state.enemies[2].move_left();
+	g_state.enemies[2].set_speed(0.75f);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
