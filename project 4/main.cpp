@@ -32,7 +32,7 @@
 #include "Map.h"
 
 #define FIXED_TIMESTEP 0.0166666f
-#define ENEMY_COUNT 1
+#define ENEMY_COUNT 2
 #define WALK_SFX_COUNT 2
 #define HIT_SFX_COUNT 3
 #define GRUNT_SFX_COUNT 4
@@ -95,7 +95,7 @@ const int LEVEL_WIDTH = 26;
 const int LEVEL_HEIGHT = 6;
 unsigned int LEVEL_DATA[] =
 {
-	 52,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,  -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   68,  180,  181,   70,   -1,
+	 52,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,  -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   68,  180,   70,   -1,   -1,
 	 94,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,    0,   1,    2,    1,    2,    1,    3,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
 	 94,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   21, 255,  254,   22,  255,  255,  252,  138,    1,    3,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
 	  0,    1,    2,    1,    2,    1,    2,    1,  139,  213, 212,  275,  255,  254,  273,  231,  275,   255,   24,  -1,   -1,   -1,   -1,   -1,   -1,   -1,
@@ -284,7 +284,7 @@ void initialize()
 	GLuint player_texture_id = load_texture(PLAYER_FILEPATH);
 
 	glm::vec3 player_scale = glm::vec3(1.0f, 1.25f, 0.0f) * 1.3f;
-	glm::vec3 player_position = glm::vec3(10.75f, -0.5f, 0.0f);
+	glm::vec3 player_position = glm::vec3(4.75f, -0.5f, 0.0f);
 	const float player_speed = 2.3f;
 	
 	int player_animation[4][8] =
@@ -321,7 +321,10 @@ void initialize()
 	GLuint enemy_texture_id = load_texture(ENEMY_FILEPATH);
 
 	glm::vec3 enemy_scale = glm::vec3(1.0f, 1.25f, 0.0f) * 4.0f;
-	glm::vec3 enemy1_position = glm::vec3(1.0f, -0.5f, 0.0f);
+
+	glm::vec3 enemy1_position = glm::vec3(15.0f, -0.5f, 0.0f);
+	glm::vec3 enemy2_position = glm::vec3(23.0f, 0.5f, 0.0f);
+
 	const float enemy_speed = 0.75f;
 
 	int enemy_animation[4][8] =
@@ -360,9 +363,14 @@ void initialize()
 		);
 	}
 
-	g_state.enemies[0].set_ai_type(GUARD);
+	g_state.enemies[0].set_ai_type(GUARDIAN);
 	g_state.enemies[0].set_ai_state(IDLING);
 	g_state.enemies[0].set_position(enemy1_position);
+
+	g_state.enemies[1].set_ai_type(WAITER);
+	g_state.enemies[1].set_ai_state(IDLING);
+	g_state.enemies[1].set_position(enemy2_position);
+	g_state.enemies[1].face_left();
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

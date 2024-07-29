@@ -13,8 +13,8 @@
 #define GRUNT_SFX_COUNT 4
 
 
-enum EntityType { PLATFORM, PLAYER, ENEMY };
-enum AIType { WALKER, GUARD};
+enum EntityType { PLAYER, ENEMY };
+enum AIType { WALKER, GUARDIAN, WAITER};
 enum AIState { WALKING, IDLING, ATTACKING, DYING};
 
 enum AnimationAction { IDLE, MOVE, DIE, ATTACK };
@@ -112,6 +112,7 @@ public:
 	void ai_activate(Entity *player, float curr_ticks);
 	void ai_walk();
 	void ai_guard(Entity* player, float curr_ticks);	
+	void ai_wait(Entity* player, float curr_ticks);
 
 	void normalize_movement()
 	{

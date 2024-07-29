@@ -504,8 +504,12 @@ void Entity::ai_activate(Entity* player, float curr_ticks)
 			ai_walk();
 			break;
 
-		case GUARD:
+		case GUARDIAN:
 			ai_guard(player, curr_ticks);
+			break;
+
+		case WAITER:
+			ai_wait(player, curr_ticks);
 			break;
 
 		default:
@@ -579,6 +583,40 @@ void Entity::ai_guard(Entity* player, float curr_ticks)
 			break;
 
 		default:
+			break;
+	}
+}
+
+
+void Entity::ai_wait(Entity* player, float curr_ticks)
+{
+	switch (m_ai_state)
+	{
+		case IDLING:
+			dont_move();
+			if (glm::distance(m_position, player->get_position()) < 1.45f)
+			{
+				m_ai_state = ATTACKING;
+			}
+			break;
+
+		case ATTACKING:
+			if ((curr_ticks - m_last_attack_time) >= 1.5f && player->m_is_active)
+			{
+				attack(player, 1);
+				m_last_attack_time = curr_ticks;
+			}
+			if (glm::distance(m_position, player->get_position()) >= 1.45f)
+			{
+				m_ai_state = IDLING;
+			}
+			break;
+
+		case DYING:
+			if (!m_dying)
+			{
+				die();
+			}
 			break;
 	}
 }
