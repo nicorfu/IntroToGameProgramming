@@ -36,6 +36,7 @@
 #define WALK_SFX_COUNT 2
 #define HIT_SFX_COUNT 3
 #define GRUNT_SFX_COUNT 4
+#define PAIN_SFX_COUNT 4
 #define GRAVITY -9.81
 #define GRAVITY_FACTOR 1.0
 
@@ -54,6 +55,8 @@ struct GameState
 	Mix_Chunk* skull_sfx[HIT_SFX_COUNT];
 	Mix_Chunk* osiris_grunt_sfx[GRUNT_SFX_COUNT];
 	Mix_Chunk* irina_grunt_sfx[GRUNT_SFX_COUNT];
+	Mix_Chunk* osiris_pain_sfx[PAIN_SFX_COUNT];
+	Mix_Chunk* irina_pain_sfx[PAIN_SFX_COUNT];
 };
 
 GameState g_state;
@@ -138,6 +141,14 @@ const char IRINAGRUNT1_SFX_FILEPATH[] = "assets/audio/irina_grunt_1.wav";
 const char IRINAGRUNT2_SFX_FILEPATH[] = "assets/audio/irina_grunt_2.wav";
 const char IRINAGRUNT3_SFX_FILEPATH[] = "assets/audio/irina_grunt_3.wav";
 const char IRINAGRUNT4_SFX_FILEPATH[] = "assets/audio/irina_grunt_4.wav";
+const char OSIRISPAIN1_SFX_FILEPATH[] = "assets/audio/osiris_pain_1.wav";
+const char OSIRISPAIN2_SFX_FILEPATH[] = "assets/audio/osiris_pain_2.wav";
+const char OSIRISPAIN3_SFX_FILEPATH[] = "assets/audio/osiris_pain_3.wav";
+const char OSIRISPAIN4_SFX_FILEPATH[] = "assets/audio/osiris_pain_4.wav";
+const char IRINAPAIN1_SFX_FILEPATH[] = "assets/audio/irina_pain_1.wav";
+const char IRINAPAIN2_SFX_FILEPATH[] = "assets/audio/irina_pain_2.wav";
+const char IRINAPAIN3_SFX_FILEPATH[] = "assets/audio/irina_pain_3.wav";
+const char IRINAPAIN4_SFX_FILEPATH[] = "assets/audio/irina_pain_4.wav";
 
 glm::mat4 g_view_matrix;
 glm::mat4 g_projection_matrix;
@@ -275,6 +286,24 @@ void initialize()
 		Mix_VolumeChunk(g_state.irina_grunt_sfx[i], int(MIX_MAX_VOLUME * 0.62));
 	}
 
+	g_state.osiris_pain_sfx[0] = Mix_LoadWAV(OSIRISPAIN1_SFX_FILEPATH);
+	g_state.osiris_pain_sfx[1] = Mix_LoadWAV(OSIRISPAIN2_SFX_FILEPATH);
+	g_state.osiris_pain_sfx[2] = Mix_LoadWAV(OSIRISPAIN3_SFX_FILEPATH);
+	g_state.osiris_pain_sfx[3] = Mix_LoadWAV(OSIRISPAIN4_SFX_FILEPATH);
+	for (int i = 0; i < PAIN_SFX_COUNT; i++)
+	{
+		Mix_VolumeChunk(g_state.osiris_pain_sfx[i], int(MIX_MAX_VOLUME * 0.8));
+	}
+
+	g_state.irina_pain_sfx[0] = Mix_LoadWAV(IRINAPAIN1_SFX_FILEPATH);
+	g_state.irina_pain_sfx[1] = Mix_LoadWAV(IRINAPAIN2_SFX_FILEPATH);
+	g_state.irina_pain_sfx[2] = Mix_LoadWAV(IRINAPAIN3_SFX_FILEPATH);
+	g_state.irina_pain_sfx[3] = Mix_LoadWAV(IRINAPAIN4_SFX_FILEPATH);
+	for (int i = 0; i < PAIN_SFX_COUNT; i++)
+	{
+		Mix_VolumeChunk(g_state.irina_pain_sfx[i], int(MIX_MAX_VOLUME * 0.62));
+	}
+
 	GLuint map_texture_id = load_texture(MAP_TILESET_FILEPATH);
 	 
 	g_state.map = new Map(LEVEL_WIDTH, LEVEL_HEIGHT, LEVEL_DATA, map_texture_id, TILE_SIZE, TILE_COUNT_X, TILE_COUNT_Y);
@@ -315,7 +344,8 @@ void initialize()
 		g_state.land_sfx,
 		g_state.walk_sfx,
 		g_state.punch_sfx,
-		g_state.osiris_grunt_sfx
+		g_state.osiris_grunt_sfx,
+		g_state.osiris_pain_sfx
 	);
 
 	GLuint enemy_texture_id = load_texture(ENEMY_FILEPATH);
@@ -358,7 +388,8 @@ void initialize()
 			g_state.land_sfx,
 			g_state.walk_sfx,
 			g_state.skull_sfx,
-			g_state.irina_grunt_sfx
+			g_state.irina_grunt_sfx,
+			g_state.irina_pain_sfx
 		);
 	}
 
@@ -366,7 +397,7 @@ void initialize()
 	g_state.enemies[0].set_ai_state(IDLING);
 	g_state.enemies[0].set_position(enemy1_position);
 	g_state.enemies[0].face_left();
-	g_state.enemies[0].set_speed(0.75f);
+	g_state.enemies[0].set_speed(1.5f);
 
 	g_state.enemies[1].set_ai_type(WAITER);
 	g_state.enemies[1].set_ai_state(IDLING);
@@ -377,7 +408,7 @@ void initialize()
 	g_state.enemies[2].set_ai_state(WALKING);
 	g_state.enemies[2].set_position(enemy3_position);
 	g_state.enemies[2].move_left();
-	g_state.enemies[2].set_speed(0.75f);
+	g_state.enemies[2].set_speed(0.85f);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -533,6 +564,8 @@ void shutdown()
 	Mix_FreeChunk(*g_state.skull_sfx);
 	Mix_FreeChunk(*g_state.osiris_grunt_sfx);
 	Mix_FreeChunk(*g_state.irina_grunt_sfx);
+	Mix_FreeChunk(*g_state.osiris_pain_sfx);
+	Mix_FreeChunk(*g_state.irina_pain_sfx);
 }
 
 

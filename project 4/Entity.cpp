@@ -43,7 +43,7 @@ Entity::Entity()
 Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 position, glm::vec3 acceleration, 
 			   float width, float height, float speed, float jump_power, int animation_cols, int animation_rows, 
 			   int animation_frames, int animation_index, float animation_time, int animation[4][8], Mix_Chunk* land_sfx,
-			   Mix_Chunk* walk_sfx[2], Mix_Chunk* hit_sfx[3], Mix_Chunk* grunt_sfx[4])
+			   Mix_Chunk* walk_sfx[2], Mix_Chunk* hit_sfx[3], Mix_Chunk* grunt_sfx[4], Mix_Chunk* pain_sfx[4])
 {
 	m_entity_type = entity_type;
 	m_texture_id = texture_id;
@@ -71,6 +71,7 @@ Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::
 	set_walk_sfx(walk_sfx);
 	set_hit_sfx(hit_sfx);
 	set_grunt_sfx(grunt_sfx);
+	set_pain_sfx(pain_sfx);
 }
 
 
@@ -244,11 +245,15 @@ void const Entity::check_collision_x(Entity* collidable_entities, int collidable
 			{
 				m_position.x -= x_overlap;
 				m_velocity.x = 0;
+
+				//m_collided_right = true;
 			}
 			else if (m_velocity.x < 0)
 			{
 				m_position.x += x_overlap;
 				m_velocity.x = 0;
+
+				//m_collided_left = true;
 			}
 		}
 	}
@@ -271,14 +276,14 @@ void const Entity::check_collision_y(Entity* collidable_entities, int collidable
 				m_position.y -= y_overlap;
 				m_velocity.y = 0;
 
-				m_collided_top = true;
+				//m_collided_top = true;
 			}
 			else if (m_velocity.y < 0)
 			{
 				m_position.y += y_overlap;
 				m_velocity.y = 0;
 
-				m_collided_bottom = true;
+				//m_collided_bottom = true;
 			}
 		}
 	}
@@ -443,7 +448,7 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
 		m_play_land = false;
 	}
 
-	if (m_ai_state != IDLING && (m_collided_left || m_collided_right))
+	if (m_entity_type == ENEMY && m_ai_state != IDLING && (m_collided_left || m_collided_right))
 	{
 		if (m_velocity.y == 0.0f)
 		{
@@ -543,12 +548,39 @@ void Entity::ai_walk(Entity* player, float curr_ticks)
 			{
 				move_right();
 			}
+			if (glm::distance(m_position, player->get_position()) < 1.5f)
+			{
+				if (m_position.x > player->get_position().x)
+				{
+					face_left();
+				}
+				else
+				{
+					face_right();
+				}
+
+				m_ai_state = ATTACKING;
+			}
 			break;
 
 		case ATTACKING:
+			m_movement.x = 0.0f;
+			if ((curr_ticks - m_last_attack_time) >= 1.5f && player->m_is_active)
+			{
+				attack(player, 1);
+				m_last_attack_time = curr_ticks;
+			}
+			if (glm::distance(m_position, player->get_position()) >= 1.5f)
+			{
+				m_ai_state = WALKING;
+			}
 			break;
 
 		case DYING:
+			if (!m_dying)
+			{
+				die();
+			}
 			break;
 	}
 }
@@ -624,7 +656,7 @@ void Entity::ai_wait(Entity* player, float curr_ticks)
 	{
 		case IDLING:
 			dont_move();
-			if (glm::distance(m_position, player->get_position()) < 1.45f)
+			if (glm::distance(m_position, player->get_position()) < 1.48f)
 			{
 				m_ai_state = ATTACKING;
 			}
@@ -636,7 +668,7 @@ void Entity::ai_wait(Entity* player, float curr_ticks)
 				attack(player, 1);
 				m_last_attack_time = curr_ticks;
 			}
-			if (glm::distance(m_position, player->get_position()) >= 1.45f)
+			if (glm::distance(m_position, player->get_position()) >= 1.48f)
 			{
 				m_ai_state = IDLING;
 			}

@@ -11,6 +11,7 @@
 #define WALK_SFX_COUNT 2
 #define HIT_SFX_COUNT 3
 #define GRUNT_SFX_COUNT 4
+#define PAIN_SFX_COUNT 4
 
 
 enum EntityType { PLAYER, ENEMY };
@@ -76,6 +77,7 @@ private:
 	Mix_Chunk* m_walk_sfx[WALK_SFX_COUNT];
 	Mix_Chunk* m_hit_sfx[HIT_SFX_COUNT];
 	Mix_Chunk* m_grunt_sfx[GRUNT_SFX_COUNT];
+	Mix_Chunk* m_pain_sfx[PAIN_SFX_COUNT];
 
 public:
 	static constexpr int SECONDS_PER_FRAME = 6;
@@ -85,7 +87,7 @@ public:
 	Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 position, glm::vec3 acceleration, 
 		float width, float height, float speed, float jump_power, int animation_cols, int animation_rows, 
 		int animation_frames, int animation_index, float animation_time, int animation[4][8], Mix_Chunk* land_sfx,
-		Mix_Chunk* walk_sfx[2], Mix_Chunk* hit_sfx[3], Mix_Chunk* grunt_sfx[4]);
+		Mix_Chunk* walk_sfx[2], Mix_Chunk* hit_sfx[3], Mix_Chunk* grunt_sfx[4], Mix_Chunk* pain_sfx[4]);
 
 	Entity(EntityType entity_type, GLuint texture_id, float width, float height, float speed);
 
@@ -186,7 +188,6 @@ public:
 				{
 					hittable_entities[i].die();
 				}
-				
 			}
 		}
 
@@ -195,6 +196,8 @@ public:
 
 	void die()
 	{
+		Mix_PlayChannel((m_entity_type == PLAYER) ? 7 : 8, m_pain_sfx[get_random_sfx_index(PAIN_SFX_COUNT)], 0);
+
 		m_animation_indices = m_animation[DIE];
 		m_animation_index = 0;
 
@@ -440,6 +443,14 @@ public:
 		for (int i = 0; i < GRUNT_SFX_COUNT; i++)
 		{
 			m_grunt_sfx[i] = new_grunt_sfx[i];
+		}
+	}
+
+	void set_pain_sfx(Mix_Chunk* new_pain_sfx[PAIN_SFX_COUNT])
+	{
+		for (int i = 0; i < PAIN_SFX_COUNT; i++)
+		{
+			m_pain_sfx[i] = new_pain_sfx[i];
 		}
 	}
 };
