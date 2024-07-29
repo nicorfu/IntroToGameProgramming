@@ -46,6 +46,8 @@ private:
 	float m_speed;
 	float m_jump_power;
 
+	bool m_has_jumped_on = false;
+
 	bool m_is_jumping = false;
 
 	int m_animation_cols;

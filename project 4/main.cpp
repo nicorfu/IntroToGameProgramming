@@ -316,7 +316,7 @@ void initialize()
 
 	glm::vec3 player_scale = glm::vec3(1.0f, 1.25f, 0.0f) * 1.3f;
 	glm::vec3 player_position = glm::vec3(4.75f, -0.5f, 0.0f);
-	const float player_speed = 2.3f;
+	const float player_speed = 2.4f;
 	
 	int player_animation[4][8] =
 	{
@@ -399,7 +399,7 @@ void initialize()
 	g_state.enemies[0].set_ai_state(IDLING);
 	g_state.enemies[0].set_position(enemy1_position);
 	g_state.enemies[0].face_left();
-	g_state.enemies[0].set_speed(1.5f);
+	g_state.enemies[0].set_speed(2.3f);
 
 	g_state.enemies[1].set_ai_type(WAITER);
 	g_state.enemies[1].set_ai_state(IDLING);
@@ -567,13 +567,22 @@ void render()
 	{
 		if (!LOST)
 		{
-			g_state.text->draw_text(&g_shader_program, "YOU WON...", 0.4f, 0.0001f, 
-				glm::vec3(g_state.player->get_position().x, 2.9f, 0.0f), FONTBANK_SIZE);
+			g_state.text->draw_text(&g_shader_program, "YOU WON", 0.45f, 0.0001f,
+					glm::vec3(g_state.player->get_position().x - 1.4f, 2.725f, 0.0f), FONTBANK_SIZE);
+			
 		}
 		else
 		{
-			g_state.text->draw_text(&g_shader_program, "YOU LOST LMAOO", 0.4f, 0.0001f, 
-				glm::vec3(g_state.player->get_position().x, 2.9f, 0.0f), FONTBANK_SIZE);
+			if (g_state.player->get_position().x < 4.75f)
+			{
+				g_state.text->draw_text(&g_shader_program, "YOU LOST LMAOO", 0.45f, 0.0001f,
+					glm::vec3(1.8f, 2.725f, 0.0f), FONTBANK_SIZE);
+			}
+			else
+			{
+				g_state.text->draw_text(&g_shader_program, "YOU LOST LMAOO", 0.45f, 0.0001f,
+					glm::vec3(g_state.player->get_position().x - 2.915f, 2.725f, 0.0f), FONTBANK_SIZE);
+			}
 		}
 	}
 

@@ -282,6 +282,14 @@ void const Entity::check_collision_y(Entity* collidable_entities, int collidable
 			{
 				m_position.y += y_overlap;
 				m_velocity.y = 0;
+
+				if (!m_has_jumped_on)
+				{
+					collidable_entity->m_ai_state = DYING;
+
+					m_has_jumped_on = true;
+				}
+
 				//m_collided_bottom = true;
 			}
 		}
@@ -591,7 +599,7 @@ void Entity::ai_guard(Entity* player, float curr_ticks)
 	{
 		case IDLING:
 			dont_move();
-			if (glm::distance(m_position, player->get_position()) < 3.5f)
+			if (glm::distance(m_position, player->get_position()) < 3.75f)
 			{
 				m_ai_state = WALKING;
 			}
@@ -617,7 +625,7 @@ void Entity::ai_guard(Entity* player, float curr_ticks)
 					m_ai_state = ATTACKING;
 				}
 			}
-			if (glm::distance(m_position, player->get_position()) >= 3.5f)
+			if (glm::distance(m_position, player->get_position()) >= 3.75f)
 			{
 				m_ai_state = IDLING;
 			}
