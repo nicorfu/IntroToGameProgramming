@@ -46,6 +46,8 @@ struct GameState
 	Entity* player;
 	Entity* enemies;
 
+	Entity* text;
+
 	Map* map;
 
 	Mix_Chunk* jump_sfx;
@@ -410,6 +412,10 @@ void initialize()
 	g_state.enemies[2].move_left();
 	g_state.enemies[2].set_speed(0.95f);
 
+	GLuint font_texture_id = load_texture(FONTSHEET_FILEPATH);
+	g_state.text = new Entity();
+	g_state.text->set_texture_id(font_texture_id);
+
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
@@ -424,6 +430,7 @@ void process_input()
 	else
 	{
 		GAME_ONGOING = false;
+		LOST = true;
 	}
 
 	SDL_Event event;
@@ -555,6 +562,20 @@ void render()
 	}
 
 	g_state.player->render(&g_shader_program);
+
+	if (!GAME_ONGOING)
+	{
+		if (!LOST)
+		{
+			g_state.text->draw_text(&g_shader_program, "YOU WON...", 0.4f, 0.0001f, 
+				glm::vec3(g_state.player->get_position().x, 2.9f, 0.0f), FONTBANK_SIZE);
+		}
+		else
+		{
+			g_state.text->draw_text(&g_shader_program, "YOU LOST LMAOO", 0.4f, 0.0001f, 
+				glm::vec3(g_state.player->get_position().x, 2.9f, 0.0f), FONTBANK_SIZE);
+		}
+	}
 
 	SDL_GL_SwapWindow(g_display_window);
 }
