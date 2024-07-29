@@ -74,9 +74,9 @@ ShaderProgram g_shader_program;
 constexpr int WINDOW_WIDTH = 1100;
 constexpr int WINDOW_HEIGHT = 710;
 
-constexpr float BG_RED = 43.0f / 255.0f;
-constexpr float BG_GREEN = 76.0f / 255.0f;
-constexpr float BG_BLUE = 115.0f / 255.0f;
+constexpr float BG_RED = 88.0f / 255.0f;
+constexpr float BG_GREEN = 119.0f / 255.0f;
+constexpr float BG_BLUE = 157.0f / 255.0f;
 constexpr float BG_OPACITY = 1.0f;
 
 constexpr int VIEWPORT_X = 0;
@@ -562,6 +562,19 @@ void render()
 	}
 
 	g_state.player->render(&g_shader_program);
+
+	if (g_curr_ticks < 2.0f)
+	{
+		g_state.text->draw_text(&g_shader_program, "YOU CAN JUMP ON AN", 0.325f, 0.0001f,
+			glm::vec3(0.2f, 3.2f, 0.0f), FONTBANK_SIZE);
+		g_state.text->draw_text(&g_shader_program, "ENEMY TO KILL THEM", 0.325f, 0.0001f,
+			glm::vec3(2.3f, 2.7f, 0.0f), FONTBANK_SIZE);
+	}
+	else if ((g_curr_ticks < 6.0f) && (g_state.player->get_position().x >= 6.0f))
+	{
+		g_state.text->draw_text(&g_shader_program, "BUT ONLY ONCE", 0.325f, 0.0001f,
+			glm::vec3(4.2f, 2.525f, 0.0f), FONTBANK_SIZE);
+	}
 
 	if (!GAME_ONGOING)
 	{

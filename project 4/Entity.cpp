@@ -383,6 +383,13 @@ void const Entity::check_collision_y(Map* map)
 
 			m_collided_bottom = true;
 		}
+		else if (!map->is_solid(bottom_right, &penetration_x, &penetration_y))
+		{
+			if (m_entity_type == ENEMY && m_position.x >= 20.0f)
+			{
+				m_position.x -= 0.1f;
+			}
+		}
 	}
 }
 
