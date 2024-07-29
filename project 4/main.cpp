@@ -408,7 +408,7 @@ void initialize()
 	g_state.enemies[2].set_ai_state(WALKING);
 	g_state.enemies[2].set_position(enemy3_position);
 	g_state.enemies[2].move_left();
-	g_state.enemies[2].set_speed(0.85f);
+	g_state.enemies[2].set_speed(0.95f);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -511,9 +511,20 @@ void update()
 	{
 		g_state.player->update(FIXED_TIMESTEP, g_state.player, g_state.enemies, ENEMY_COUNT, g_state.map, g_curr_ticks);
 
+		bool one_enemy_active = false;
 		for (int i = 0; i < ENEMY_COUNT; i++)
 		{
 			g_state.enemies[i].update(FIXED_TIMESTEP, g_state.player, g_state.player, 1, g_state.map, g_curr_ticks);
+
+			if (g_state.enemies[i].get_is_active())
+			{
+				one_enemy_active = true;
+			}
+		}
+
+		if (!one_enemy_active)
+		{
+			GAME_ONGOING = false;
 		}
 
 		delta_time -= FIXED_TIMESTEP;
