@@ -301,7 +301,7 @@ void initialize()
 	g_state.irina_pain_sfx[3] = Mix_LoadWAV(IRINAPAIN4_SFX_FILEPATH);
 	for (int i = 0; i < PAIN_SFX_COUNT; i++)
 	{
-		Mix_VolumeChunk(g_state.irina_pain_sfx[i], int(MIX_MAX_VOLUME * 0.62));
+		Mix_VolumeChunk(g_state.irina_pain_sfx[i], int(MIX_MAX_VOLUME * 1.0));
 	}
 
 	GLuint map_texture_id = load_texture(MAP_TILESET_FILEPATH);

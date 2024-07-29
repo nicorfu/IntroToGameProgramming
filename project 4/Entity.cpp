@@ -282,7 +282,6 @@ void const Entity::check_collision_y(Entity* collidable_entities, int collidable
 			{
 				m_position.y += y_overlap;
 				m_velocity.y = 0;
-
 				//m_collided_bottom = true;
 			}
 		}

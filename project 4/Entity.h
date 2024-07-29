@@ -196,7 +196,7 @@ public:
 
 	void die()
 	{
-		Mix_PlayChannel((m_entity_type == PLAYER) ? 7 : 8, m_pain_sfx[get_random_sfx_index(PAIN_SFX_COUNT)], 0);
+		Mix_PlayChannel(-1, m_pain_sfx[get_random_sfx_index(PAIN_SFX_COUNT)], 0);
 
 		m_animation_indices = m_animation[DIE];
 		m_animation_index = 0;
