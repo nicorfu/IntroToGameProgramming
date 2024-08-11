@@ -8,10 +8,12 @@
 #include "ShaderProgram.h"
 #include <SDL_mixer.h>
 
+/*
 #define WALK_SFX_COUNT 2
 #define HIT_SFX_COUNT 3
 #define GRUNT_SFX_COUNT 4
 #define PAIN_SFX_COUNT 4
+*/
 
 
 enum EntityType { PLAYER, ENEMY };
@@ -76,10 +78,12 @@ private:
 	Mix_Chunk* m_land_sfx;
 	bool m_play_land = false;
 
+	/*
 	Mix_Chunk* m_walk_sfx[WALK_SFX_COUNT];
 	Mix_Chunk* m_hit_sfx[HIT_SFX_COUNT];
 	Mix_Chunk* m_grunt_sfx[GRUNT_SFX_COUNT];
 	Mix_Chunk* m_pain_sfx[PAIN_SFX_COUNT];
+	*/
 
 public:
 	static constexpr int SECONDS_PER_FRAME = 6;
