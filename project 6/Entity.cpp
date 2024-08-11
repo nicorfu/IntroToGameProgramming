@@ -68,10 +68,12 @@ Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::
 	m_animation_indices = m_animation[IDLE];
 
 	m_land_sfx = land_sfx;
+	/*
 	set_walk_sfx(walk_sfx);
 	set_hit_sfx(hit_sfx);
 	set_grunt_sfx(grunt_sfx);
 	set_pain_sfx(pain_sfx);
+	*/
 }
 
 

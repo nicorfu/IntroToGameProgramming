@@ -49,9 +49,9 @@ ShaderProgram g_shader_program;
 constexpr int WINDOW_WIDTH = 1100;
 constexpr int WINDOW_HEIGHT = 710;
 
-constexpr float BG_RED = 11.0f / 255.0f;
-constexpr float BG_GREEN = 4.0f / 255.0f;
-constexpr float BG_BLUE = 4.0f / 255.0f;
+constexpr float BG_RED = 221.0f / 255.0f;
+constexpr float BG_GREEN = 18.0f / 255.0f;
+constexpr float BG_BLUE = 25.0f / 255.0f;
 constexpr float BG_OPACITY = 1.0f;
 
 constexpr int VIEWPORT_X = 0;
@@ -88,7 +88,7 @@ void initialize()
 {
 	SDL_Init(SDL_INIT_VIDEO);
 
-	g_display_window = SDL_CreateWindow("Lunar Lander", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+	g_display_window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
 
 	if (g_display_window == nullptr)

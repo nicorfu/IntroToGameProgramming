@@ -156,7 +156,7 @@ public:
 
 		if (m_collided_bottom)
 		{
-			Mix_PlayChannel(-1, m_walk_sfx[get_random_sfx_index(WALK_SFX_COUNT)], 0);
+			//Mix_PlayChannel(-1, m_walk_sfx[get_random_sfx_index(WALK_SFX_COUNT)], 0);
 		}
 	}
 
@@ -169,13 +169,13 @@ public:
 
 		if (m_collided_bottom)
 		{
-			Mix_PlayChannel(-1, m_walk_sfx[get_random_sfx_index(WALK_SFX_COUNT)], 0);
+			//Mix_PlayChannel(-1, m_walk_sfx[get_random_sfx_index(WALK_SFX_COUNT)], 0);
 		}
 	}
 
 	void attack(Entity* hittable_entities, int hittable_entity_count)
 	{
-		Mix_PlayChannel((m_entity_type == PLAYER) ? 3 : 4, m_grunt_sfx[get_random_sfx_index(GRUNT_SFX_COUNT)], 0);
+		//Mix_PlayChannel((m_entity_type == PLAYER) ? 3 : 4, m_grunt_sfx[get_random_sfx_index(GRUNT_SFX_COUNT)], 0);
 
 		m_animation_indices = m_animation[ATTACK];
 		m_animation_index = 0;
@@ -184,7 +184,7 @@ public:
 		{
 			if (glm::distance(m_position, hittable_entities[i].m_position) < m_lethal_distance && hittable_entities[i].m_is_active)
 			{
-				Mix_PlayChannel((m_entity_type == PLAYER) ? 5 : 6, m_hit_sfx[get_random_sfx_index(HIT_SFX_COUNT)], 0);
+				//Mix_PlayChannel((m_entity_type == PLAYER) ? 5 : 6, m_hit_sfx[get_random_sfx_index(HIT_SFX_COUNT)], 0);
 
 				if (hittable_entities[i].m_entity_type == ENEMY)
 				{
@@ -202,7 +202,7 @@ public:
 
 	void die()
 	{
-		Mix_PlayChannel(-1, m_pain_sfx[get_random_sfx_index(PAIN_SFX_COUNT)], 0);
+		//Mix_PlayChannel(-1, m_pain_sfx[get_random_sfx_index(PAIN_SFX_COUNT)], 0);
 
 		m_animation_indices = m_animation[DIE];
 		m_animation_index = 0;
@@ -428,6 +428,7 @@ public:
 		}
 	}
 
+	/*
 	void set_walk_sfx(Mix_Chunk* new_walk_sfx[WALK_SFX_COUNT])
 	{
 		for (int i = 0; i < WALK_SFX_COUNT; i++)
@@ -459,6 +460,7 @@ public:
 			m_pain_sfx[i] = new_pain_sfx[i];
 		}
 	}
+	*/
 };
 
 #endif
