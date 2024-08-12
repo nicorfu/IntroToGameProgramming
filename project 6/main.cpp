@@ -79,7 +79,7 @@ constexpr GLint TEXTURE_BORDER = 0;
 const char V_SHADER_PATH[] = "shaders/vertex_textured.glsl";
 const char F_SHADER_PATH[] = "shaders/fragment_textured.glsl";
 
-//const char MAP_TILESET_FILEPATH[] = "assets/visual/.png";
+const char MAP_TILESET_FILEPATH[] = "assets/visual/summer_plains_tileset.png";
 const float TILE_SIZE = 1.0f;
 const int TILE_COUNT_X = 0.0f;
 const int TILE_COUNT_Y = 0.0f;
