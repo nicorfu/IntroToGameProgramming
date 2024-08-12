@@ -12,10 +12,11 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "ShaderProgram.h"
 
+
 class Utility
 {
 public:
 	static GLuint load_texture(const char* filepath);
-	static void draw_text(ShaderProgram* program, GLuint font_texture_id, std::string text, float screen_size, float spacing, 
-		glm::vec3 position);
+	void draw_text(ShaderProgram* shader_program, std::string text, float font_size, float spacing, glm::vec3 position,
+		int fontbank_size);
 };
