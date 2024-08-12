@@ -12,7 +12,6 @@
 #include <GL/glew.h>
 
 #define GL_SILENCE_DEPRECATION
-#define STB_IMAGE_IMPLEMENTATION
 #define GL_GLEXT_PROTOTYPES 1
 
 #include <SDL.h>

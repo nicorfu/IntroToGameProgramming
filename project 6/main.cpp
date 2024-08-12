@@ -12,7 +12,6 @@
 #include <GL/glew.h>
 
 #define GL_SILENCE_DEPRECATION
-#define STB_IMAGE_IMPLEMENTATION
 #define GL_GLEXT_PROTOTYPES 1
 #define LOG(argument) std::cout << argument << '\n'
 
@@ -23,7 +22,6 @@
 #include "glm/mat4x4.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "ShaderProgram.h"
-#include "stb_image.h"
 #include "cmath"
 #include <cstdlib>
 #include <ctime>
