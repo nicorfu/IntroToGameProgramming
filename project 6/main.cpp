@@ -39,16 +39,6 @@
 #define PAIN_SFX_COUNT 4
 */
 
-
-struct GameState
-{
-	Entity* player;
-
-	Map* map;
-};
-
-GameState g_state;
-
 bool g_game_is_running = true;
 
 bool GAME_ONGOING = true;
@@ -254,8 +244,6 @@ void render()
 void shutdown()
 {
 	SDL_Quit();
-
-	delete g_state.player;
 }
 
 
