@@ -69,8 +69,8 @@ void Level1::initialize()
 		player_speed,
 		7.0f,
 		8,
-		9,
-		8,
+		18,
+		4,
 		0,
 		0.0f,
 		player_animation
