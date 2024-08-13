@@ -86,7 +86,7 @@ void Level1::initialize()
 
 void Level1::update(float delta_time)
 {
-	m_state.player->update(delta_time, m_state.player, m_state.enemies, ENEMY_COUNT, m_state.map, 0.0f);
+	m_state.player->update(delta_time, m_state.player, m_state.enemies, 0, m_state.map, 0.0f);
 
 	for (int i = 0; i < ENEMY_COUNT; i++)
 	{

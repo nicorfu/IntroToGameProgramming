@@ -128,13 +128,30 @@ public:
 		m_movement = glm::normalize(m_movement);
 	}
 
-	void dont_move()
+	void idle()
 	{
 		m_movement.x = 0.0f;
 
-		if (!m_attacking)
+		switch (m_animation_direction)
 		{
-			m_animation_indices = m_animation[IDLE];
+		case UP:
+			m_animation_indices = m_animation[IDLE + UP];
+			break;
+
+		case DOWN:
+			m_animation_indices = m_animation[IDLE + DOWN];
+			break;
+
+		case LEFT:
+			m_animation_indices = m_animation[IDLE + LEFT];
+			break;
+
+		case RIGHT:
+			m_animation_indices = m_animation[IDLE + RIGHT];
+			break;
+
+		default:
+			break;
 		}
 	}
 
@@ -171,6 +188,7 @@ public:
 
 	void attack(Entity* hittable_entities, int hittable_entity_count)
 	{
+		/*
 		//Mix_PlayChannel((m_entity_type == PLAYER) ? 3 : 4, m_grunt_sfx[get_random_sfx_index(GRUNT_SFX_COUNT)], 0);
 
 		m_animation_indices = m_animation[ATTACK];
@@ -194,6 +212,7 @@ public:
 		}
 
 		m_attacking = true;
+		*/
 	}
 
 	void die()

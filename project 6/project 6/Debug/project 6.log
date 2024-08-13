@@ -1,6 +1,4 @@
-﻿  Level1.cpp
-C:\Users\nico\Desktop\IntroToGameProgramming\project 6\Level1.cpp(83,18): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  main.cpp
-  Scene.cpp
-  Generating Code...
+﻿  Entity.cpp
+C:\Users\nico\Desktop\IntroToGameProgramming\project 6\Entity.cpp(148,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\nico\Desktop\IntroToGameProgramming\project 6\Entity.cpp(200,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   project 6.vcxproj -> C:\Users\nico\Desktop\IntroToGameProgramming\project 6\Debug\project 6.exe

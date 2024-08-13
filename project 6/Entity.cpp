@@ -426,7 +426,7 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
 				if (m_attacking)
 				{
 					m_attacking = false;
-					dont_move();
+					//dont_move();
 				}
 				if (m_dying)
 				{
@@ -494,7 +494,7 @@ void Entity::render(ShaderProgram* program)
 
 	if (m_animation_indices != nullptr)
 	{
-		draw_sprite_from_texture_atlas(program, m_texture_id, m_animation_indices[m_animation_index], m_facing_left);
+		draw_sprite_from_texture_atlas(program, m_texture_id, m_animation_indices[m_animation_index]);
 
 		return;
 	}
@@ -545,29 +545,29 @@ void Entity::ai_walk(Entity* player, float curr_ticks)
 	case WALKING:
 		if (m_position.x <= 8.85f)
 		{
-			move_right();
+			//move_right();
 		}
 		else if (m_position.x >= 15.15f)
 		{
-			move_left();
+			//move_left();
 		}
-		if (m_facing_left)
+		if (/*m_facing_left*/0)
 		{
-			move_left();
+			//move_left();
 		}
 		else
 		{
-			move_right();
+			//move_right();
 		}
 		if (glm::distance(m_position, player->get_position()) < 1.5f)
 		{
 			if (m_position.x > player->get_position().x)
 			{
-				face_left();
+				//face_left();
 			}
 			else
 			{
-				face_right();
+				//face_right();
 			}
 
 			m_ai_state = ATTACKING;
@@ -602,7 +602,7 @@ void Entity::ai_guard(Entity* player, float curr_ticks)
 	switch (m_ai_state)
 	{
 	case IDLING:
-		dont_move();
+		//dont_move();
 		if (glm::distance(m_position, player->get_position()) < 3.75f)
 		{
 			m_ai_state = WALKING;
@@ -612,11 +612,11 @@ void Entity::ai_guard(Entity* player, float curr_ticks)
 	case WALKING:
 		if (m_position.x > player->get_position().x)
 		{
-			move_left();
+			//move_left();
 		}
 		else
 		{
-			move_right();
+			//move_right();
 		}
 		if (glm::distance(m_position, player->get_position()) < 1.8f)
 		{
@@ -666,7 +666,7 @@ void Entity::ai_wait(Entity* player, float curr_ticks)
 	switch (m_ai_state)
 	{
 	case IDLING:
-		dont_move();
+		//dont_move();
 		if (glm::distance(m_position, player->get_position()) < 1.48f)
 		{
 			m_ai_state = ATTACKING;
