@@ -32,7 +32,7 @@ struct GameState
 class Scene
 {
 public:
-	GameState m_game_state;
+	GameState m_state;
 
 	int m_num_enemies = 1;
 
@@ -42,7 +42,7 @@ public:
 
 	GameState const get_state() const
 	{
-		return m_game_state;
+		return m_state;
 	}
 
 	int const get_num_enemies() const

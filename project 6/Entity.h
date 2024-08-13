@@ -20,7 +20,8 @@ enum EntityType { PLAYER, ENEMY };
 enum AIType { WALKER, GUARDIAN, WAITER };
 enum AIState { WALKING, IDLING, ATTACKING, DYING };
 
-enum AnimationAction { IDLE, MOVE, DIE, ATTACK };
+enum AnimationAction { IDLE=0, WALK=4, DIE=8 };
+enum AnimationDirection { UP, DOWN, LEFT, RIGHT };
 
 class Entity
 {
@@ -57,13 +58,13 @@ private:
 	int m_animation_frames;
 	int m_animation_index;
 
+	AnimationDirection m_animation_direction;
 	int* m_animation_indices = nullptr;
 
 	float m_animation_time = 0.0f;
 
 	int m_animation[4][8];
 
-	bool m_facing_left = false;
 	bool m_attacking = false;
 	bool m_dying = false;
 
@@ -92,14 +93,14 @@ public:
 
 	Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 position, glm::vec3 acceleration,
 		float width, float height, float speed, float jump_power, int animation_cols, int animation_rows,
-		int animation_frames, int animation_index, float animation_time, int animation[4][8], Mix_Chunk* land_sfx,
-		Mix_Chunk* walk_sfx[2], Mix_Chunk* hit_sfx[3], Mix_Chunk* grunt_sfx[4], Mix_Chunk* pain_sfx[4]);
+		int animation_frames, int animation_index, float animation_time, int animation[12][4]);//, Mix_Chunk* land_sfx,
+		//Mix_Chunk* walk_sfx[2], Mix_Chunk* hit_sfx[3], Mix_Chunk* grunt_sfx[4], Mix_Chunk* pain_sfx[4]);
 
 	Entity(EntityType entity_type, GLuint texture_id, float width, float height, float speed);
 
 	~Entity();
 
-	void draw_sprite_from_texture_atlas(ShaderProgram* program, GLuint texture_id, int index, bool facing_left);
+	void draw_sprite_from_texture_atlas(ShaderProgram* program, GLuint texture_id, int index);
 
 	void draw_text(ShaderProgram* shader_program, std::string text, float font_size, float spacing, glm::vec3 position,
 		int fontbank_size);
@@ -127,16 +128,6 @@ public:
 		m_movement = glm::normalize(m_movement);
 	}
 
-	void face_left()
-	{
-		m_facing_left = true;
-	}
-
-	void face_right()
-	{
-		m_facing_left = false;
-	}
-
 	void dont_move()
 	{
 		m_movement.x = 0.0f;
@@ -147,30 +138,35 @@ public:
 		}
 	}
 
-	void move_left()
+	void walk()
 	{
-		m_movement.x = -1.0f;
-
-		m_animation_indices = m_animation[MOVE];
-		face_left();
-
-		if (m_collided_bottom)
+		switch (m_animation_direction)
 		{
-			//Mix_PlayChannel(-1, m_walk_sfx[get_random_sfx_index(WALK_SFX_COUNT)], 0);
+			case UP:
+				m_movement.y = 1.0f;
+				m_animation_indices = m_animation[WALK + UP];
+				break;
+
+			case DOWN:
+				m_movement.y = -1.0f;
+				m_animation_indices = m_animation[WALK + DOWN];
+				break;
+
+			case LEFT:
+				m_movement.x = -1.0f;
+				m_animation_indices = m_animation[WALK + LEFT];
+				break;
+
+			case RIGHT:
+				m_movement.x = 1.0f;
+				m_animation_indices = m_animation[WALK + RIGHT];
+				break;
+
+			default:
+				break;
 		}
-	}
 
-	void move_right()
-	{
-		m_movement.x = 1.0f;
-
-		m_animation_indices = m_animation[MOVE];
-		face_right();
-
-		if (m_collided_bottom)
-		{
-			//Mix_PlayChannel(-1, m_walk_sfx[get_random_sfx_index(WALK_SFX_COUNT)], 0);
-		}
+		//Mix_PlayChannel(-1, m_walk_sfx[get_random_sfx_index(WALK_SFX_COUNT)], 0);
 	}
 
 	void attack(Entity* hittable_entities, int hittable_entity_count)
@@ -417,7 +413,7 @@ public:
 		m_last_attack_time = new_attack_time;
 	}
 
-	void set_animation(int new_animation[4][8])
+	void set_animation(int new_animation[12][4])
 	{
 		for (int i = 0; i < 4; i++)
 		{

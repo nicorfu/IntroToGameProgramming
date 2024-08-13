@@ -41,8 +41,8 @@ Entity::Entity()
 
 Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 position, glm::vec3 acceleration,
 	float width, float height, float speed, float jump_power, int animation_cols, int animation_rows,
-	int animation_frames, int animation_index, float animation_time, int animation[4][8], Mix_Chunk* land_sfx,
-	Mix_Chunk* walk_sfx[2], Mix_Chunk* hit_sfx[3], Mix_Chunk* grunt_sfx[4], Mix_Chunk* pain_sfx[4])
+	int animation_frames, int animation_index, float animation_time, int animation[12][4])//, Mix_Chunk* land_sfx,
+	//Mix_Chunk* walk_sfx[2], Mix_Chunk* hit_sfx[3], Mix_Chunk* grunt_sfx[4], Mix_Chunk* pain_sfx[4])
 {
 	m_entity_type = entity_type;
 	m_texture_id = texture_id;
@@ -66,7 +66,7 @@ Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::
 	set_animation(animation);
 	m_animation_indices = m_animation[IDLE];
 
-	m_land_sfx = land_sfx;
+	//m_land_sfx = land_sfx;
 	/*
 	set_walk_sfx(walk_sfx);
 	set_hit_sfx(hit_sfx);
@@ -101,7 +101,7 @@ Entity::~Entity()
 { }
 
 
-void Entity::draw_sprite_from_texture_atlas(ShaderProgram* program, GLuint texture_id, int index, bool facing_left)
+void Entity::draw_sprite_from_texture_atlas(ShaderProgram* program, GLuint texture_id, int index)
 {
 	float u_coord = (float)(index % m_animation_cols) / (float)m_animation_cols;
 	float v_coord = (float)(index / m_animation_cols) / (float)m_animation_rows;
@@ -111,12 +111,8 @@ void Entity::draw_sprite_from_texture_atlas(ShaderProgram* program, GLuint textu
 
 	float tex_coords[] =
 	{
-		facing_left ? u_coord + width : u_coord, v_coord + height,
-		facing_left ? u_coord : u_coord + width, v_coord + height,
-		facing_left ? u_coord : u_coord + width, v_coord,
-		facing_left ? u_coord + width : u_coord, v_coord + height,
-		facing_left ? u_coord : u_coord + width, v_coord,
-		facing_left ? u_coord + width : u_coord, v_coord
+		u_coord, v_coord + height, u_coord + width, v_coord + height, u_coord + width,
+		v_coord, u_coord, v_coord + height, u_coord + width, v_coord, u_coord, v_coord
 	};
 
 	float vertices[] =

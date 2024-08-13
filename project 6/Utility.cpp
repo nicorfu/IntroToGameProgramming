@@ -53,7 +53,7 @@ GLuint Utility::load_texture(const char* filepath)
 }
 
 
-void Utility::draw_text(ShaderProgram* shader_program, std::string text, float font_size, float spacing, glm::vec3 position,
+void Utility::draw_text(ShaderProgram* shader_program, GLuint font_texture_id, std::string text, float font_size, float spacing, glm::vec3 position,
 	int fontbank_size)
 {
 	float width = 1.0f / fontbank_size;
@@ -104,7 +104,7 @@ void Utility::draw_text(ShaderProgram* shader_program, std::string text, float f
 		texture_coordinates.data());
 	glEnableVertexAttribArray(shader_program->get_tex_coordinate_attribute());
 
-	glBindTexture(GL_TEXTURE_2D, m_texture_id);
+	glBindTexture(GL_TEXTURE_2D, font_texture_id);
 	glDrawArrays(GL_TRIANGLES, 0, (int)(text.size() * 6));
 
 	glDisableVertexAttribArray(shader_program->get_position_attribute());

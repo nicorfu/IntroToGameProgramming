@@ -28,10 +28,14 @@
 #include <vector>
 #include "Entity.h"
 #include "Map.h"
+#include "Utility.h"
+#include "Scene.h"
+#include "Level1.h"
 
 
 #define FIXED_TIMESTEP 0.0166666f
-#define ENEMY_COUNT 3
+#define LEVEL1_LEFT_EDGE 4.75
+
 /*
 #define WALK_SFX_COUNT 2
 #define HIT_SFX_COUNT 3
@@ -67,33 +71,7 @@ constexpr GLint TEXTURE_BORDER = 0;
 const char V_SHADER_PATH[] = "shaders/vertex_textured.glsl";
 const char F_SHADER_PATH[] = "shaders/fragment_textured.glsl";
 
-const char MAP_TILESET_FILEPATH[] = "assets/visual/summer_plains_tileset.png";
-const float TILE_SIZE = 1.0f;
-const int TILE_COUNT_X = 0.0f;
-const int TILE_COUNT_Y = 0.0f;
-
-const int LEVEL_WIDTH = 10;
-const int LEVEL_HEIGHT = 5;
-unsigned int LEVEL_DATA[] =
-{
-	0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-};
-
 constexpr int FONTBANK_SIZE = 16;
-
-constexpr int CD_QUAL_FREQ = 44100;
-constexpr int AUDIO_CHAN_AMT = 2;
-constexpr int AUDIO_BUFF_SIZE = 512;
-
-constexpr int PLAY_ONCE = 0;
-constexpr int NEXT_CHNL = -1;
-constexpr int MUTE_VOL = 0;
-constexpr int MILS_IN_SEC = 1000;
-constexpr int ALL_SFX_CHN = -1;
 
 //const char PLAYER_FILEPATH[] = "assets/visual/.png";
 //const char ENEMY_FILEPATH[] = "assets/visual/.png";
@@ -107,7 +85,15 @@ const float MILLISECONDS_IN_SECOND = 1000.0f;
 float g_previous_ticks = 0.0f;
 float g_accumulator = 0.0f;
 
-GLuint load_texture(const char* filepath);
+Scene* g_current_scene;
+Level1* g_level_1;
+
+void switch_to_scene(Scene* scene)
+{
+	g_current_scene = scene;
+	g_current_scene->initialize();
+}
+
 void initialize();
 void process_input();
 void update();
@@ -115,42 +101,9 @@ void render();
 void shutdown();
 
 
-GLuint load_texture(const char* filepath)
-{
-	int width;
-	int height;
-	int num_components;
-
-	unsigned char* image = stbi_load(filepath, &width, &height, &num_components, STBI_rgb_alpha);
-
-	if (image == NULL)
-	{
-		LOG("Can't load image. Smh. Check filepath.");
-		assert(false);
-	}
-
-	GLuint textureID;
-	glGenTextures(NUMBER_OF_TEXTURES, &textureID);
-	glBindTexture(GL_TEXTURE_2D, textureID);
-
-	glTexImage2D(GL_TEXTURE_2D, LEVEL_OF_DETAIL, GL_RGBA, width, height, TEXTURE_BORDER,
-		GL_RGBA, GL_UNSIGNED_BYTE, image);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	stbi_image_free(image);
-
-	return textureID;
-}
-
-
 void initialize()
 {
-	SDL_Init(SDL_INIT_VIDEO);
+	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 
 	g_display_window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
@@ -164,14 +117,30 @@ void initialize()
 
 	SDL_GLContext context = SDL_GL_CreateContext(g_display_window);
 	SDL_GL_MakeCurrent(g_display_window, context);
+	
+	if (context == nullptr)
+	{
+		shutdown();
+	}
 
 	glewInit();
 
 	glViewport(VIEWPORT_X, VIEWPORT_Y, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
 
+	g_shader_program.load(V_SHADER_PATH, F_SHADER_PATH);
+
+	g_view_matrix = glm::mat4(1.0f);
+	g_projection_matrix = glm::ortho(-5.0f, 5.0f, -4.0f, 4.0f, -1.0f, 1.0f);
+
+	g_shader_program.set_projection_matrix(g_projection_matrix);
+	g_shader_program.set_view_matrix(g_view_matrix);
+
 	glUseProgram(g_shader_program.get_program_id());
 
 	glClearColor(BG_RED, BG_GREEN, BG_BLUE, BG_OPACITY);
+
+	g_level_1 = new Level1();
+	switch_to_scene(g_level_1);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -229,13 +198,48 @@ void process_input()
 
 void update()
 {
+	float ticks = (float)SDL_GetTicks() / MILLISECONDS_IN_SECOND;
+	float delta_time = ticks - g_previous_ticks;
+	g_previous_ticks = ticks;
 
+	delta_time += g_accumulator;
+
+	if (delta_time < FIXED_TIMESTEP)
+	{
+		g_accumulator = delta_time;
+
+		return;
+	}
+
+	while (delta_time >= FIXED_TIMESTEP)
+	{
+		g_current_scene->update(FIXED_TIMESTEP);
+
+		delta_time -= FIXED_TIMESTEP;
+	}
+
+	g_accumulator = delta_time;
+
+	g_view_matrix = glm::mat4(1.0f);
+
+	if (g_current_scene->get_state().player->get_position().x >= LEVEL1_LEFT_EDGE) 
+	{
+		g_view_matrix = glm::translate(g_view_matrix, glm::vec3(-g_current_scene->get_state().player->get_position().x, 3.75, 0));
+	}
+	else 
+	{
+		g_view_matrix = glm::translate(g_view_matrix, glm::vec3(-4.75, 3.75, 0));
+	}
 }
 
 
 void render()
 {
+	g_shader_program.set_view_matrix(g_view_matrix);
+
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	g_current_scene->render(&g_shader_program);
 
 	SDL_GL_SwapWindow(g_display_window);
 }
@@ -244,6 +248,8 @@ void render()
 void shutdown()
 {
 	SDL_Quit();
+
+	delete g_level_1;
 }
 
 
