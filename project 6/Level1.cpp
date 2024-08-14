@@ -2,18 +2,22 @@
 #include "Utility.h"
 
 
-constexpr char MAP_TILESET_FILEPATH[] = "assets/visual/summer_plains_tileset.png";
+constexpr char MAP_TILESET_FILEPATH[] = "assets/visual/medieval_tileset.png";
 const float TILE_SIZE = 1.0f;
-const int TILE_COUNT_X = 13;
-const int TILE_COUNT_Y = 12;
+const int TILE_COUNT_X = 16;
+const int TILE_COUNT_Y = 40;
 
 const int LEVEL_WIDTH = 10;
-const int LEVEL_HEIGHT = 3;
+const int LEVEL_HEIGHT = 7;
 unsigned int LEVEL_DATA[] =
 {
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	154, 225, 226, 227, 228, 225, 226, 227, 228, 225,
+	170,  81,  96,  65,  97,   6,   1,  53,  53,  18,
+	186,   4,  21,  80,   5,  19,  22,  32,   4,  39,
+	154,  18,  39,  64,  17,  80,  37,  54,  23,  50,
+	170,  35,  50,  81,  65,  97,  51,   3,  21,   2,
+	186,  52,   2,   0,  36,  33,   0,  20,   0,  22,
+	186,   7,  23,  48,  55,  49,   16, 38,   7,  34
 };
 
 constexpr char PLAYER_FILEPATH[] = "assets/visual/hamza_spritesheet.png";
@@ -37,9 +41,9 @@ void Level1::initialize()
 
 	GLuint player_texture_id = Utility::load_texture(PLAYER_FILEPATH);
 
-	glm::vec3 player_scale = glm::vec3(1.0f, 1.25f, 0.0f) * 1.3f;
-	glm::vec3 player_position = glm::vec3(5.0f, -0.5f, 0.0f);
-	const float player_speed = 2.4f;
+	glm::vec3 player_scale = glm::vec3(1.0f, 1.35f, 0.0f) * 1.6f;
+	glm::vec3 player_position = glm::vec3(0.75f, -1.0f, 0.0f);
+	const float player_speed = 1.7f;
 
 	int player_animation[12][4] =
 	{
@@ -64,8 +68,8 @@ void Level1::initialize()
 		player_scale,
 		player_position,
 		glm::vec3(0.0f),
-		0.58f,
-		1.5f,
+		0.4f,
+		0.8f,
 		player_speed,
 		7.0f,
 		8,

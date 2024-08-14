@@ -34,7 +34,7 @@
 
 
 #define FIXED_TIMESTEP 0.0166666f
-#define LEVEL1_LEFT_EDGE 4.75
+#define LEVEL1_LEFT_EDGE 5
 
 /*
 #define WALK_SFX_COUNT 2
@@ -54,9 +54,9 @@ ShaderProgram g_shader_program;
 constexpr int WINDOW_WIDTH = 1100;
 constexpr int WINDOW_HEIGHT = 710;
 
-constexpr float BG_RED = 221.0f / 255.0f;
-constexpr float BG_GREEN = 18.0f / 255.0f;
-constexpr float BG_BLUE = 25.0f / 255.0f;
+constexpr float BG_RED = 29.0f / 255.0f;
+constexpr float BG_GREEN = 25.0f / 255.0f;
+constexpr float BG_BLUE = 54.0f / 255.0f;
 constexpr float BG_OPACITY = 1.0f;
 
 constexpr int VIEWPORT_X = 0;
@@ -105,7 +105,7 @@ void initialize()
 {
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 
-	g_display_window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+	g_display_window = SDL_CreateWindow("Hamza's Revenge", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
 
 	if (g_display_window == nullptr)
@@ -178,22 +178,22 @@ void process_input()
 	{
 		const Uint8* key_state = SDL_GetKeyboardState(NULL);
 
-		if (key_state[SDL_SCANCODE_UP])
+		if (key_state[SDL_SCANCODE_UP] || key_state[SDL_SCANCODE_W])
 		{
 			g_current_scene->get_state().player->set_animation_direction(UP);
 			g_current_scene->get_state().player->walk();
 		}
-		else if (key_state[SDL_SCANCODE_DOWN])
+		else if (key_state[SDL_SCANCODE_DOWN] || key_state[SDL_SCANCODE_S])
 		{
 			g_current_scene->get_state().player->set_animation_direction(DOWN);
 			g_current_scene->get_state().player->walk();
 		}
-		else if (key_state[SDL_SCANCODE_LEFT])
+		else if (key_state[SDL_SCANCODE_LEFT] || key_state[SDL_SCANCODE_A])
 		{
 			g_current_scene->get_state().player->set_animation_direction(LEFT);
 			g_current_scene->get_state().player->walk();
 		}
-		else if (key_state[SDL_SCANCODE_RIGHT])
+		else if (key_state[SDL_SCANCODE_RIGHT] || key_state[SDL_SCANCODE_D])
 		{
 			g_current_scene->get_state().player->set_animation_direction(RIGHT);
 			g_current_scene->get_state().player->walk();
@@ -235,11 +235,11 @@ void update()
 
 	if (g_current_scene->get_state().player->get_position().x >= LEVEL1_LEFT_EDGE) 
 	{
-		g_view_matrix = glm::translate(g_view_matrix, glm::vec3(-g_current_scene->get_state().player->get_position().x, 1.5, 0));
+		g_view_matrix = glm::translate(g_view_matrix, glm::vec3(-g_current_scene->get_state().player->get_position().x, 3, 0));
 	}
 	else 
 	{
-		g_view_matrix = glm::translate(g_view_matrix, glm::vec3(-4.75, 1.5, 0));
+		g_view_matrix = glm::translate(g_view_matrix, glm::vec3(-5, 3, 0));
 	}
 }
 

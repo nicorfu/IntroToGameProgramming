@@ -125,7 +125,7 @@ bool Map::is_solid(glm::vec3 position, float* penetration_x, float* penetration_
 
 	int tile = m_level_data[tile_y * m_width + tile_x];
 
-	if (tile == 0)
+	if (tile == 64 || tile == 65 || tile == 80 || tile == 81 || tile == 96 || tile == 97)
 	{
 		return false;
 	}

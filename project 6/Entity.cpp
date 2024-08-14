@@ -343,20 +343,6 @@ void const Entity::check_collision_y(Map* map)
 
 			m_collided_top = true;
 		}
-		else if (map->is_solid(top_left, &penetration_x, &penetration_y))
-		{
-			m_position.y -= penetration_y;
-			m_velocity.y = 0;
-
-			m_collided_top = true;
-		}
-		else if (map->is_solid(top_right, &penetration_x, &penetration_y))
-		{
-			m_position.y -= penetration_y;
-			m_velocity.y = 0;
-
-			m_collided_top = true;
-		}
 	}
 	else if (m_velocity.y < 0)
 	{
@@ -366,27 +352,6 @@ void const Entity::check_collision_y(Map* map)
 			m_velocity.y = 0;
 
 			m_collided_bottom = true;
-		}
-		else if (map->is_solid(bottom_left, &penetration_x, &penetration_y))
-		{
-			m_position.y += penetration_y;
-			m_velocity.y = 0;
-
-			m_collided_bottom = true;
-		}
-		else if (map->is_solid(bottom_right, &penetration_x, &penetration_y))
-		{
-			m_position.y += penetration_y;
-			m_velocity.y = 0;
-
-			m_collided_bottom = true;
-		}
-		else if (!map->is_solid(bottom_right, &penetration_x, &penetration_y))
-		{
-			if (m_entity_type == ENEMY && m_position.x >= 20.0f)
-			{
-				m_position.x -= 0.1f;
-			}
 		}
 	}
 }
@@ -439,13 +404,7 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
 	}
 
 	m_velocity.x = m_movement.x * m_speed;
-	//m_velocity += m_acceleration * delta_time;
-
 	m_position.x += m_velocity.x * delta_time;
-	if (m_position.x < 0.0f)
-	{
-		m_position.x += 0.1f;
-	}
 	check_collision_x(collidable_entities, collidable_entity_count);
 	check_collision_x(map);
 
