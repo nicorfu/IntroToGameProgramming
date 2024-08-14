@@ -16,7 +16,7 @@
 */
 
 
-enum EntityType { PLAYER, ENEMY };
+enum EntityType { PLAYER, ENEMY, COIN };
 enum AIType { WALKER, GUARDIAN, WAITER };
 enum AIState { WALKING, IDLING, ATTACKING, DYING };
 
@@ -41,7 +41,6 @@ private:
 	glm::vec3 m_position;
 	glm::vec3 m_movement;
 	glm::vec3 m_velocity;
-	glm::vec3 m_acceleration;
 
 	float m_width = 1.0f;
 	float m_height = 1.0f;
@@ -91,12 +90,12 @@ public:
 
 	Entity();
 
-	Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 position, glm::vec3 acceleration,
+	Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 position,
 		float width, float height, float speed, float jump_power, int animation_cols, int animation_rows,
 		int animation_frames, int animation_index, float animation_time, int animation[12][4]);//, Mix_Chunk* land_sfx,
 		//Mix_Chunk* walk_sfx[2], Mix_Chunk* hit_sfx[3], Mix_Chunk* grunt_sfx[4], Mix_Chunk* pain_sfx[4]);
 
-	Entity(EntityType entity_type, GLuint texture_id, float width, float height, float speed);
+	Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, float width, float height);
 
 	~Entity();
 
@@ -265,11 +264,6 @@ public:
 		return m_velocity;
 	}
 
-	glm::vec3 const get_acceleration() const
-	{
-		return m_acceleration;
-	}
-
 	int const get_width() const
 	{
 		return int(m_width);
@@ -353,11 +347,6 @@ public:
 	void const set_velocity(glm::vec3 new_velocity)
 	{
 		m_velocity = new_velocity;
-	}
-
-	void const set_acceleration(glm::vec3 new_acceleration)
-	{
-		m_acceleration = new_acceleration;
 	}
 
 	void const set_width(float new_width)

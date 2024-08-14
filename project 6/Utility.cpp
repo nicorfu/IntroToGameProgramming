@@ -1,6 +1,6 @@
 /**
 * Author: Nico Flores
-* Assignment: [Your game's name here]
+* Assignment: Hamza's Revenge
 * Date due: 2024-08-15, 1:00pm
 * I pledge that I have completed this assignment without
 * collaborating with anyone else, in conformance with the
@@ -50,63 +50,4 @@ GLuint Utility::load_texture(const char* filepath)
 	stbi_image_free(image);
 
 	return textureID;
-}
-
-
-void Utility::draw_text(ShaderProgram* shader_program, GLuint font_texture_id, std::string text, float font_size, float spacing, glm::vec3 position,
-	int fontbank_size)
-{
-	float width = 1.0f / fontbank_size;
-	float height = 1.0f / fontbank_size;
-
-	std::vector<float> vertices;
-	std::vector<float> texture_coordinates;
-
-	for (int i = 0; i < text.size(); i++)
-	{
-		int spritesheet_index = (int)text[i];
-		float offset = (font_size + spacing) * i;
-
-		float u_coordinate = (float)(spritesheet_index % fontbank_size) / fontbank_size;
-		float v_coordinate = (float)(spritesheet_index / fontbank_size) / fontbank_size;
-
-		vertices.insert(vertices.end(),
-			{
-				offset + (-0.5f * font_size), 0.5f * font_size,
-				offset + (-0.5f * font_size), -0.5f * font_size,
-				offset + (0.5f * font_size), 0.5f * font_size,
-				offset + (0.5f * font_size), -0.5f * font_size,
-				offset + (0.5f * font_size), 0.5f * font_size,
-				offset + (-0.5f * font_size), -0.5f * font_size,
-			});
-
-		texture_coordinates.insert(texture_coordinates.end(),
-			{
-				u_coordinate, v_coordinate,
-				u_coordinate, v_coordinate + height,
-				u_coordinate + width, v_coordinate,
-				u_coordinate + width, v_coordinate + height,
-				u_coordinate + width, v_coordinate,
-				u_coordinate, v_coordinate + height,
-			});
-	}
-
-	glm::mat4 model_matrix = glm::mat4(1.0f);
-	model_matrix = glm::translate(model_matrix, position);
-
-	shader_program->set_model_matrix(model_matrix);
-	glUseProgram(shader_program->get_program_id());
-
-	glVertexAttribPointer(shader_program->get_position_attribute(), 2, GL_FLOAT, false, 0, vertices.data());
-	glEnableVertexAttribArray(shader_program->get_position_attribute());
-
-	glVertexAttribPointer(shader_program->get_tex_coordinate_attribute(), 2, GL_FLOAT, false, 0,
-		texture_coordinates.data());
-	glEnableVertexAttribArray(shader_program->get_tex_coordinate_attribute());
-
-	glBindTexture(GL_TEXTURE_2D, font_texture_id);
-	glDrawArrays(GL_TRIANGLES, 0, (int)(text.size() * 6));
-
-	glDisableVertexAttribArray(shader_program->get_position_attribute());
-	glDisableVertexAttribArray(shader_program->get_tex_coordinate_attribute());
 }

@@ -140,6 +140,7 @@
     <ClCompile Include="Level1.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MenuScreen.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="Utility.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Level1.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="MenuScreen.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SDL.h" />
     <ClInclude Include="SDL_opengl.h" />

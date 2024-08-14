@@ -1,6 +1,6 @@
 /**
 * Author: Nico Flores
-* Assignment: [Your game's name here]
+* Assignment: Hamza's Revenge
 * Date due: 2024-08-15, 1:00pm
 * I pledge that I have completed this assignment without
 * collaborating with anyone else, in conformance with the

@@ -1,6 +1,6 @@
 /**
 * Author: Nico Flores
-* Assignment: [Your game's name here]
+* Assignment: Hamza's Revenge
 * Date due: 2024-08-15, 1:00pm
 * I pledge that I have completed this assignment without
 * collaborating with anyone else, in conformance with the
@@ -30,6 +30,7 @@
 #include "Map.h"
 #include "Utility.h"
 #include "Scene.h"
+#include "MenuScreen.h"
 #include "Level1.h"
 
 
@@ -45,7 +46,7 @@
 
 bool g_game_is_running = true;
 
-bool GAME_ONGOING = true;
+bool GAME_ONGOING = false;
 bool LOST = false;
 
 SDL_Window* g_display_window;
@@ -71,12 +72,7 @@ constexpr GLint TEXTURE_BORDER = 0;
 const char V_SHADER_PATH[] = "shaders/vertex_textured.glsl";
 const char F_SHADER_PATH[] = "shaders/fragment_textured.glsl";
 
-constexpr int FONTBANK_SIZE = 16;
-
-//const char PLAYER_FILEPATH[] = "assets/visual/.png";
-//const char ENEMY_FILEPATH[] = "assets/visual/.png";
-
-const char FONTSHEET_FILEPATH[] = "assets/visual/font.png";
+//constexpr int FONTBANK_SIZE = 16;
 
 glm::mat4 g_view_matrix;
 glm::mat4 g_projection_matrix;
@@ -86,6 +82,7 @@ float g_previous_ticks = 0.0f;
 float g_accumulator = 0.0f;
 
 Scene* g_current_scene;
+MenuScreen* g_menu_screen;
 Level1* g_level_1;
 
 void switch_to_scene(Scene* scene)
@@ -139,8 +136,11 @@ void initialize()
 
 	glClearColor(BG_RED, BG_GREEN, BG_BLUE, BG_OPACITY);
 
-	g_level_1 = new Level1();
-	switch_to_scene(g_level_1);
+	//g_level_1 = new Level1();
+	//switch_to_scene(g_level_1);
+
+	g_menu_screen = new MenuScreen();
+	switch_to_scene(g_menu_screen);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -149,28 +149,39 @@ void initialize()
 
 void process_input()
 {
-	g_current_scene->get_state().player->idle();
+	if (g_current_scene != g_menu_screen)
+	{
+		g_current_scene->get_state().player->idle();
+	}
 
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
 	{
 		switch (event.type)
 		{
-		case SDL_QUIT:
-		case SDL_WINDOWEVENT_CLOSE:
-			g_game_is_running = false;
-			break;
-
-		case SDL_KEYDOWN:
-			switch (event.key.keysym.sym)
-			{
-			case SDLK_ESCAPE:
+			case SDL_QUIT:
+			case SDL_WINDOWEVENT_CLOSE:
 				g_game_is_running = false;
 				break;
 
-			default:
-				break;
-			}
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym)
+				{
+					case SDLK_ESCAPE:
+						g_game_is_running = false;
+						break;
+
+					case SDLK_RETURN:
+						if (g_current_scene == g_menu_screen)
+						{
+							GAME_ONGOING = true;
+							switch_to_scene(g_level_1);
+						}
+						break;
+
+					default:
+						break;
+				}
 		}
 	}
 
@@ -233,13 +244,28 @@ void update()
 
 	g_view_matrix = glm::mat4(1.0f);
 
-	if (g_current_scene->get_state().player->get_position().x >= LEVEL1_LEFT_EDGE) 
+	if (g_current_scene != g_menu_screen)
 	{
-		g_view_matrix = glm::translate(g_view_matrix, glm::vec3(-g_current_scene->get_state().player->get_position().x, 3, 0));
-	}
-	else 
-	{
-		g_view_matrix = glm::translate(g_view_matrix, glm::vec3(-5, 3, 0));
+		if (g_current_scene->get_state().player->get_position().x >= LEVEL1_LEFT_EDGE &&
+			g_current_scene->get_state().player->get_position().y <= -3.175)
+		{
+			g_view_matrix = glm::translate(g_view_matrix, glm::vec3(-g_current_scene->get_state().player->get_position().x,
+				-g_current_scene->get_state().player->get_position().y, 0));
+		}
+		else if (g_current_scene->get_state().player->get_position().x < LEVEL1_LEFT_EDGE &&
+			g_current_scene->get_state().player->get_position().y <= -3.175)
+		{
+			g_view_matrix = glm::translate(g_view_matrix, glm::vec3(-5, -g_current_scene->get_state().player->get_position().y, 0));
+		}
+		else if (g_current_scene->get_state().player->get_position().x >= LEVEL1_LEFT_EDGE &&
+			g_current_scene->get_state().player->get_position().y > -3.175)
+		{
+			g_view_matrix = glm::translate(g_view_matrix, glm::vec3(-g_current_scene->get_state().player->get_position().x, 3.175, 0));
+		}
+		else
+		{
+			g_view_matrix = glm::translate(g_view_matrix, glm::vec3(-5.0f, 3.175f, 0.0f));
+		}
 	}
 }
 

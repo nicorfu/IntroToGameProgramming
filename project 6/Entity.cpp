@@ -1,6 +1,6 @@
 /**
 * Author: Nico Flores
-* Assignment: [Your game's name here]
+* Assignment: Hamza's Revenge
 * Date due: 2024-08-15, 1:00pm
 * I pledge that I have completed this assignment without
 * collaborating with anyone else, in conformance with the
@@ -31,7 +31,6 @@ Entity::Entity()
 	m_position = glm::vec3(0.0f);
 	m_movement = glm::vec3(0.0f);
 	m_velocity = glm::vec3(0.0f);
-	m_acceleration = glm::vec3(0.0f);
 	m_animation_cols = 0;
 	m_animation_rows = 0;
 	m_animation_frames = 0;
@@ -39,7 +38,7 @@ Entity::Entity()
 }
 
 
-Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 position, glm::vec3 acceleration,
+Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 position,
 	float width, float height, float speed, float jump_power, int animation_cols, int animation_rows,
 	int animation_frames, int animation_index, float animation_time, int animation[12][4])//, Mix_Chunk* land_sfx,
 	//Mix_Chunk* walk_sfx[2], Mix_Chunk* hit_sfx[3], Mix_Chunk* grunt_sfx[4], Mix_Chunk* pain_sfx[4])
@@ -51,7 +50,6 @@ Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::
 	m_position = position;
 	m_movement = glm::vec3(0.0f, 0.0f, 0.0f);
 	m_velocity = glm::vec3(0.0f, 0.0f, 0.0f);
-	m_acceleration = acceleration;
 	m_width = width;
 	m_height = height;
 	m_speed = speed;
@@ -77,24 +75,17 @@ Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::
 }
 
 
-Entity::Entity(EntityType entity_type, GLuint texture_id, float width, float height, float speed)
+Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, float width, float height)
 {
 	m_entity_type = entity_type;
 	m_texture_id = texture_id;
 	m_model_matrix = glm::mat4(1.0f);
-	m_scale = glm::vec3(1.0f, 1.0f, 0.0f);
-	m_position = glm::vec3(0.0f, 0.0f, 0.0f);
-	m_movement = glm::vec3(0.0f, 0.0f, 0.0f);
-	m_velocity = glm::vec3(0.0f, 0.0f, 0.0f);
-	m_acceleration = glm::vec3(0.0f, 0.0f, 0.0f);
+	m_scale = scale;
+	m_position = glm::vec3(0.0f);
+	m_movement = glm::vec3(0.0f);
+	m_velocity = glm::vec3(0.0f);
 	m_width = width;
 	m_height = height;
-	m_speed = speed;
-	m_animation_cols = 0;
-	m_animation_rows = 0;
-	m_animation_frames = 0;
-	m_animation_index = 0;
-	m_animation_time = 0.0f;
 }
 
 
@@ -405,13 +396,21 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
 
 	m_velocity.x = m_movement.x * m_speed;
 	m_position.x += m_velocity.x * delta_time;
-	check_collision_x(collidable_entities, collidable_entity_count);
-	check_collision_x(map);
+
+	if (map != nullptr)
+	{
+		check_collision_x(collidable_entities, collidable_entity_count);
+		check_collision_x(map);
+	}
 
 	m_velocity.y = m_movement.y * m_speed;
 	m_position.y += m_velocity.y * delta_time;
-	check_collision_y(collidable_entities, collidable_entity_count);
-	check_collision_y(map);
+
+	if (map != nullptr)
+	{
+		check_collision_y(collidable_entities, collidable_entity_count);
+		check_collision_y(map);
+	}
 
 	if (m_collided_bottom && m_play_land)
 	{

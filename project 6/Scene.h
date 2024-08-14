@@ -20,6 +20,10 @@ struct GameState
 {
 	Map* map;
 
+	Entity* text;
+
+	Entity* coins;
+
 	Entity* player;
 	Entity* enemies;
 
