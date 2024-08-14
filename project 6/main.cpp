@@ -85,6 +85,8 @@ Scene* g_current_scene;
 MenuScreen* g_menu_screen;
 Level1* g_level_1;
 
+Scene* g_levels[2];
+
 void switch_to_scene(Scene* scene)
 {
 	g_current_scene = scene;
@@ -136,11 +138,13 @@ void initialize()
 
 	glClearColor(BG_RED, BG_GREEN, BG_BLUE, BG_OPACITY);
 
-	//g_level_1 = new Level1();
-	//switch_to_scene(g_level_1);
-
 	g_menu_screen = new MenuScreen();
-	switch_to_scene(g_menu_screen);
+	g_level_1 = new Level1();
+
+	g_levels[0] = g_menu_screen;
+	g_levels[1] = g_level_1;
+
+	switch_to_scene(g_levels[0]);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -174,8 +178,9 @@ void process_input()
 					case SDLK_RETURN:
 						if (g_current_scene == g_menu_screen)
 						{
+							g_current_scene->m_state.next_scene_id = 1;
+							switch_to_scene(g_levels[g_current_scene->m_state.next_scene_id]);
 							GAME_ONGOING = true;
-							switch_to_scene(g_level_1);
 						}
 						break;
 
@@ -298,6 +303,12 @@ int main(int argc, char* argv[])
 	{
 		process_input();
 		update();
+
+		if (g_current_scene->m_state.next_scene_id >= 0)
+		{
+			//switch_to_scene(g_levels[g_current_scene->m_state.next_scene_id]);
+		}
+
 		render();
 	}
 
