@@ -178,8 +178,7 @@ void process_input()
 					case SDLK_RETURN:
 						if (g_current_scene == g_menu_screen)
 						{
-							g_current_scene->m_state.next_scene_id = 1;
-							switch_to_scene(g_levels[g_current_scene->m_state.next_scene_id]);
+							switch_to_scene(g_levels[1]);
 							GAME_ONGOING = true;
 						}
 						break;

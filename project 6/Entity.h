@@ -46,11 +46,6 @@ private:
 	float m_height = 1.0f;
 
 	float m_speed;
-	float m_jump_power;
-
-	bool m_has_jumped_on = false;
-
-	bool m_is_jumping = false;
 
 	int m_animation_cols;
 	int m_animation_rows;
@@ -91,7 +86,7 @@ public:
 	Entity();
 
 	Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 position,
-		float width, float height, float speed, float jump_power, int animation_cols, int animation_rows,
+		float width, float height, float speed, int animation_cols, int animation_rows,
 		int animation_frames, int animation_index, float animation_time, int animation[12][4]);//, Mix_Chunk* land_sfx,
 		//Mix_Chunk* walk_sfx[2], Mix_Chunk* hit_sfx[3], Mix_Chunk* grunt_sfx[4], Mix_Chunk* pain_sfx[4]);
 
@@ -202,11 +197,6 @@ public:
 		m_movement = glm::vec3(0.0f);
 
 		//m_dying = true;
-	}
-
-	void const jump()
-	{
-		m_is_jumping = true;
 	}
 
 	void activate()
@@ -362,11 +352,6 @@ public:
 	void const set_speed(float new_speed)
 	{
 		m_speed = new_speed;
-	}
-
-	void const set_jump_power(float new_jump_power)
-	{
-		m_jump_power = new_jump_power;
 	}
 
 	void const set_animation_cols(int new_animation_cols)

@@ -39,7 +39,7 @@ Entity::Entity()
 
 
 Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 position,
-	float width, float height, float speed, float jump_power, int animation_cols, int animation_rows,
+	float width, float height, float speed, int animation_cols, int animation_rows,
 	int animation_frames, int animation_index, float animation_time, int animation[12][4])//, Mix_Chunk* land_sfx,
 	//Mix_Chunk* walk_sfx[2], Mix_Chunk* hit_sfx[3], Mix_Chunk* grunt_sfx[4], Mix_Chunk* pain_sfx[4])
 {
@@ -53,7 +53,6 @@ Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::
 	m_width = width;
 	m_height = height;
 	m_speed = speed;
-	m_jump_power = jump_power;
 	m_animation_cols = animation_cols;
 	m_animation_rows = animation_rows;
 	m_animation_frames = animation_frames;
@@ -272,13 +271,6 @@ void const Entity::check_collision_y(Entity* collidable_entities, int collidable
 				m_position.y += y_overlap;
 				m_velocity.y = 0;
 
-				if (!m_has_jumped_on)
-				{
-					collidable_entity->m_ai_state = DYING;
-
-					m_has_jumped_on = true;
-				}
-
 				//m_collided_bottom = true;
 			}
 		}
@@ -363,7 +355,7 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
 
 	if (m_entity_type == ENEMY)
 	{
-		ai_activate(player, curr_ticks);
+		//ai_activate(player, curr_ticks);
 	}
 
 	if (m_animation_indices != nullptr)
@@ -417,23 +409,6 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
 		Mix_PlayChannel(2, m_land_sfx, 0);
 
 		m_play_land = false;
-	}
-
-	if (m_entity_type == ENEMY && m_ai_state != IDLING && (m_collided_left || m_collided_right))
-	{
-		if (m_velocity.y == 0.0f)
-		{
-			jump();
-		}
-	}
-
-	if (m_is_jumping)
-	{
-		m_is_jumping = false;
-
-		m_velocity.y += m_jump_power;
-
-		m_play_land = true;
 	}
 
 	m_model_matrix = glm::mat4(1.0f);
