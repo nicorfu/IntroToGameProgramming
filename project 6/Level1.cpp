@@ -47,7 +47,7 @@ void Level1::initialize()
 		{   0,   2,   4,   6 },		// idle down
 		{   8,  10,  12,  14 },		// idle left
 		{  40,  42,  44,  46 },		// idle right
-		{  72,  74,  76,  68 },		// walk up
+		{  72,  74,  76,  78 },		// walk up
 		{  48,  50,  52,  54 },		// walk down
 		{  56,  58,  60,  62 },		// walk left
 		{  88,  90,  92,  94 },		// walk right

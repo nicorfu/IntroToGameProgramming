@@ -149,6 +149,8 @@ void initialize()
 
 void process_input()
 {
+	g_current_scene->get_state().player->idle();
+
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
 	{
@@ -172,27 +174,36 @@ void process_input()
 		}
 	}
 
-	/*
 	if (GAME_ONGOING)
 	{
 		const Uint8* key_state = SDL_GetKeyboardState(NULL);
 
-		if (key_state[SDL_SCANCODE_LEFT])
+		if (key_state[SDL_SCANCODE_UP])
 		{
+			g_current_scene->get_state().player->set_animation_direction(UP);
+			g_current_scene->get_state().player->walk();
+		}
+		else if (key_state[SDL_SCANCODE_DOWN])
+		{
+			g_current_scene->get_state().player->set_animation_direction(DOWN);
+			g_current_scene->get_state().player->walk();
+		}
+		else if (key_state[SDL_SCANCODE_LEFT])
+		{
+			g_current_scene->get_state().player->set_animation_direction(LEFT);
+			g_current_scene->get_state().player->walk();
 		}
 		else if (key_state[SDL_SCANCODE_RIGHT])
 		{
-		}
-		else if (key_state[SDL_SCANCODE_SPACE])
-		{
+			g_current_scene->get_state().player->set_animation_direction(RIGHT);
+			g_current_scene->get_state().player->walk();
 		}
 
-		if (glm::length(g_state.player->m_movement) > 1.0f)
+		if (glm::length(g_current_scene->get_state().player->get_movement()) > 1.0f)
 		{
-			g_state.player->m_movement = glm::normalize(g_state.player->m_movement);
+			(g_current_scene->get_state().player->normalize_movement());
 		}
 	}
-	*/
 }
 
 
@@ -224,11 +235,11 @@ void update()
 
 	if (g_current_scene->get_state().player->get_position().x >= LEVEL1_LEFT_EDGE) 
 	{
-		g_view_matrix = glm::translate(g_view_matrix, glm::vec3(-g_current_scene->get_state().player->get_position().x, 3.75, 0));
+		g_view_matrix = glm::translate(g_view_matrix, glm::vec3(-g_current_scene->get_state().player->get_position().x, 1.5, 0));
 	}
 	else 
 	{
-		g_view_matrix = glm::translate(g_view_matrix, glm::vec3(-4.75, 3.75, 0));
+		g_view_matrix = glm::translate(g_view_matrix, glm::vec3(-4.75, 1.5, 0));
 	}
 }
 

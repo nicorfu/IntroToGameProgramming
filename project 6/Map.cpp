@@ -125,7 +125,7 @@ bool Map::is_solid(glm::vec3 position, float* penetration_x, float* penetration_
 
 	int tile = m_level_data[tile_y * m_width + tile_x];
 
-	if (tile == -1)
+	if (tile == 0)
 	{
 		return false;
 	}

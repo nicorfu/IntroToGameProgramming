@@ -64,7 +64,8 @@ Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::
 	m_lethal_distance = (entity_type == PLAYER) ? 1.5f : 1.4f;
 
 	set_animation(animation);
-	m_animation_indices = m_animation[IDLE];
+	m_animation_direction = DOWN;
+	m_animation_indices = m_animation[IDLE + m_animation_direction];
 
 	//m_land_sfx = land_sfx;
 	/*
@@ -438,7 +439,7 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
 	}
 
 	m_velocity.x = m_movement.x * m_speed;
-	m_velocity += m_acceleration * delta_time;
+	//m_velocity += m_acceleration * delta_time;
 
 	m_position.x += m_velocity.x * delta_time;
 	if (m_position.x < 0.0f)
@@ -448,6 +449,7 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
 	check_collision_x(collidable_entities, collidable_entity_count);
 	check_collision_x(map);
 
+	m_velocity.y = m_movement.y * m_speed;
 	m_position.y += m_velocity.y * delta_time;
 	check_collision_y(collidable_entities, collidable_entity_count);
 	check_collision_y(map);

@@ -63,7 +63,7 @@ private:
 
 	float m_animation_time = 0.0f;
 
-	int m_animation[4][8];
+	int m_animation[12][4];
 
 	bool m_attacking = false;
 	bool m_dying = false;
@@ -87,7 +87,7 @@ private:
 	*/
 
 public:
-	static constexpr int SECONDS_PER_FRAME = 6;
+	static constexpr int SECONDS_PER_FRAME = 8;
 
 	Entity();
 
@@ -130,29 +130,9 @@ public:
 
 	void idle()
 	{
-		m_movement.x = 0.0f;
+		m_movement = glm::vec3(0.0f, 0.0f, 0.0f);
 
-		switch (m_animation_direction)
-		{
-		case UP:
-			m_animation_indices = m_animation[IDLE + UP];
-			break;
-
-		case DOWN:
-			m_animation_indices = m_animation[IDLE + DOWN];
-			break;
-
-		case LEFT:
-			m_animation_indices = m_animation[IDLE + LEFT];
-			break;
-
-		case RIGHT:
-			m_animation_indices = m_animation[IDLE + RIGHT];
-			break;
-
-		default:
-			break;
-		}
+		m_animation_indices = m_animation[IDLE + m_animation_direction];
 	}
 
 	void walk()
@@ -161,27 +141,25 @@ public:
 		{
 			case UP:
 				m_movement.y = 1.0f;
-				m_animation_indices = m_animation[WALK + UP];
 				break;
 
 			case DOWN:
 				m_movement.y = -1.0f;
-				m_animation_indices = m_animation[WALK + DOWN];
 				break;
 
 			case LEFT:
 				m_movement.x = -1.0f;
-				m_animation_indices = m_animation[WALK + LEFT];
 				break;
 
 			case RIGHT:
 				m_movement.x = 1.0f;
-				m_animation_indices = m_animation[WALK + RIGHT];
 				break;
 
 			default:
 				break;
 		}
+
+		m_animation_indices = m_animation[WALK + m_animation_direction];
 
 		//Mix_PlayChannel(-1, m_walk_sfx[get_random_sfx_index(WALK_SFX_COUNT)], 0);
 	}
@@ -224,7 +202,7 @@ public:
 
 		m_movement = glm::vec3(0.0f);
 
-		m_dying = true;
+		//m_dying = true;
 	}
 
 	void const jump()
@@ -432,11 +410,16 @@ public:
 		m_last_attack_time = new_attack_time;
 	}
 
+	void set_animation_direction(AnimationDirection new_animation_direction)
+	{
+		m_animation_direction = new_animation_direction;
+	}
+
 	void set_animation(int new_animation[12][4])
 	{
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 12; i++)
 		{
-			for (int j = 0; j < 8; j++)
+			for (int j = 0; j < 4; j++)
 			{
 				m_animation[i][j] = new_animation[i][j];
 			}
