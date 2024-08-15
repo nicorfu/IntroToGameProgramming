@@ -24,6 +24,8 @@ struct GameState
 
 	Entity* coins;
 
+	Entity* portal;
+
 	Entity* player;
 	Entity* enemies;
 

@@ -16,9 +16,10 @@
 */
 
 
-enum EntityType { PLAYER, ENEMY, COIN };
-enum AIType { WALKER, GUARDIAN, WAITER };
+enum EntityType { PLAYER, ENEMY, COIN, PORTAL };
+enum AIType { WALKER, GUARDIAN };
 enum AIState { WALKING, IDLING, ATTACKING, DYING };
+enum AIWalkingOrientation { HORIZONTAL, VERTICAL };
 
 enum AnimationAction { IDLE=0, WALK=4, DIE=8 };
 enum AnimationDirection { UP, DOWN, LEFT, RIGHT };
@@ -32,6 +33,9 @@ private:
 
 	AIType m_ai_type;
 	AIState m_ai_state;
+
+	AIWalkingOrientation m_ai_walking_orientation;
+	float m_ai_walking_range[2];
 
 	GLuint m_texture_id;
 
@@ -114,8 +118,6 @@ public:
 
 	void ai_activate(Entity* player, float curr_ticks);
 	void ai_walk(Entity* player, float curr_ticks);
-	void ai_guard(Entity* player, float curr_ticks);
-	void ai_wait(Entity* player, float curr_ticks);
 
 	void normalize_movement()
 	{
@@ -313,6 +315,17 @@ public:
 	{
 		m_ai_state = new_ai_state;
 	};
+
+	void const set_ai_walking_orientation(AIWalkingOrientation new_ai_walking_orientation)
+	{
+		m_ai_walking_orientation = new_ai_walking_orientation;
+	}
+
+	void const set_ai_walking_range(float new_ai_walking_range[2])
+	{
+		m_ai_walking_range[0] = new_ai_walking_range[0];
+		m_ai_walking_range[1] = new_ai_walking_range[1];
+	}
 
 	void const set_texture_id(GLuint new_texture_id)
 	{

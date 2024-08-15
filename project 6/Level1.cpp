@@ -8,7 +8,7 @@ const int TILE_COUNT_X = 16;
 const int TILE_COUNT_Y = 40;
 
 const int LEVEL_WIDTH = 16;
-const int LEVEL_HEIGHT = 11;
+const int LEVEL_HEIGHT = 13;
 unsigned int LEVEL_DATA[] =
 {
 	154, 225, 226, 227, 228, 225, 226, 227, 228, 225, 226, 227, 228, 230, 225, 153,
@@ -19,10 +19,14 @@ unsigned int LEVEL_DATA[] =
 	186,  35,  50,  81,  65,  97,  64,  96,  65,   0,  80,   6,  19,  32,  52, 185,
 	154,  52,   2,   0,  81,  33,   0,  20,  81,  96,  65,  20,  35,  55,   2, 153,
 	170,  65,  97,  48,  96,  49,  16,  38,   7,  96,  23,  38,  49,   0,  17, 169,
-	186,   5,  81,  80,  97,  50,   3,  18,  39,  81,  97,  80,   7,   7,  39, 185,
-	154,   1,  21,  64,  37,  16,   7,  33,  48,  23,  54,   0,   4,  48,  16, 153,
-	 -1, 225, 226,  65,  32,  52,   4,  20,  35,  55,  33,  55,   3,  16,  23, 169
+	186,   5,  81,  80,  97,  50,  65,  80,  97,  81,  16,  22,   7,   7,  39, 185,
+	154,   1,  21,  64,  37,  16,   7,  33,  48,  23,  54,   0,   4,  55,  19, 153,
+	170, 225, 226,  65,  32,  52,   4,  20,  35,  55,  33,  55, 228, 225, 226, 169,
+	186, 241, 242, 225, 226, 227, 228, 225, 230, 225, 226, 227, 244, 241, 242, 185,
+	 -1,  -1,  -1, 241, 242, 243, 244, 241, 246, 241, 242, 243,  -1,  -1,  -1,  -1
 };
+
+constexpr char PORTAL_FILEPATH[] = "assets/visual/purple_portal.png";
 
 constexpr char COIN_FILEPATH[] = "assets/visual/coin.png";
 
@@ -32,10 +36,12 @@ constexpr char ENEMY_FILEPATH[] = "assets/visual/akram_spritesheet.png";
 
 Level1::~Level1()
 {
-	delete[] m_state.enemies;
+	delete m_state.enemies;
 	delete m_state.player;
 
 	delete[] m_state.coins;
+
+	delete m_state.portal;
 
 	delete m_state.map;
 
@@ -68,6 +74,22 @@ void Level1::initialize()
 
 	m_state.coins[0].set_position(glm::vec3(5.0f, -4.0f, 0.0f));
 	m_state.coins[1].set_position(glm::vec3(13.0f, -3.0f, 0.0f));
+	m_state.coins[2].set_position(glm::vec3(6.0f, -8.0f, 0.0f));
+
+	GLuint portal_texture_id = Utility::load_texture(PORTAL_FILEPATH);
+
+	glm::vec3 portal_scale = glm::vec3(1.0f, 1.4f, 0.0f) * 1.0f;
+
+	m_state.portal = new Entity
+	(
+		PORTAL,
+		portal_texture_id,
+		portal_scale,
+		1.0f,
+		1.0f
+	);
+
+	m_state.portal->set_position(glm::vec3(1.0f, -6.7f, 0.0f));
 
 	GLuint player_texture_id = Utility::load_texture(PLAYER_FILEPATH);
 
@@ -129,31 +151,31 @@ void Level1::initialize()
 		{  68,  69,  70,  71 }		// die right
 	};
 
-	m_state.enemies = new Entity[ENEMY_COUNT];
+	m_state.enemies = new Entity
+	(
+		ENEMY,
+		enemy_texture_id,
+		enemy_scale,
+		glm::vec3(0.0f),
+		0.5f,
+		0.7f,
+		0.0f,
+		24,
+		8,
+		4,
+		0,
+		0.0f,
+		enemy_animation
+	);
 
-	for (int i = 0; i < ENEMY_COUNT; i++)
-	{
-		m_state.enemies[i] = Entity
-		(
-			ENEMY,
-			enemy_texture_id,
-			enemy_scale,
-			glm::vec3(0.0f),
-			0.5f,
-			0.7f,
-			0.0f,
-			24,
-			8,
-			4,
-			0,
-			0.0f,
-			enemy_animation
-		);
-	}
+	float walking_range[2] = {-3.0f, -6.0f};
 
-	m_state.enemies[0].set_ai_type(WAITER);
-	m_state.enemies[0].set_ai_state(IDLING);
-	m_state.enemies[0].set_position(glm::vec3(10.0f, -3.0f, 0.0f));
+	m_state.enemies->set_ai_type(WALKER);
+	m_state.enemies->set_ai_state(WALKING);
+	m_state.enemies->set_position(glm::vec3(10.0f, -3.0f, 0.0f));
+	m_state.enemies->set_speed(1.0f);
+	m_state.enemies->set_ai_walking_orientation(VERTICAL);
+	m_state.enemies->set_ai_walking_range(walking_range);
 
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
 
@@ -170,12 +192,11 @@ void Level1::update(float delta_time)
 		m_state.coins[i].update(delta_time, m_state.player, nullptr, 0, m_state.map, 0.0f);
 	}
 
+	m_state.portal->update(delta_time, m_state.player, nullptr, 0, m_state.map, 0.0f);
+
 	m_state.player->update(delta_time, m_state.player, m_state.enemies, ENEMY_COUNT, m_state.map, 0.0f);
 
-	for (int i = 0; i < ENEMY_COUNT; i++)
-	{
-		m_state.enemies[i].update(delta_time, m_state.player, nullptr, 0, m_state.map, 0.0f);
-	}
+	m_state.enemies->update(delta_time, m_state.player, nullptr, 0, m_state.map, 0.0f);
 }
 
 
@@ -188,10 +209,9 @@ void Level1::render(ShaderProgram* g_shader_program)
 		m_state.coins[i].render(g_shader_program);
 	}
 
-	for (int i = 0; i < ENEMY_COUNT; i++)
-	{
-		m_state.enemies[i].render(g_shader_program);
-	}
+	m_state.enemies->render(g_shader_program);
 	
 	m_state.player->render(g_shader_program);
+
+	m_state.portal->render(g_shader_program);
 }

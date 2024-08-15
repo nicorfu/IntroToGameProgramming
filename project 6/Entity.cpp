@@ -446,23 +446,7 @@ void Entity::render(ShaderProgram* program)
 
 void Entity::ai_activate(Entity* player, float curr_ticks)
 {
-	switch (m_ai_type)
-	{
-		case WALKER:
-			ai_walk(player, curr_ticks);
-			break;
-
-		case GUARDIAN:
-			ai_guard(player, curr_ticks);
-			break;
-
-		case WAITER:
-			ai_wait(player, curr_ticks);
-			break;
-
-		default:
-			break;
-	}
+	ai_walk(player, curr_ticks);
 }
 
 
@@ -471,22 +455,31 @@ void Entity::ai_walk(Entity* player, float curr_ticks)
 	switch (m_ai_state)
 	{
 		case WALKING:
-			if (m_position.x <= 8.85f)
+			if (m_ai_walking_orientation == HORIZONTAL)
 			{
-				//move_right();
+				if (m_position.x <= m_ai_walking_range[0])
+				{
+					set_animation_direction(RIGHT);
+				}
+				else if (m_position.x >= m_ai_walking_range[1])
+				{
+					set_animation_direction(LEFT);
+				}
 			}
-			else if (m_position.x >= 15.15f)
+			else if (m_ai_walking_orientation == VERTICAL)
 			{
-				//move_left();
+				if (m_position.y >= m_ai_walking_range[0])
+				{
+					set_animation_direction(DOWN);
+				}
+				else if (m_position.y <= m_ai_walking_range[1])
+				{
+					set_animation_direction(UP);
+				}
 			}
-			if (/*m_facing_left*/0)
-			{
-				//move_left();
-			}
-			else
-			{
-				//move_right();
-			}
+
+			walk();
+
 			if (glm::distance(m_position, player->get_position()) < 1.5f)
 			{
 				if (m_position.x > player->get_position().x)
@@ -498,7 +491,7 @@ void Entity::ai_walk(Entity* player, float curr_ticks)
 					//face_right();
 				}
 
-				m_ai_state = ATTACKING;
+				//m_ai_state = ATTACKING;
 			}
 			break;
 
@@ -512,104 +505,6 @@ void Entity::ai_walk(Entity* player, float curr_ticks)
 			if (glm::distance(m_position, player->get_position()) >= 1.5f)
 			{
 				m_ai_state = WALKING;
-			}
-			break;
-
-		case DYING:
-			if (!m_dying)
-			{
-				die();
-			}
-			break;
-	}
-}
-
-
-void Entity::ai_guard(Entity* player, float curr_ticks)
-{
-	switch (m_ai_state)
-	{
-		case IDLING:
-			//dont_move();
-			if (glm::distance(m_position, player->get_position()) < 3.75f)
-			{
-				m_ai_state = WALKING;
-			}
-			break;
-
-		case WALKING:
-			if (m_position.x > player->get_position().x)
-			{
-				//move_left();
-			}
-			else
-			{
-				//move_right();
-			}
-			if (glm::distance(m_position, player->get_position()) < 1.8f)
-			{
-				if (player->get_velocity().x != 0.0f)
-				{
-					m_ai_state = ATTACKING;
-				}
-				else if (glm::distance(m_position, player->get_position()) < m_lethal_distance)
-				{
-					m_ai_state = ATTACKING;
-				}
-			}
-			if (glm::distance(m_position, player->get_position()) >= 3.75f)
-			{
-				m_ai_state = IDLING;
-			}
-			break;
-
-		case ATTACKING:
-			m_movement.x = 0.0f;
-			if ((curr_ticks - m_last_attack_time) >= 1.5f && player->m_is_active)
-			{
-				attack(player, 1);
-				m_last_attack_time = curr_ticks;
-			}
-			if (glm::distance(m_position, player->get_position()) >= 1.8f)
-			{
-				m_ai_state = WALKING;
-			}
-			break;
-
-		case DYING:
-			if (!m_dying)
-			{
-				die();
-			}
-			break;
-
-		default:
-			break;
-	}
-}
-
-
-void Entity::ai_wait(Entity* player, float curr_ticks)
-{
-	switch (m_ai_state)
-	{
-		case IDLING:
-			idle();
-			if (glm::distance(m_position, player->get_position()) < 1.48f)
-			{
-				//m_ai_state = ATTACKING;
-			}
-			break;
-
-		case ATTACKING:
-			if ((curr_ticks - m_last_attack_time) >= 1.5f && player->m_is_active)
-			{
-				attack(player, 1);
-				m_last_attack_time = curr_ticks;
-			}
-			if (glm::distance(m_position, player->get_position()) >= 1.48f)
-			{
-				m_ai_state = IDLING;
 			}
 			break;
 
