@@ -33,6 +33,7 @@
 #include "MenuScreen.h"
 #include "Level1.h"
 #include "Level2.h"
+#include "Level3.h"
 
 
 #define FIXED_TIMESTEP 0.0166666f
@@ -86,8 +87,9 @@ float g_accumulator = 0.0f;
 MenuScreen* g_menu_screen;
 Level1* g_level_1;
 Level2* g_level_2;
+Level3* g_level_3;
 
-Scene* g_levels[3];
+Scene* g_levels[4];
 
 Scene* g_current_scene;
 
@@ -145,10 +147,12 @@ void initialize()
 	g_menu_screen = new MenuScreen();
 	g_level_1 = new Level1();
 	g_level_2 = new Level2();
+	g_level_3 = new Level3();
 
 	g_levels[0] = g_menu_screen;
 	g_levels[1] = g_level_1;
 	g_levels[2] = g_level_2;
+	g_levels[3] = g_level_3;
 
 	switch_to_scene(g_levels[0]);
 
@@ -161,7 +165,15 @@ void process_input()
 {
 	if (g_current_scene != g_menu_screen)
 	{
-		g_current_scene->get_state().player->idle();
+		if (!g_current_scene->get_state().player->get_dying())
+		{
+			g_current_scene->get_state().player->idle();
+		}
+		else 
+		{
+			GAME_ONGOING = false;
+			LOST = true;
+		}
 	}
 
 	SDL_Event event;
@@ -190,7 +202,7 @@ void process_input()
 						break;
 
 					case SDLK_f:
-						if (GAME_ONGOING && (g_curr_ticks - g_current_scene->get_state().player->get_last_attack_time()) >= 0.2f)
+						if (GAME_ONGOING && (g_curr_ticks - g_current_scene->get_state().player->get_last_attack_time()) >= 0.1f)
 						{
 							g_current_scene->get_state().player->set_attacking(true);
 						}
@@ -305,6 +317,7 @@ void shutdown()
 
 	delete g_level_1;
 	delete g_level_2;
+	delete g_level_3;
 }
 
 

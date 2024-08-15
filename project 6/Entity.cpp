@@ -218,7 +218,7 @@ bool const Entity::check_collision(Entity* other) const
 	float x_distance = fabs(m_position.x - other->m_position.x) - ((m_width + other->m_width) / 2.0f);
 	float y_distance = fabs(m_position.y - other->m_position.y) - ((m_height + other->m_height) / 2.0f);
 
-	return x_distance < 0.0f && y_distance < 0.0f;
+	return (m_entity_type == PLAYER) ? x_distance < 0.0f && y_distance < 0.5f : x_distance < 0.0f && y_distance < 0.0f;
 }
 
 
@@ -240,6 +240,11 @@ void const Entity::check_collision_x(Entity* collidable_entities, int collidable
 			{
 				set_portal_touched(true);
 				return;
+			}
+
+			if (m_entity_type == PLAYER)
+			{
+				die();
 			}
 
 			float x_distance = fabs(m_position.x - collidable_entity->m_position.x);
@@ -272,6 +277,7 @@ void const Entity::check_collision_y(Entity* collidable_entities, int collidable
 
 		if (check_collision(collidable_entity))
 		{
+
 			float y_distance = fabs(m_position.y - collidable_entity->m_position.y);
 			float y_overlap = fabs(y_distance - (m_height / 2.0f) - (collidable_entity->m_height / 2.0f));
 
