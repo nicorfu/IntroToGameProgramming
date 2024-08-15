@@ -18,7 +18,7 @@
 
 enum EntityType { PLAYER, ENEMY, COIN, PORTAL };
 enum AIType { WALKER, GUARDIAN };
-enum AIState { WALKING, IDLING, ATTACKING, DYING };
+enum AIState { WALKING, IDLING, DYING };
 enum AIWalkingOrientation { HORIZONTAL, VERTICAL };
 
 enum AnimationAction { IDLE=0, WALK=4, DIE=8 };
@@ -64,10 +64,9 @@ private:
 	int m_animation[12][4];
 
 	bool m_attacking = false;
-	bool m_dying = false;
-
 	float m_last_attack_time = 0.0f;
-	float m_lethal_distance;
+
+	bool m_dying = false;
 
 	bool m_collided_top = false;
 	bool m_collided_bottom = false;
@@ -85,7 +84,7 @@ private:
 	*/
 
 public:
-	static constexpr int SECONDS_PER_FRAME = 8;
+	int SECONDS_PER_FRAME = 8;
 
 	Entity();
 
@@ -162,43 +161,31 @@ public:
 
 	void attack(Entity* hittable_entities, int hittable_entity_count)
 	{
-		/*
 		//Mix_PlayChannel((m_entity_type == PLAYER) ? 3 : 4, m_grunt_sfx[get_random_sfx_index(GRUNT_SFX_COUNT)], 0);
 
-		m_animation_indices = m_animation[ATTACK];
-		m_animation_index = 0;
+		idle();
 
 		for (int i = 0; i < hittable_entity_count; i++)
 		{
-			if (glm::distance(m_position, hittable_entities[i].m_position) < m_lethal_distance && hittable_entities[i].m_is_active)
+			if (glm::distance(m_position, hittable_entities[i].m_position) < 1.5f && hittable_entities[i].m_is_active)
 			{
 				//Mix_PlayChannel((m_entity_type == PLAYER) ? 5 : 6, m_hit_sfx[get_random_sfx_index(HIT_SFX_COUNT)], 0);
 
-				if (hittable_entities[i].m_entity_type == ENEMY)
-				{
-					hittable_entities[i].m_ai_state = DYING;
-				}
-				else
-				{
-					hittable_entities[i].die();
-				}
+				hittable_entities[i].m_ai_state = DYING;
 			}
 		}
-
-		m_attacking = true;
-		*/
 	}
 
 	void die()
 	{
 		//Mix_PlayChannel(-1, m_pain_sfx[get_random_sfx_index(PAIN_SFX_COUNT)], 0);
 
-		m_animation_indices = m_animation[DIE];
+		m_animation_indices = m_animation[DIE + m_animation_direction];
 		m_animation_index = 0;
 
 		m_movement = glm::vec3(0.0f);
 
-		//m_dying = true;
+		m_dying = true;
 	}
 
 	void activate()
@@ -296,6 +283,11 @@ public:
 		return m_last_attack_time;
 	}
 
+	bool const get_attacking() const
+	{
+		return m_attacking;
+	}
+
 	bool const get_dying() const
 	{
 		return m_dying;
@@ -315,6 +307,11 @@ public:
 	{
 		m_ai_state = new_ai_state;
 	};
+
+	void const set_attacking(bool new_attacking)
+	{
+		m_attacking = new_attacking;
+	}
 
 	void const set_ai_walking_orientation(AIWalkingOrientation new_ai_walking_orientation)
 	{

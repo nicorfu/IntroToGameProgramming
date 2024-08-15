@@ -173,7 +173,7 @@ void Level1::initialize()
 	m_state.enemies->set_ai_type(WALKER);
 	m_state.enemies->set_ai_state(IDLING);
 	m_state.enemies->set_position(glm::vec3(10.0f, -3.0f, 0.0f));
-	m_state.enemies->set_speed(1.0f);
+	m_state.enemies->set_speed(1.8f);
 	m_state.enemies->set_ai_walking_orientation(VERTICAL);
 	m_state.enemies->set_ai_walking_range(walking_range);
 
@@ -185,18 +185,27 @@ void Level1::initialize()
 }
 
 
-void Level1::update(float delta_time)
+void Level1::update(float delta_time, float curr_ticks)
 {
 	for (int i = 0; i < COIN_COUNT; i++)
 	{
-		m_state.coins[i].update(delta_time, m_state.player, nullptr, 0, m_state.map, 0.0f);
+		m_state.coins[i].update(delta_time, m_state.player, nullptr, 0, m_state.map, curr_ticks);
 	}
 
-	m_state.portal->update(delta_time, m_state.player, nullptr, 0, m_state.map, 0.0f);
+	m_state.portal->update(delta_time, m_state.player, nullptr, 0, m_state.map, curr_ticks);
 
-	m_state.player->update(delta_time, m_state.player, m_state.enemies, ENEMY_COUNT, m_state.map, 0.0f);
+	m_state.player->update(delta_time, m_state.player, m_state.enemies, ENEMY_COUNT, m_state.map, curr_ticks);
 
-	m_state.enemies->update(delta_time, m_state.player, m_state.player, 1, m_state.map, 0.0f);
+	m_state.enemies->update(delta_time, m_state.player, m_state.player, 1, m_state.map, curr_ticks);
+
+	if (m_state.player->get_attacking())
+	{
+		m_state.player->attack(m_state.enemies, ENEMY_COUNT);
+
+		m_state.player->set_last_attack_time(curr_ticks);
+
+		m_state.player->set_attacking(false);
+	}
 }
 
 

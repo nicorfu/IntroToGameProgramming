@@ -43,7 +43,7 @@ public:
 	int m_num_enemies = 1;
 
 	virtual void initialize() = 0;
-	virtual void update(float delta_time) = 0;
+	virtual void update(float delta_time, float curr_ticks) = 0;
 	virtual void render(ShaderProgram* shader_program) = 0;	
 
 	GameState const get_state() const

@@ -58,11 +58,15 @@ Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::
 	m_animation_frames = animation_frames;
 	m_animation_index = animation_index;
 	m_animation_time = animation_time;
-	m_lethal_distance = (entity_type == PLAYER) ? 1.5f : 1.4f;
 
 	set_animation(animation);
 	m_animation_direction = DOWN;
 	m_animation_indices = m_animation[IDLE + m_animation_direction];
+
+	if (entity_type == ENEMY)
+	{
+		SECONDS_PER_FRAME = 5;
+	}
 
 	//m_land_sfx = land_sfx;
 	/*
@@ -372,11 +376,6 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
 
 			if (m_animation_index >= m_animation_frames)
 			{
-				if (m_attacking)
-				{
-					m_attacking = false;
-					//dont_move();
-				}
 				if (m_dying)
 				{
 					deactivate();
@@ -493,32 +492,6 @@ void Entity::ai_walk(Entity* player, float curr_ticks)
 				m_ai_state = IDLING;
 			}
 
-			if (glm::distance(m_position, player->get_position()) < 1.5f)
-			{
-				if (m_position.x > player->get_position().x)
-				{
-					//face_left();
-				}
-				else
-				{
-					//face_right();
-				}
-
-				//m_ai_state = ATTACKING;
-			}
-			break;
-
-		case ATTACKING:
-			m_movement.x = 0.0f;
-			if ((curr_ticks - m_last_attack_time) >= 1.5f && player->m_is_active)
-			{
-				attack(player, 1);
-				m_last_attack_time = curr_ticks;
-			}
-			if (glm::distance(m_position, player->get_position()) >= 1.5f)
-			{
-				m_ai_state = WALKING;
-			}
 			break;
 
 		case DYING:

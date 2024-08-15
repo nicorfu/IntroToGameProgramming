@@ -79,6 +79,7 @@ glm::mat4 g_projection_matrix;
 
 const float MILLISECONDS_IN_SECOND = 1000.0f;
 float g_previous_ticks = 0.0f;
+float g_curr_ticks = 0.0f;
 float g_accumulator = 0.0f;
 
 Scene* g_current_scene;
@@ -183,6 +184,13 @@ void process_input()
 						}
 						break;
 
+					case SDLK_f:
+						if (GAME_ONGOING && (g_curr_ticks - g_current_scene->get_state().player->get_last_attack_time()) >= 0.7f)
+						{
+							g_current_scene->get_state().player->set_attacking(true);
+						}
+						break;
+
 					default:
 						break;
 				}
@@ -224,9 +232,9 @@ void process_input()
 
 void update()
 {
-	float ticks = (float)SDL_GetTicks() / MILLISECONDS_IN_SECOND;
-	float delta_time = ticks - g_previous_ticks;
-	g_previous_ticks = ticks;
+	g_curr_ticks = (float)SDL_GetTicks() / MILLISECONDS_IN_SECOND;
+	float delta_time = g_curr_ticks - g_previous_ticks;
+	g_previous_ticks = g_curr_ticks;
 
 	delta_time += g_accumulator;
 
@@ -239,7 +247,7 @@ void update()
 
 	while (delta_time >= FIXED_TIMESTEP)
 	{
-		g_current_scene->update(FIXED_TIMESTEP);
+		g_current_scene->update(FIXED_TIMESTEP, g_curr_ticks);
 
 		delta_time -= FIXED_TIMESTEP;
 	}

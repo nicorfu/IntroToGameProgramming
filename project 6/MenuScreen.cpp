@@ -26,7 +26,7 @@ void MenuScreen::initialize()
 }
 
 
-void MenuScreen::update(float delta_time)
+void MenuScreen::update(float delta_time, float curr_ticks)
 {
 }
 

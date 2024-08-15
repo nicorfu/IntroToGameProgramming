@@ -1,4 +1,4 @@
 ﻿  Entity.cpp
-C:\Users\nico\Desktop\IntroToGameProgramming\project 6\Entity.cpp(139,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\nico\Desktop\IntroToGameProgramming\project 6\Entity.cpp(191,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\nico\Desktop\IntroToGameProgramming\project 6\Entity.cpp(143,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\nico\Desktop\IntroToGameProgramming\project 6\Entity.cpp(195,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   project 6.vcxproj -> C:\Users\nico\Desktop\IntroToGameProgramming\project 6\Debug\project 6.exe
