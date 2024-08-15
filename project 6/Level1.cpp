@@ -157,7 +157,7 @@ void Level1::initialize()
 		enemy_texture_id,
 		enemy_scale,
 		glm::vec3(0.0f),
-		0.5f,
+		0.6f,
 		0.7f,
 		0.0f,
 		24,
@@ -171,7 +171,7 @@ void Level1::initialize()
 	float walking_range[2] = {-3.0f, -6.0f};
 
 	m_state.enemies->set_ai_type(WALKER);
-	m_state.enemies->set_ai_state(WALKING);
+	m_state.enemies->set_ai_state(IDLING);
 	m_state.enemies->set_position(glm::vec3(10.0f, -3.0f, 0.0f));
 	m_state.enemies->set_speed(1.0f);
 	m_state.enemies->set_ai_walking_orientation(VERTICAL);
@@ -196,7 +196,7 @@ void Level1::update(float delta_time)
 
 	m_state.player->update(delta_time, m_state.player, m_state.enemies, ENEMY_COUNT, m_state.map, 0.0f);
 
-	m_state.enemies->update(delta_time, m_state.player, nullptr, 0, m_state.map, 0.0f);
+	m_state.enemies->update(delta_time, m_state.player, m_state.player, 1, m_state.map, 0.0f);
 }
 
 

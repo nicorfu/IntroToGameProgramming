@@ -454,6 +454,14 @@ void Entity::ai_walk(Entity* player, float curr_ticks)
 {
 	switch (m_ai_state)
 	{
+		case IDLING:
+			idle();
+			if (glm::distance(m_position, player->get_position()) < 4.0f)
+			{
+				m_ai_state = WALKING;
+			}
+			break;
+
 		case WALKING:
 			if (m_ai_walking_orientation == HORIZONTAL)
 			{
@@ -479,6 +487,11 @@ void Entity::ai_walk(Entity* player, float curr_ticks)
 			}
 
 			walk();
+
+			if (glm::distance(m_position, player->get_position()) >= 4.0f)
+			{
+				m_ai_state = IDLING;
+			}
 
 			if (glm::distance(m_position, player->get_position()) < 1.5f)
 			{
