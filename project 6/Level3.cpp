@@ -272,6 +272,7 @@ void Level3::update(float delta_time, float curr_ticks)
 			if (m_state.enemies[i].get_is_active())
 			{
 				level_done = false;
+				m_state.portal->set_portal_touched(false);
 				break;
 			}
 		}
@@ -281,6 +282,7 @@ void Level3::update(float delta_time, float curr_ticks)
 			if (m_state.coins[i].get_is_active())
 			{
 				level_done = false;
+				m_state.portal->set_portal_touched(false);
 				break;
 			}
 		}

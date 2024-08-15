@@ -161,7 +161,7 @@ void initialize()
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 512);
 	music = Mix_LoadMUS("assets/audio/mystery_piano.mp3");
 	Mix_PlayMusic(music, -1);
-	Mix_VolumeMusic(MIX_MAX_VOLUME / 4);
+	Mix_VolumeMusic(MIX_MAX_VOLUME * 0.85);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
