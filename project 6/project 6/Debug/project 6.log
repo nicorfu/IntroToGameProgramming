@@ -1,4 +1,17 @@
 ﻿  Entity.cpp
 C:\Users\nico\Desktop\IntroToGameProgramming\project 6\Entity.cpp(143,20): warning C4018: '<': signed/unsigned mismatch
 C:\Users\nico\Desktop\IntroToGameProgramming\project 6\Entity.cpp(195,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Level1.cpp
+C:\Users\nico\Desktop\IntroToGameProgramming\project 6\Level1.cpp(26,3): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 6\Level1.cpp(26,8): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 6\Level1.cpp(26,13): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 6\Level1.cpp(26,63): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 6\Level1.cpp(26,68): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 6\Level1.cpp(26,73): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 6\Level1.cpp(26,78): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
+C:\Users\nico\Desktop\IntroToGameProgramming\project 6\Level1.cpp(184,18): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  MenuScreen.cpp
+  Scene.cpp
+  main.cpp
+  Generating Code...
   project 6.vcxproj -> C:\Users\nico\Desktop\IntroToGameProgramming\project 6\Debug\project 6.exe

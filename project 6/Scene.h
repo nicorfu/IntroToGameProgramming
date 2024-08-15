@@ -31,7 +31,7 @@ struct GameState
 
 	Mix_Music* music;
 
-	int next_scene_id;
+	int next_scene_index = 0;
 };
 
 

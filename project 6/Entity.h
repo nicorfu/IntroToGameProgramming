@@ -68,6 +68,8 @@ private:
 
 	bool m_dying = false;
 
+	bool m_portal_touched = false;
+
 	bool m_collided_top = false;
 	bool m_collided_bottom = false;
 	bool m_collided_left = false;
@@ -167,7 +169,7 @@ public:
 
 		for (int i = 0; i < hittable_entity_count; i++)
 		{
-			if (glm::distance(m_position, hittable_entities[i].m_position) < 1.5f && hittable_entities[i].m_is_active)
+			if (glm::distance(m_position, hittable_entities[i].m_position) < 0.8f && hittable_entities[i].m_is_active)
 			{
 				//Mix_PlayChannel((m_entity_type == PLAYER) ? 5 : 6, m_hit_sfx[get_random_sfx_index(HIT_SFX_COUNT)], 0);
 
@@ -276,6 +278,11 @@ public:
 	bool const get_collided_right() const
 	{
 		return m_collided_right;
+	}
+
+	bool const get_portal_touched() const
+	{
+		return m_portal_touched;
 	}
 
 	float const get_last_attack_time() const
@@ -387,6 +394,11 @@ public:
 	void const set_animation_time(float new_animation_time)
 	{
 		m_animation_time = new_animation_time;
+	}
+
+	void const set_portal_touched(float new_portal_touched)
+	{
+		m_portal_touched = new_portal_touched;
 	}
 
 	void const set_last_attack_time(float new_attack_time)

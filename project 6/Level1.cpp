@@ -67,8 +67,8 @@ void Level1::initialize()
 			COIN,
 			coin_texture_id,
 			coin_scale,
-			1.0f,
-			1.0f
+			0.1f,
+			0.1f
 		);
 	}
 
@@ -85,8 +85,8 @@ void Level1::initialize()
 		PORTAL,
 		portal_texture_id,
 		portal_scale,
-		1.0f,
-		1.0f
+		0.5f,
+		0.5f
 	);
 
 	m_state.portal->set_position(glm::vec3(1.0f, -6.7f, 0.0f));
@@ -189,10 +189,10 @@ void Level1::update(float delta_time, float curr_ticks)
 {
 	for (int i = 0; i < COIN_COUNT; i++)
 	{
-		m_state.coins[i].update(delta_time, m_state.player, nullptr, 0, m_state.map, curr_ticks);
+		m_state.coins[i].update(delta_time, m_state.player, m_state.player, 1, m_state.map, curr_ticks);
 	}
 
-	m_state.portal->update(delta_time, m_state.player, nullptr, 0, m_state.map, curr_ticks);
+	m_state.portal->update(delta_time, m_state.player, m_state.player, 1, m_state.map, curr_ticks);
 
 	m_state.player->update(delta_time, m_state.player, m_state.enemies, ENEMY_COUNT, m_state.map, curr_ticks);
 
@@ -205,6 +205,11 @@ void Level1::update(float delta_time, float curr_ticks)
 		m_state.player->set_last_attack_time(curr_ticks);
 
 		m_state.player->set_attacking(false);
+	}
+
+	if (m_state.portal->get_portal_touched())
+	{
+		m_state.next_scene_index = 2;
 	}
 }
 

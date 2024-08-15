@@ -230,6 +230,18 @@ void const Entity::check_collision_x(Entity* collidable_entities, int collidable
 
 		if (check_collision(collidable_entity))
 		{
+			if (m_entity_type == COIN)
+			{
+				deactivate();
+				return;
+			}
+
+			if (m_entity_type == PORTAL)
+			{
+				set_portal_touched(true);
+				return;
+			}
+
 			float x_distance = fabs(m_position.x - collidable_entity->m_position.x);
 			float x_overlap = fabs(x_distance - (m_width / 2.0f) - (collidable_entity->m_width / 2.0f));
 

@@ -82,6 +82,7 @@ float g_previous_ticks = 0.0f;
 float g_curr_ticks = 0.0f;
 float g_accumulator = 0.0f;
 
+int previous_scene_id = 0;
 Scene* g_current_scene;
 MenuScreen* g_menu_screen;
 Level1* g_level_1;
@@ -185,7 +186,7 @@ void process_input()
 						break;
 
 					case SDLK_f:
-						if (GAME_ONGOING && (g_curr_ticks - g_current_scene->get_state().player->get_last_attack_time()) >= 0.7f)
+						if (GAME_ONGOING && (g_curr_ticks - g_current_scene->get_state().player->get_last_attack_time()) >= 0.4f)
 						{
 							g_current_scene->get_state().player->set_attacking(true);
 						}
@@ -311,9 +312,9 @@ int main(int argc, char* argv[])
 		process_input();
 		update();
 
-		if (g_current_scene->m_state.next_scene_id >= 0)
+		if (g_current_scene->m_state.next_scene_index > 0)
 		{
-			//switch_to_scene(g_levels[g_current_scene->m_state.next_scene_id]);
+			switch_to_scene(g_levels[g_current_scene->m_state.next_scene_index]);
 		}
 
 		render();
