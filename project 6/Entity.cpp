@@ -467,7 +467,7 @@ void Entity::ai_walk(Entity* player, float curr_ticks)
 	{
 		case IDLING:
 			idle();
-			if (glm::distance(m_position, player->get_position()) < 4.0f)
+			if (glm::distance(m_position, player->get_position()) < 4.5f)
 			{
 				m_ai_state = WALKING;
 			}
@@ -499,7 +499,7 @@ void Entity::ai_walk(Entity* player, float curr_ticks)
 
 			walk();
 
-			if (glm::distance(m_position, player->get_position()) >= 4.0f)
+			if (glm::distance(m_position, player->get_position()) >= 4.5f)
 			{
 				m_ai_state = IDLING;
 			}

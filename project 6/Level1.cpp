@@ -57,6 +57,9 @@ void Level1::initialize()
 	GLuint coin_texture_id = Utility::load_texture(COIN_FILEPATH);
 
 	glm::vec3 coin_scale = glm::vec3(1.0f, 1.0f, 0.0f) * 0.5f;
+	glm::vec3 coin1_position = glm::vec3(5.0f, -4.0f, 0.0f);
+	glm::vec3 coin2_position = glm::vec3(13.0f, -3.0f, 0.0f);
+	glm::vec3 coin3_position = glm::vec3(6.0f, -8.0f, 0.0f);
 
 	m_state.coins = new Entity[COIN_COUNT];
 
@@ -72,13 +75,14 @@ void Level1::initialize()
 		);
 	}
 
-	m_state.coins[0].set_position(glm::vec3(5.0f, -4.0f, 0.0f));
-	m_state.coins[1].set_position(glm::vec3(13.0f, -3.0f, 0.0f));
-	m_state.coins[2].set_position(glm::vec3(6.0f, -8.0f, 0.0f));
+	m_state.coins[0].set_position(coin1_position);
+	m_state.coins[1].set_position(coin2_position);
+	m_state.coins[2].set_position(coin3_position);
 
 	GLuint portal_texture_id = Utility::load_texture(PORTAL_FILEPATH);
 
 	glm::vec3 portal_scale = glm::vec3(1.0f, 1.4f, 0.0f) * 1.0f;
+	glm::vec3 portal_position = glm::vec3(1.0f, -6.7f, 0.0f);
 
 	m_state.portal = new Entity
 	(
@@ -89,7 +93,7 @@ void Level1::initialize()
 		0.5f
 	);
 
-	m_state.portal->set_position(glm::vec3(1.0f, -6.7f, 0.0f));
+	m_state.portal->set_position(portal_position);
 
 	GLuint player_texture_id = Utility::load_texture(PLAYER_FILEPATH);
 
@@ -133,6 +137,7 @@ void Level1::initialize()
 	GLuint enemy_texture_id = Utility::load_texture(ENEMY_FILEPATH);
 
 	glm::vec3 enemy_scale = glm::vec3(0.8f, 1.0f, 0.0f) * 1.6f;
+	glm::vec3 enemy_position = glm::vec3(10.0f, -3.0f, 0.0f);
 	const float enemy_speed = 1.8f;
 
 	int enemy_animation[12][4] =
@@ -156,10 +161,10 @@ void Level1::initialize()
 		ENEMY,
 		enemy_texture_id,
 		enemy_scale,
-		glm::vec3(0.0f),
+		enemy_position,
 		0.6f,
 		0.7f,
-		0.0f,
+		enemy_speed,
 		24,
 		8,
 		4,
@@ -172,8 +177,6 @@ void Level1::initialize()
 
 	m_state.enemies->set_ai_type(WALKER);
 	m_state.enemies->set_ai_state(IDLING);
-	m_state.enemies->set_position(glm::vec3(10.0f, -3.0f, 0.0f));
-	m_state.enemies->set_speed(enemy_speed);
 	m_state.enemies->set_ai_walking_orientation(VERTICAL);
 	m_state.enemies->set_ai_walking_range(walking_range);
 
@@ -231,7 +234,7 @@ void Level1::update(float delta_time, float curr_ticks)
 			}
 		}
 
-		if (!level_done)
+		if (level_done)
 		{
 			m_state.next_scene_index = 2;
 		}
