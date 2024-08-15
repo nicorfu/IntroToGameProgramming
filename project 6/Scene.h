@@ -34,6 +34,7 @@ struct GameState
 	Mix_Chunk* punch_sfx;
 	Mix_Chunk* hamza_die_sfx;
 	Mix_Chunk* coin_sfx;
+	Mix_Chunk* boom_sfx;
 
 	int next_scene_index = 0;
 };

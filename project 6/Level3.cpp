@@ -43,6 +43,7 @@ const char HAMZAATTACK_SFX_FILEPATH[] = "assets/audio/hamza_attack.wav";
 const char PUNCH_SFX_FILEPATH[] = "assets/audio/punch.wav";
 const char HAMZADIE_SFX_FILEPATH[] = "assets/audio/hamza_die.wav";
 const char COIN_SFX_FILEPATH[] = "assets/audio/coin_grab.wav";
+const char BOOM_SFX_FILEPATH[] = "assets/audio/vine_boom.wav";
 
 Level3::~Level3()
 {
@@ -62,6 +63,7 @@ Level3::~Level3()
 	Mix_FreeChunk(m_state.punch_sfx);
 	Mix_FreeChunk(m_state.hamza_die_sfx);
 	Mix_FreeChunk(m_state.coin_sfx);
+	Mix_FreeChunk(m_state.boom_sfx);
 }
 
 
@@ -235,6 +237,9 @@ void Level3::initialize()
 
 	m_state.coin_sfx = Mix_LoadWAV(COIN_SFX_FILEPATH);
 	Mix_VolumeChunk(m_state.coin_sfx, int(MIX_MAX_VOLUME * 0.4));
+
+	m_state.boom_sfx = Mix_LoadWAV(BOOM_SFX_FILEPATH);
+	Mix_VolumeChunk(m_state.boom_sfx, int(MIX_MAX_VOLUME * 0.8));
 }
 
 

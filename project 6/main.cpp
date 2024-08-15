@@ -307,6 +307,8 @@ void update()
 		Mix_PlayChannel(7, g_current_scene->get_state().hamza_die_sfx, 0);
 
 		g_current_scene->get_state().player->set_died(false);
+
+		Mix_PlayChannel(8, g_current_scene->get_state().boom_sfx, 0);
 	}
 
 	g_accumulator = delta_time;
