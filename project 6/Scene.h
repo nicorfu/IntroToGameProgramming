@@ -29,7 +29,11 @@ struct GameState
 	Entity* player;
 	Entity* enemies;
 
-	Mix_Music* music;
+	Mix_Chunk* walk_sfx;
+	Mix_Chunk* hamza_attack_sfx;
+	Mix_Chunk* punch_sfx;
+	Mix_Chunk* hamza_die_sfx;
+	Mix_Chunk* coin_sfx;
 
 	int next_scene_index = 0;
 };

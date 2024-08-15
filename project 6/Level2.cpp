@@ -2,6 +2,10 @@
 #include "Utility.h"
 
 
+const char FONTSHEET_FILEPATH[] = "assets/visual/font.png";
+
+constexpr int FONTBANK_SIZE = 16;
+
 constexpr char MAP_TILESET_FILEPATH[] = "assets/visual/medieval_tileset.png";
 const float TILE_SIZE = 1.0f;
 const int TILE_COUNT_X = 16;
@@ -34,6 +38,12 @@ constexpr char COIN_FILEPATH[] = "assets/visual/coin.png";
 constexpr char PLAYER_FILEPATH[] = "assets/visual/hamza_spritesheet.png";
 constexpr char ENEMY_FILEPATH[] = "assets/visual/akram_spritesheet.png";
 
+const char WALK_SFX_FILEPATH[] = "assets/audio/stone_walk_1.wav";
+const char HAMZAATTACK_SFX_FILEPATH[] = "assets/audio/hamza_attack.wav";
+const char PUNCH_SFX_FILEPATH[] = "assets/audio/punch.wav";
+const char HAMZADIE_SFX_FILEPATH[] = "assets/audio/hamza_die.wav";
+const char COIN_SFX_FILEPATH[] = "assets/audio/coin_grab.wav";
+
 
 Level2::~Level2()
 {
@@ -46,12 +56,22 @@ Level2::~Level2()
 
 	delete m_state.map;
 
-	Mix_FreeMusic(m_state.music);
+	delete m_state.text;
+
+	Mix_FreeChunk(m_state.walk_sfx);
+	Mix_FreeChunk(m_state.hamza_attack_sfx);
+	Mix_FreeChunk(m_state.punch_sfx);
+	Mix_FreeChunk(m_state.hamza_die_sfx);
+	Mix_FreeChunk(m_state.coin_sfx);
 }
 
 
 void Level2::initialize()
 {
+	GLuint font_texture_id = Utility::load_texture(FONTSHEET_FILEPATH);
+	m_state.text = new Entity();
+	m_state.text->set_texture_id(font_texture_id);
+
 	GLuint map_texture_id = Utility::load_texture(MAP_TILESET_FILEPATH);
 	m_state.map = new Map(LEVEL_WIDTH, LEVEL_HEIGHT, LEVEL2_DATA, map_texture_id, TILE_SIZE, TILE_COUNT_X, TILE_COUNT_Y);
 
@@ -100,7 +120,7 @@ void Level2::initialize()
 
 	glm::vec3 player_scale = glm::vec3(1.0f, 1.35f, 0.0f) * 1.6f;
 	glm::vec3 player_position = glm::vec3(8.0f, -4.3f, 0.0f);
-	const float player_speed = 1.7f;
+	const float player_speed = 2.1f;
 
 	int player_animation[12][4] =
 	{
@@ -194,11 +214,20 @@ void Level2::initialize()
 	m_state.enemies[1].set_ai_walking_orientation(HORIZONTAL);
 	m_state.enemies[1].set_ai_walking_range(walking_range2);
 
-	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
+	m_state.walk_sfx = Mix_LoadWAV(WALK_SFX_FILEPATH);
+	Mix_VolumeChunk(m_state.walk_sfx, int(MIX_MAX_VOLUME * 0.05));
 
-	//m_state.music = Mix_LoadMUS("assets/audio/.mp3");
-	Mix_PlayMusic(m_state.music, -1);
-	Mix_VolumeMusic(0.0f);
+	m_state.hamza_attack_sfx = Mix_LoadWAV(HAMZAATTACK_SFX_FILEPATH);
+	Mix_VolumeChunk(m_state.hamza_attack_sfx, int(MIX_MAX_VOLUME * 0.3));
+
+	m_state.punch_sfx = Mix_LoadWAV(PUNCH_SFX_FILEPATH);
+	Mix_VolumeChunk(m_state.punch_sfx, int(MIX_MAX_VOLUME * 0.3));
+
+	m_state.hamza_die_sfx = Mix_LoadWAV(HAMZADIE_SFX_FILEPATH);
+	Mix_VolumeChunk(m_state.hamza_die_sfx, int(MIX_MAX_VOLUME * 0.3));
+
+	m_state.coin_sfx = Mix_LoadWAV(COIN_SFX_FILEPATH);
+	Mix_VolumeChunk(m_state.coin_sfx, int(MIX_MAX_VOLUME * 0.4));
 }
 
 
@@ -274,4 +303,10 @@ void Level2::render(ShaderProgram* g_shader_program)
 	m_state.player->render(g_shader_program);
 
 	m_state.portal->render(g_shader_program);
+
+	if (!m_state.player->get_is_active())
+	{
+		glm::vec3 text_position = glm::vec3(m_state.player->get_position().x - 2.2f, m_state.player->get_position().y + 2.0f, 0.0f);
+		m_state.text->draw_text(g_shader_program, "YOU LOST", 0.6f, 0.0001f, text_position, FONTBANK_SIZE);
+	}
 }

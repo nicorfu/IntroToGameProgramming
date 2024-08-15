@@ -8,13 +8,6 @@
 #include "ShaderProgram.h"
 #include <SDL_mixer.h>
 
-/*
-#define WALK_SFX_COUNT 2
-#define HIT_SFX_COUNT 3
-#define GRUNT_SFX_COUNT 4
-#define PAIN_SFX_COUNT 4
-*/
-
 
 enum EntityType { PLAYER, ENEMY, COIN, PORTAL };
 enum AIType { WALKER, GUARDIAN };
@@ -66,24 +59,23 @@ private:
 	bool m_attacking = false;
 	float m_last_attack_time = 0.0f;
 
+	bool m_enemy_hit = false;
+
+	bool m_coin_grabbed = false;
+
+	bool m_died = false;
+
 	bool m_dying = false;
 
 	bool m_portal_touched = false;
+
+	bool m_player_won = false;
 
 	bool m_collided_top = false;
 	bool m_collided_bottom = false;
 	bool m_collided_left = false;
 	bool m_collided_right = false;
 
-	Mix_Chunk* m_land_sfx;
-	bool m_play_land = false;
-
-	/*
-	Mix_Chunk* m_walk_sfx[WALK_SFX_COUNT];
-	Mix_Chunk* m_hit_sfx[HIT_SFX_COUNT];
-	Mix_Chunk* m_grunt_sfx[GRUNT_SFX_COUNT];
-	Mix_Chunk* m_pain_sfx[PAIN_SFX_COUNT];
-	*/
 
 public:
 	int SECONDS_PER_FRAME = 8;
@@ -92,8 +84,7 @@ public:
 
 	Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 position,
 		float width, float height, float speed, int animation_cols, int animation_rows,
-		int animation_frames, int animation_index, float animation_time, int animation[12][4]);//, Mix_Chunk* land_sfx,
-		//Mix_Chunk* walk_sfx[2], Mix_Chunk* hit_sfx[3], Mix_Chunk* grunt_sfx[4], Mix_Chunk* pain_sfx[4]);
+		int animation_frames, int animation_index, float animation_time, int animation[12][4]);
 
 	Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, float width, float height);
 
@@ -157,22 +148,17 @@ public:
 		}
 
 		m_animation_indices = m_animation[WALK + m_animation_direction];
-
-		//Mix_PlayChannel(-1, m_walk_sfx[get_random_sfx_index(WALK_SFX_COUNT)], 0);
 	}
 
 	void attack(Entity* hittable_entities, int hittable_entity_count)
 	{
-		//Mix_PlayChannel((m_entity_type == PLAYER) ? 3 : 4, m_grunt_sfx[get_random_sfx_index(GRUNT_SFX_COUNT)], 0);
-
 		idle();
 
 		for (int i = 0; i < hittable_entity_count; i++)
 		{
-			if (glm::distance(m_position, hittable_entities[i].m_position) < 1.0f && hittable_entities[i].m_is_active)
+			if (glm::distance(m_position, hittable_entities[i].m_position) < 1.2f && hittable_entities[i].m_is_active)
 			{
-				//Mix_PlayChannel((m_entity_type == PLAYER) ? 5 : 6, m_hit_sfx[get_random_sfx_index(HIT_SFX_COUNT)], 0);
-
+				m_enemy_hit = true;
 				hittable_entities[i].m_ai_state = DYING;
 			}
 		}
@@ -180,8 +166,6 @@ public:
 
 	void die()
 	{
-		//Mix_PlayChannel(-1, m_pain_sfx[get_random_sfx_index(PAIN_SFX_COUNT)], 0);
-
 		m_animation_indices = m_animation[DIE + m_animation_direction];
 		m_animation_index = 0;
 
@@ -285,6 +269,11 @@ public:
 		return m_portal_touched;
 	}
 
+	bool const get_player_won() const
+	{
+		return m_player_won;
+	}
+
 	float const get_last_attack_time() const
 	{
 		return m_last_attack_time;
@@ -298,6 +287,21 @@ public:
 	bool const get_dying() const
 	{
 		return m_dying;
+	}
+
+	bool const get_enemy_hit() const
+	{
+		return m_enemy_hit;
+	}
+
+	bool const get_coin_grabbed() const
+	{
+		return m_coin_grabbed;
+	}
+
+	bool const get_died() const
+	{
+		return m_died;
 	}
 
 	void const set_entity_type(EntityType new_entity_type)
@@ -396,9 +400,29 @@ public:
 		m_animation_time = new_animation_time;
 	}
 
+	void const set_enemy_hit(float new_enemy_hit)
+	{
+		m_enemy_hit = new_enemy_hit;
+	}
+
+	void const set_coin_grabbed(float new_coin_grabbed)
+	{
+		m_coin_grabbed = new_coin_grabbed;
+	}
+
+	void const set_died(float new_died)
+	{
+		m_died = new_died;
+	}
+
 	void const set_portal_touched(float new_portal_touched)
 	{
 		m_portal_touched = new_portal_touched;
+	}
+
+	void const set_player_won(float new_player_won)
+	{
+		m_player_won = new_player_won;
 	}
 
 	void const set_last_attack_time(float new_attack_time)
@@ -421,40 +445,6 @@ public:
 			}
 		}
 	}
-
-	/*
-	void set_walk_sfx(Mix_Chunk* new_walk_sfx[WALK_SFX_COUNT])
-	{
-		for (int i = 0; i < WALK_SFX_COUNT; i++)
-		{
-			m_walk_sfx[i] = new_walk_sfx[i];
-		}
-	}
-
-	void set_hit_sfx(Mix_Chunk* new_hit_sfx[HIT_SFX_COUNT])
-	{
-		for (int i = 0; i < HIT_SFX_COUNT; i++)
-		{
-			m_hit_sfx[i] = new_hit_sfx[i];
-		}
-	}
-
-	void set_grunt_sfx(Mix_Chunk* new_grunt_sfx[GRUNT_SFX_COUNT])
-	{
-		for (int i = 0; i < GRUNT_SFX_COUNT; i++)
-		{
-			m_grunt_sfx[i] = new_grunt_sfx[i];
-		}
-	}
-
-	void set_pain_sfx(Mix_Chunk* new_pain_sfx[PAIN_SFX_COUNT])
-	{
-		for (int i = 0; i < PAIN_SFX_COUNT; i++)
-		{
-			m_pain_sfx[i] = new_pain_sfx[i];
-		}
-	}
-	*/
 };
 
 #endif

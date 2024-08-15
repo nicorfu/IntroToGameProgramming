@@ -40,8 +40,7 @@ Entity::Entity()
 
 Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::vec3 position,
 	float width, float height, float speed, int animation_cols, int animation_rows,
-	int animation_frames, int animation_index, float animation_time, int animation[12][4])//, Mix_Chunk* land_sfx,
-	//Mix_Chunk* walk_sfx[2], Mix_Chunk* hit_sfx[3], Mix_Chunk* grunt_sfx[4], Mix_Chunk* pain_sfx[4])
+	int animation_frames, int animation_index, float animation_time, int animation[12][4])
 {
 	m_entity_type = entity_type;
 	m_texture_id = texture_id;
@@ -67,14 +66,6 @@ Entity::Entity(EntityType entity_type, GLuint texture_id, glm::vec3 scale, glm::
 	{
 		SECONDS_PER_FRAME = 5;
 	}
-
-	//m_land_sfx = land_sfx;
-	/*
-	set_walk_sfx(walk_sfx);
-	set_hit_sfx(hit_sfx);
-	set_grunt_sfx(grunt_sfx);
-	set_pain_sfx(pain_sfx);
-	*/
 }
 
 
@@ -232,6 +223,7 @@ void const Entity::check_collision_x(Entity* collidable_entities, int collidable
 		{
 			if (m_entity_type == COIN)
 			{
+				collidable_entity->m_coin_grabbed = true;
 				deactivate();
 				return;
 			}
@@ -244,6 +236,7 @@ void const Entity::check_collision_x(Entity* collidable_entities, int collidable
 
 			if (m_entity_type == PLAYER)
 			{
+				m_died = true;
 				die();
 			}
 

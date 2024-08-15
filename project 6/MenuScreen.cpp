@@ -6,7 +6,6 @@ const char FONTSHEET_FILEPATH[] = "assets/visual/font.png";
 
 constexpr int FONTBANK_SIZE = 16;
 
-
 glm::vec3 text_position1 = glm::vec3(-4.25f, 2.5f, 0.0f);
 glm::vec3 text_position2 = glm::vec3(-2.5f, -0.75f, 0.0f);
 glm::vec3 text_position3 = glm::vec3(-1.75f, -1.5f, 0.0f);

@@ -93,6 +93,8 @@ Scene* g_levels[4];
 
 Scene* g_current_scene;
 
+Mix_Music* music;
+
 void switch_to_scene(Scene* scene)
 {
 	g_current_scene = scene;
@@ -156,6 +158,11 @@ void initialize()
 
 	switch_to_scene(g_levels[0]);
 
+	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 512);
+	music = Mix_LoadMUS("assets/audio/mystery_piano.mp3");
+	Mix_PlayMusic(music, -1);
+	Mix_VolumeMusic(MIX_MAX_VOLUME / 4);
+
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
@@ -204,6 +211,7 @@ void process_input()
 					case SDLK_f:
 						if (GAME_ONGOING && (g_curr_ticks - g_current_scene->get_state().player->get_last_attack_time()) >= 0.1f)
 						{
+							Mix_PlayChannel(4, g_current_scene->get_state().hamza_attack_sfx, 0);
 							g_current_scene->get_state().player->set_attacking(true);
 						}
 						break;
@@ -222,21 +230,29 @@ void process_input()
 		{
 			g_current_scene->get_state().player->set_animation_direction(UP);
 			g_current_scene->get_state().player->walk();
+
+			Mix_PlayChannel(-1, g_current_scene->get_state().walk_sfx, 0);
 		}
 		else if (key_state[SDL_SCANCODE_DOWN] || key_state[SDL_SCANCODE_S])
 		{
 			g_current_scene->get_state().player->set_animation_direction(DOWN);
 			g_current_scene->get_state().player->walk();
+
+			Mix_PlayChannel(-1, g_current_scene->get_state().walk_sfx, 0);
 		}
 		else if (key_state[SDL_SCANCODE_LEFT] || key_state[SDL_SCANCODE_A])
 		{
 			g_current_scene->get_state().player->set_animation_direction(LEFT);
 			g_current_scene->get_state().player->walk();
+
+			Mix_PlayChannel(-1, g_current_scene->get_state().walk_sfx, 0);
 		}
 		else if (key_state[SDL_SCANCODE_RIGHT] || key_state[SDL_SCANCODE_D])
 		{
 			g_current_scene->get_state().player->set_animation_direction(RIGHT);
 			g_current_scene->get_state().player->walk();
+
+			Mix_PlayChannel(-1, g_current_scene->get_state().walk_sfx, 0);
 		}
 
 		if (glm::length(g_current_scene->get_state().player->get_movement()) > 1.0f)
@@ -269,6 +285,27 @@ void update()
 		delta_time -= FIXED_TIMESTEP;
 	}
 
+	if (g_current_scene != g_menu_screen && g_current_scene->get_state().player->get_enemy_hit())
+	{
+		Mix_PlayChannel(5, g_current_scene->get_state().punch_sfx, 0);
+
+		g_current_scene->get_state().player->set_enemy_hit(false);
+	}
+
+	if (g_current_scene != g_menu_screen && g_current_scene->get_state().player->get_coin_grabbed())
+	{
+		Mix_PlayChannel(6, g_current_scene->get_state().coin_sfx, 0);
+
+		g_current_scene->get_state().player->set_coin_grabbed(false);
+	}
+
+	if (g_current_scene != g_menu_screen && g_current_scene->get_state().player->get_died())
+	{
+		Mix_PlayChannel(7, g_current_scene->get_state().hamza_die_sfx, 0);
+
+		g_current_scene->get_state().player->set_died(false);
+	}
+
 	g_accumulator = delta_time;
 
 	g_view_matrix = glm::mat4(1.0f);
@@ -296,6 +333,11 @@ void update()
 			g_view_matrix = glm::translate(g_view_matrix, glm::vec3(-5.0f, 3.175f, 0.0f));
 		}
 	}
+
+	if (g_current_scene != g_menu_screen && g_current_scene->get_state().player->get_player_won())
+	{
+		GAME_ONGOING = false;
+	}
 }
 
 
@@ -318,6 +360,8 @@ void shutdown()
 	delete g_level_1;
 	delete g_level_2;
 	delete g_level_3;
+
+	Mix_FreeMusic(music);
 }
 
 
