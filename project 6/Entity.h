@@ -156,7 +156,7 @@ public:
 
 		for (int i = 0; i < hittable_entity_count; i++)
 		{
-			if (glm::distance(m_position, hittable_entities[i].m_position) < 1.2f && hittable_entities[i].m_is_active)
+			if (glm::distance(m_position, hittable_entities[i].m_position) < 0.75f && hittable_entities[i].m_is_active)
 			{
 				m_enemy_hit = true;
 				hittable_entities[i].m_ai_state = DYING;

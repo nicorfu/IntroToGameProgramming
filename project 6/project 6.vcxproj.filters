@@ -87,4 +87,8 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="vertex_lit.glsl" />
+    <None Include="fragment_lit.glsl" />
+  </ItemGroup>
 </Project>

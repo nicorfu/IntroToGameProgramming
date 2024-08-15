@@ -71,6 +71,9 @@ constexpr GLint NUMBER_OF_TEXTURES = 1;
 constexpr GLint LEVEL_OF_DETAIL = 0;
 constexpr GLint TEXTURE_BORDER = 0;
 
+//const char V_SHADER_PATH[] = "shaders/vertex_lit.glsl";
+//const char F_SHADER_PATH[] = "shaders/fragment_lit.glsl";
+
 const char V_SHADER_PATH[] = "shaders/vertex_textured.glsl";
 const char F_SHADER_PATH[] = "shaders/fragment_textured.glsl";
 
@@ -343,9 +346,18 @@ void update()
 
 void render()
 {
+	/*
+	if (g_current_scene != g_menu_screen)
+	{
+		g_shader_program.set_light_position_matrix(g_current_scene->get_state().player->get_position());
+	}
+	*/
+
 	g_shader_program.set_view_matrix(g_view_matrix);
 
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	glUseProgram(g_shader_program.get_program_id());
 
 	g_current_scene->render(&g_shader_program);
 

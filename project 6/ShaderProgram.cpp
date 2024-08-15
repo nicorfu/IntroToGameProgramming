@@ -4,6 +4,7 @@
 
 void ShaderProgram::load(const char *vertex_shader_file, const char *fragment_shader_file) {
     
+    lightPositionUniform = glGetUniformLocation(m_program_id, "lightPosition");
     // create the vertex shader
     m_vertex_shader = load_shader_from_file(vertex_shader_file, GL_VERTEX_SHADER);
     // create the fragment shader
@@ -33,6 +34,12 @@ void ShaderProgram::load(const char *vertex_shader_file, const char *fragment_sh
     
     set_colour(1.0f, 1.0f, 1.0f, 1.0f);
     
+}
+
+void ShaderProgram::set_light_position_matrix(glm::vec3 position)
+{
+    glUseProgram(m_program_id);
+    glUniform2f(lightPositionUniform, position.x, position.y);
 }
 
 void ShaderProgram::cleanup()
