@@ -355,7 +355,7 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
 
 	if (m_entity_type == ENEMY)
 	{
-		//ai_activate(player, curr_ticks);
+		ai_activate(player, curr_ticks);
 	}
 
 	if (m_animation_indices != nullptr)
@@ -404,13 +404,6 @@ void Entity::update(float delta_time, Entity* player, Entity* collidable_entitie
 		check_collision_y(map);
 	}
 
-	if (m_collided_bottom && m_play_land)
-	{
-		Mix_PlayChannel(2, m_land_sfx, 0);
-
-		m_play_land = false;
-	}
-
 	m_model_matrix = glm::mat4(1.0f);
 
 	m_model_matrix = glm::translate(m_model_matrix, m_position);
@@ -455,20 +448,20 @@ void Entity::ai_activate(Entity* player, float curr_ticks)
 {
 	switch (m_ai_type)
 	{
-	case WALKER:
-		ai_walk(player, curr_ticks);
-		break;
+		case WALKER:
+			ai_walk(player, curr_ticks);
+			break;
 
-	case GUARDIAN:
-		ai_guard(player, curr_ticks);
-		break;
+		case GUARDIAN:
+			ai_guard(player, curr_ticks);
+			break;
 
-	case WAITER:
-		ai_wait(player, curr_ticks);
-		break;
+		case WAITER:
+			ai_wait(player, curr_ticks);
+			break;
 
-	default:
-		break;
+		default:
+			break;
 	}
 }
 
@@ -477,57 +470,57 @@ void Entity::ai_walk(Entity* player, float curr_ticks)
 {
 	switch (m_ai_state)
 	{
-	case WALKING:
-		if (m_position.x <= 8.85f)
-		{
-			//move_right();
-		}
-		else if (m_position.x >= 15.15f)
-		{
-			//move_left();
-		}
-		if (/*m_facing_left*/0)
-		{
-			//move_left();
-		}
-		else
-		{
-			//move_right();
-		}
-		if (glm::distance(m_position, player->get_position()) < 1.5f)
-		{
-			if (m_position.x > player->get_position().x)
+		case WALKING:
+			if (m_position.x <= 8.85f)
 			{
-				//face_left();
+				//move_right();
+			}
+			else if (m_position.x >= 15.15f)
+			{
+				//move_left();
+			}
+			if (/*m_facing_left*/0)
+			{
+				//move_left();
 			}
 			else
 			{
-				//face_right();
+				//move_right();
 			}
+			if (glm::distance(m_position, player->get_position()) < 1.5f)
+			{
+				if (m_position.x > player->get_position().x)
+				{
+					//face_left();
+				}
+				else
+				{
+					//face_right();
+				}
 
-			m_ai_state = ATTACKING;
-		}
-		break;
+				m_ai_state = ATTACKING;
+			}
+			break;
 
-	case ATTACKING:
-		m_movement.x = 0.0f;
-		if ((curr_ticks - m_last_attack_time) >= 1.5f && player->m_is_active)
-		{
-			attack(player, 1);
-			m_last_attack_time = curr_ticks;
-		}
-		if (glm::distance(m_position, player->get_position()) >= 1.5f)
-		{
-			m_ai_state = WALKING;
-		}
-		break;
+		case ATTACKING:
+			m_movement.x = 0.0f;
+			if ((curr_ticks - m_last_attack_time) >= 1.5f && player->m_is_active)
+			{
+				attack(player, 1);
+				m_last_attack_time = curr_ticks;
+			}
+			if (glm::distance(m_position, player->get_position()) >= 1.5f)
+			{
+				m_ai_state = WALKING;
+			}
+			break;
 
-	case DYING:
-		if (!m_dying)
-		{
-			die();
-		}
-		break;
+		case DYING:
+			if (!m_dying)
+			{
+				die();
+			}
+			break;
 	}
 }
 
@@ -536,62 +529,62 @@ void Entity::ai_guard(Entity* player, float curr_ticks)
 {
 	switch (m_ai_state)
 	{
-	case IDLING:
-		//dont_move();
-		if (glm::distance(m_position, player->get_position()) < 3.75f)
-		{
-			m_ai_state = WALKING;
-		}
-		break;
-
-	case WALKING:
-		if (m_position.x > player->get_position().x)
-		{
-			//move_left();
-		}
-		else
-		{
-			//move_right();
-		}
-		if (glm::distance(m_position, player->get_position()) < 1.8f)
-		{
-			if (player->get_velocity().x != 0.0f)
+		case IDLING:
+			//dont_move();
+			if (glm::distance(m_position, player->get_position()) < 3.75f)
 			{
-				m_ai_state = ATTACKING;
+				m_ai_state = WALKING;
 			}
-			else if (glm::distance(m_position, player->get_position()) < m_lethal_distance)
+			break;
+
+		case WALKING:
+			if (m_position.x > player->get_position().x)
 			{
-				m_ai_state = ATTACKING;
+				//move_left();
 			}
-		}
-		if (glm::distance(m_position, player->get_position()) >= 3.75f)
-		{
-			m_ai_state = IDLING;
-		}
-		break;
+			else
+			{
+				//move_right();
+			}
+			if (glm::distance(m_position, player->get_position()) < 1.8f)
+			{
+				if (player->get_velocity().x != 0.0f)
+				{
+					m_ai_state = ATTACKING;
+				}
+				else if (glm::distance(m_position, player->get_position()) < m_lethal_distance)
+				{
+					m_ai_state = ATTACKING;
+				}
+			}
+			if (glm::distance(m_position, player->get_position()) >= 3.75f)
+			{
+				m_ai_state = IDLING;
+			}
+			break;
 
-	case ATTACKING:
-		m_movement.x = 0.0f;
-		if ((curr_ticks - m_last_attack_time) >= 1.5f && player->m_is_active)
-		{
-			attack(player, 1);
-			m_last_attack_time = curr_ticks;
-		}
-		if (glm::distance(m_position, player->get_position()) >= 1.8f)
-		{
-			m_ai_state = WALKING;
-		}
-		break;
+		case ATTACKING:
+			m_movement.x = 0.0f;
+			if ((curr_ticks - m_last_attack_time) >= 1.5f && player->m_is_active)
+			{
+				attack(player, 1);
+				m_last_attack_time = curr_ticks;
+			}
+			if (glm::distance(m_position, player->get_position()) >= 1.8f)
+			{
+				m_ai_state = WALKING;
+			}
+			break;
 
-	case DYING:
-		if (!m_dying)
-		{
-			die();
-		}
-		break;
+		case DYING:
+			if (!m_dying)
+			{
+				die();
+			}
+			break;
 
-	default:
-		break;
+		default:
+			break;
 	}
 }
 
@@ -600,31 +593,31 @@ void Entity::ai_wait(Entity* player, float curr_ticks)
 {
 	switch (m_ai_state)
 	{
-	case IDLING:
-		//dont_move();
-		if (glm::distance(m_position, player->get_position()) < 1.48f)
-		{
-			m_ai_state = ATTACKING;
-		}
-		break;
+		case IDLING:
+			idle();
+			if (glm::distance(m_position, player->get_position()) < 1.48f)
+			{
+				//m_ai_state = ATTACKING;
+			}
+			break;
 
-	case ATTACKING:
-		if ((curr_ticks - m_last_attack_time) >= 1.5f && player->m_is_active)
-		{
-			attack(player, 1);
-			m_last_attack_time = curr_ticks;
-		}
-		if (glm::distance(m_position, player->get_position()) >= 1.48f)
-		{
-			m_ai_state = IDLING;
-		}
-		break;
+		case ATTACKING:
+			if ((curr_ticks - m_last_attack_time) >= 1.5f && player->m_is_active)
+			{
+				attack(player, 1);
+				m_last_attack_time = curr_ticks;
+			}
+			if (glm::distance(m_position, player->get_position()) >= 1.48f)
+			{
+				m_ai_state = IDLING;
+			}
+			break;
 
-	case DYING:
-		if (!m_dying)
-		{
-			die();
-		}
-		break;
+		case DYING:
+			if (!m_dying)
+			{
+				die();
+			}
+			break;
 	}
 }

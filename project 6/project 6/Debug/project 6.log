@@ -1,4 +1,4 @@
 ﻿  Level1.cpp
 C:\Users\nico\Desktop\IntroToGameProgramming\project 6\Level1.cpp(24,3): warning C4838: conversion from 'int' to 'unsigned int' requires a narrowing conversion
-C:\Users\nico\Desktop\IntroToGameProgramming\project 6\Level1.cpp(113,18): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\nico\Desktop\IntroToGameProgramming\project 6\Level1.cpp(162,18): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   project 6.vcxproj -> C:\Users\nico\Desktop\IntroToGameProgramming\project 6\Debug\project 6.exe

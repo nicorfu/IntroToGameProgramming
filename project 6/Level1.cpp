@@ -18,8 +18,8 @@ unsigned int LEVEL_DATA[] =
 	170,  18,  39,  64,  17,  80,  37,  54,  23,  50,  81,  16,   7,  33,  48, 169,
 	186,  35,  50,  81,  65,  97,  64,  96,  65,   0,  80,   6,  19,  32,  52, 185,
 	154,  52,   2,   0,  81,  33,   0,  20,  81,  96,  65,  20,  35,  55,   2, 153,
-	170,  65,  97,  48,  96,  49,  16,  38,   7,  34,  23,  38,  49,   0,  17, 169,
-	186,   5,  81,  80,  97,  50,   3,  18,  39,  53,  32,  48,   7,   7,  39, 185,
+	170,  65,  97,  48,  96,  49,  16,  38,   7,  96,  23,  38,  49,   0,  17, 169,
+	186,   5,  81,  80,  97,  50,   3,  18,  39,  81,  97,  80,   7,   7,  39, 185,
 	154,   1,  21,  64,  37,  16,   7,  33,  48,  23,  54,   0,   4,  48,  16, 153,
 	 -1, 225, 226,  65,  32,  52,   4,  20,  35,  55,  33,  55,   3,  16,  23, 169
 };
@@ -35,7 +35,7 @@ Level1::~Level1()
 	delete[] m_state.enemies;
 	delete m_state.player;
 
-	delete m_state.coins;
+	delete[] m_state.coins;
 
 	delete m_state.map;
 
@@ -110,7 +110,7 @@ void Level1::initialize()
 
 	GLuint enemy_texture_id = Utility::load_texture(ENEMY_FILEPATH);
 
-	glm::vec3 enemy_scale = glm::vec3(1.0f, 1.0f, 0.0f) * 1.5f;
+	glm::vec3 enemy_scale = glm::vec3(0.8f, 1.0f, 0.0f) * 1.6f;
 	const float enemy_speed = 1.3f;
 
 	int enemy_animation[12][4] =
@@ -126,7 +126,7 @@ void Level1::initialize()
 		{ 116, 117, 118, 119 },		// die up
 		{  20,  21,  22,  23 },		// die down
 		{ 164, 165, 166, 167 },		// die left
-		{  68,  69,  70,  71 },		// die right
+		{  68,  69,  70,  71 }		// die right
 	};
 
 	m_state.enemies = new Entity[ENEMY_COUNT];
@@ -140,17 +140,19 @@ void Level1::initialize()
 			enemy_scale,
 			glm::vec3(0.0f),
 			0.5f,
-			1.8f,
+			0.7f,
 			0.0f,
-			18,
-			4,
+			24,
 			8,
+			4,
 			0,
 			0.0f,
 			enemy_animation
 		);
 	}
 
+	m_state.enemies[0].set_ai_type(WAITER);
+	m_state.enemies[0].set_ai_state(IDLING);
 	m_state.enemies[0].set_position(glm::vec3(10.0f, -3.0f, 0.0f));
 
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
@@ -168,11 +170,11 @@ void Level1::update(float delta_time)
 		m_state.coins[i].update(delta_time, m_state.player, nullptr, 0, m_state.map, 0.0f);
 	}
 
-	m_state.player->update(delta_time, m_state.player, m_state.enemies, 0, m_state.map, 0.0f);
+	m_state.player->update(delta_time, m_state.player, m_state.enemies, ENEMY_COUNT, m_state.map, 0.0f);
 
 	for (int i = 0; i < ENEMY_COUNT; i++)
 	{
-		//m_state.enemies[i].update(delta_time, m_state.player, m_state.player, 1, m_state.map, 0.0f);
+		m_state.enemies[i].update(delta_time, m_state.player, nullptr, 0, m_state.map, 0.0f);
 	}
 }
 
@@ -185,11 +187,11 @@ void Level1::render(ShaderProgram* g_shader_program)
 	{
 		m_state.coins[i].render(g_shader_program);
 	}
-	
-	m_state.player->render(g_shader_program);
 
 	for (int i = 0; i < ENEMY_COUNT; i++)
 	{
-		//m_state.enemies[i].render(g_shader_program);
+		m_state.enemies[i].render(g_shader_program);
 	}
+	
+	m_state.player->render(g_shader_program);
 }
