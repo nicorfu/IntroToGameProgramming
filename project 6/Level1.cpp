@@ -9,7 +9,7 @@ const int TILE_COUNT_Y = 40;
 
 const int LEVEL_WIDTH = 16;
 const int LEVEL_HEIGHT = 13;
-unsigned int LEVEL_DATA[] =
+unsigned int LEVEL1_DATA[] =
 {
 	154, 225, 226, 227, 228, 225, 226, 227, 228, 225, 226, 227, 228, 230, 225, 153,
 	170, 241, 242, 243, 244, 241, 242, 243, 244, 241, 242, 243, 244, 246, 241, 169,
@@ -52,7 +52,7 @@ Level1::~Level1()
 void Level1::initialize()
 {
 	GLuint map_texture_id = Utility::load_texture(MAP_TILESET_FILEPATH);
-	m_state.map = new Map(LEVEL_WIDTH, LEVEL_HEIGHT, LEVEL_DATA, map_texture_id, TILE_SIZE, TILE_COUNT_X, TILE_COUNT_Y);
+	m_state.map = new Map(LEVEL_WIDTH, LEVEL_HEIGHT, LEVEL1_DATA, map_texture_id, TILE_SIZE, TILE_COUNT_X, TILE_COUNT_Y);
 
 	GLuint coin_texture_id = Utility::load_texture(COIN_FILEPATH);
 
@@ -133,7 +133,7 @@ void Level1::initialize()
 	GLuint enemy_texture_id = Utility::load_texture(ENEMY_FILEPATH);
 
 	glm::vec3 enemy_scale = glm::vec3(0.8f, 1.0f, 0.0f) * 1.6f;
-	const float enemy_speed = 1.3f;
+	const float enemy_speed = 1.8f;
 
 	int enemy_animation[12][4] =
 	{
@@ -173,7 +173,7 @@ void Level1::initialize()
 	m_state.enemies->set_ai_type(WALKER);
 	m_state.enemies->set_ai_state(IDLING);
 	m_state.enemies->set_position(glm::vec3(10.0f, -3.0f, 0.0f));
-	m_state.enemies->set_speed(1.8f);
+	m_state.enemies->set_speed(enemy_speed);
 	m_state.enemies->set_ai_walking_orientation(VERTICAL);
 	m_state.enemies->set_ai_walking_range(walking_range);
 
@@ -209,7 +209,32 @@ void Level1::update(float delta_time, float curr_ticks)
 
 	if (m_state.portal->get_portal_touched())
 	{
-		m_state.next_scene_index = 2;
+		bool level_done = true;
+
+		for (int i = 0; i < ENEMY_COUNT; i++)
+		{
+			if (m_state.enemies[i].get_is_active())
+			{
+				level_done = false;
+				m_state.portal->set_portal_touched(false);
+				break;
+			}
+		}
+
+		for (int i = 0; (i < COIN_COUNT) && level_done; i++)
+		{
+			if (m_state.coins[i].get_is_active())
+			{
+				level_done = false;
+				m_state.portal->set_portal_touched(false);
+				break;
+			}
+		}
+
+		if (!level_done)
+		{
+			m_state.next_scene_index = 2;
+		}
 	}
 }
 

@@ -169,7 +169,7 @@ public:
 
 		for (int i = 0; i < hittable_entity_count; i++)
 		{
-			if (glm::distance(m_position, hittable_entities[i].m_position) < 0.8f && hittable_entities[i].m_is_active)
+			if (glm::distance(m_position, hittable_entities[i].m_position) < 1.0f && hittable_entities[i].m_is_active)
 			{
 				//Mix_PlayChannel((m_entity_type == PLAYER) ? 5 : 6, m_hit_sfx[get_random_sfx_index(HIT_SFX_COUNT)], 0);
 

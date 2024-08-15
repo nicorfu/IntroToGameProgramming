@@ -32,6 +32,7 @@
 #include "Scene.h"
 #include "MenuScreen.h"
 #include "Level1.h"
+#include "Level2.h"
 
 
 #define FIXED_TIMESTEP 0.0166666f
@@ -82,12 +83,13 @@ float g_previous_ticks = 0.0f;
 float g_curr_ticks = 0.0f;
 float g_accumulator = 0.0f;
 
-int previous_scene_id = 0;
-Scene* g_current_scene;
 MenuScreen* g_menu_screen;
 Level1* g_level_1;
+Level2* g_level_2;
 
-Scene* g_levels[2];
+Scene* g_levels[3];
+
+Scene* g_current_scene;
 
 void switch_to_scene(Scene* scene)
 {
@@ -142,9 +144,11 @@ void initialize()
 
 	g_menu_screen = new MenuScreen();
 	g_level_1 = new Level1();
+	g_level_2 = new Level2();
 
 	g_levels[0] = g_menu_screen;
 	g_levels[1] = g_level_1;
+	g_levels[2] = g_level_2;
 
 	switch_to_scene(g_levels[0]);
 
@@ -186,7 +190,7 @@ void process_input()
 						break;
 
 					case SDLK_f:
-						if (GAME_ONGOING && (g_curr_ticks - g_current_scene->get_state().player->get_last_attack_time()) >= 0.4f)
+						if (GAME_ONGOING && (g_curr_ticks - g_current_scene->get_state().player->get_last_attack_time()) >= 0.2f)
 						{
 							g_current_scene->get_state().player->set_attacking(true);
 						}
@@ -300,6 +304,7 @@ void shutdown()
 	SDL_Quit();
 
 	delete g_level_1;
+	delete g_level_2;
 }
 
 
